@@ -1,16 +1,155 @@
 <head>
-    <base href="/">
+
+	<meta charset="utf-8">
+	<base href="/">
+	<title>ydb - your darts buddy</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+
+	<link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
+
+	<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+	  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
 </head>
+
 <body>
 
-<div ng-app="ydb" ng-strict-di="">
-    <h1>
-        <a href="/index">Startseite</a>
-    </h1>
+<nav class="navbar navbar-inverse" role="navigation">
 
-    <div ui-view>
+	<div class="container">
+  <!-- Brand and toggle get grouped for better mobile display -->
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <i class="icon-cog"></i>
+    </button>
+    <a class="navbar-brand" href="./index.html">ydb - your darts buddy</a>
+  </div>
 
-    </div>
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav navbar-right">
+      <li class="dropdown">
+						
+			<a href="javscript:;" class="dropdown-toggle" data-toggle="dropdown">
+				<i class="icon-cog"></i>
+				Settings
+				<b class="caret"></b>
+			</a>
+			
+			<ul class="dropdown-menu">
+				<li><a href="javascript:;">Punkt A</a></li>
+				<li class="divider"></li>
+				<li><a href="javascript:;">Punkt B</a></li>
+			</ul>
+			
+		</li>
+
+		<li class="dropdown">
+						
+			<a href="javscript:;" class="dropdown-toggle" data-toggle="dropdown">
+				<i class="icon-user"></i> 
+				Rod Howard
+				<b class="caret"></b>
+			</a>
+			
+			<ul class="dropdown-menu">
+				<li><a href="javascript:;">Personal data</a></li>
+				<li class="divider"></li>
+				<li><a href="javascript:;">Logout</a></li>
+			</ul>
+			
+		</li>
+    </ul>
+  </div><!-- /.navbar-collapse -->
+</div> <!-- /.container -->
+</nav>
+    
+<div class="subnavbar">
+
+	<div class="subnavbar-inner">
+	
+		<div class="container">
+			
+			<a href="javascript:;" class="subnav-toggle" data-toggle="collapse" data-target=".subnav-collapse">
+		      <span class="sr-only">Toggle navigation</span>
+		      <i class="icon-reorder"></i>
+		      
+		    </a>
+
+			<div class="collapse subnav-collapse">
+				<ul class="mainnav">
+				
+					<li class="active">
+						<a href="./index.html">
+							<i class="icon-home"></i>
+							<span>Home</span>
+						</a>	    				
+					</li>
+
+				</ul>
+			</div> <!-- /.subnav-collapse -->
+
+		</div> <!-- /container -->
+	
+	</div> <!-- /subnavbar-inner -->
+
+</div> <!-- /subnavbar -->
+    
+    
+<div class="main">
+
+    <div class="container" ng-app="ydb" ng-strict-di="">
+
+		<div ui-view>
+
+		</div>
+
+    </div> <!-- /container -->
+    
+</div> <!-- /main -->
+    
+
+
+<div class="extra">
+
+	<div class="container">
+
+		<div class="row">
+			
+			<div class="col-md-12">
+				
+				<h4>TBD</h4>
+
+		</div> <!-- /row -->
+
+	</div> <!-- /container -->
+
+</div> <!-- /extra -->
+
+
+    
+    
+<div class="footer">
+		
+	<div class="container">
+		
+		<div class="row">
+			
+			<div id="footer-copyright" class="col-md-6">
+				&copy; 2016 by Magnus Buk
+			</div> <!-- /span6 -->
+
+		</div> <!-- /row -->
+		
+	</div> <!-- /container -->
+	
+</div> <!-- /footer -->
+
 </div>
 
 </body>
