@@ -2,12 +2,25 @@ angular.module('ydb').directive('register', function() {
     return {
         restrict: 'E',
         templateUrl: 'client/ydb/register/register.html',
-        controllerAs: 'registerController',
-        controller: function($scope, $reactive) {
+        controllerAs: 'register',
+        controller: function($scope, $reactive, $state) {
             $reactive(this).attach($scope);
 
+            this.newUser = {};
+
             this.addUser = () => {
-                alert("HALLO!");
+                Accounts.createUser({
+                    username: this.newUser.username,
+                    password: this.newUser.password
+                }, (error) => {
+                    if (error) {
+                        alert("Error occured");
+                    } else {
+                        $state.path('start');
+                    }
+                }
+                );
+                this.newUser = {};
             }
         }
     }

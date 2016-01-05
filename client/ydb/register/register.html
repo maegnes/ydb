@@ -6,6 +6,7 @@
 
             <div class="widget-header">
                 <i class="icon-pushpin"></i>
+
                 <h3>Register for your own account!</h3>
             </div>
 
@@ -14,13 +15,15 @@
                 <form id="register-form">
                     <div class="form-group">
                         <label for="txtUsername">Username</label>
-                        <input type="text" class="form-control" id="txtUsername" placeholder="Username">
+                        <input type="text" class="form-control" id="txtUsername" ng-model="register.newUser.username"
+                               placeholder="Username">
                     </div>
                     <div class="form-group">
                         <label for="txtPassword">Password</label>
-                        <input type="password" class="form-control" id="txtPassword" placeholder="Password">
+                        <input type="password" class="form-control" id="txtPassword"
+                               ng-model="register.newUser.password" placeholder="Password">
                     </div>
-                    <button type="submit" class="btn btn-default" ng-click="registerController.addUser();">Register</button>
+                    <button type="submit" class="btn btn-default" ng-click="register.addUser();">Register</button>
                 </form>
             </div>
         </div>
