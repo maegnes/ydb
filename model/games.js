@@ -8,6 +8,6 @@ Games.allow({
         return true;
     },
     remove: function (userId, game) {
-        return true;
+        return false;
     }
 });
