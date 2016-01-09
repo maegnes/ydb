@@ -5,14 +5,13 @@ Meteor.publish("games", function (options) {
         $or: [
             {
                 $and: [
-                    {'public': true},
-                    {'public': {$exists: true}}
+                    {'visibility': true},
+                    {'visibility': {$exists: true}}
                 ]
             },
             {
                 $and: [
-                    {owner: this.userId},
-                    {owner: {$exists: true}}
+                    {owner: Meteor.users.findOne(this.userId)}
                 ]
             }
         ]

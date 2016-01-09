@@ -52,17 +52,14 @@
             </div> <!-- /widget-header -->
 
             <div class="widget-content">
-                <button class="btn-default btn" ng-click="dashboard.clearGames();">Clear games</button>
                 <ul class="news-items">
                     <li ng-repeat="game in dashboard.games">
                         <div class="news-item-detail">
-                            <a href="javascript:;" class="news-item-title">{{game.name}}</a>
-                            <p class="news-item-preview">{{game.desc}}</p>
+                            <a href="javascript:;" class="news-item-title">{{game.type}} created by {{game.owner.username}}</a>
+                            <p class="news-item-preview">Currently 5 players</p>
                         </div>
-
-                        <div class="news-item-date">
-                            <span class="news-item-day">PUBLIC?</span>
-                            <span class="news-item-month">YES</span>
+                        <div class="news-item-detail">
+                            <button ng-click="dashboard.addPlayerToGame(game._id);" class="btn btn-block">join game</button>
                         </div>
                     </li>
                 </ul>
@@ -87,45 +84,11 @@
             <div class="widget-content">
 
                 <div class="shortcuts">
-                    <a href="javascript:;" class="shortcut">
+                    <a href="#startNewGameModal" data-toggle="modal" class="shortcut">
                         <i class="shortcut-icon icon-list-alt"></i>
-                        <span class="shortcut-label">Apps</span>
+                        <span class="shortcut-label">Start game</span>
                     </a>
 
-                    <a href="javascript:;" class="shortcut">
-                        <i class="shortcut-icon icon-bookmark"></i>
-                        <span class="shortcut-label">Bookmarks</span>
-                    </a>
-
-                    <a href="javascript:;" class="shortcut">
-                        <i class="shortcut-icon icon-signal"></i>
-                        <span class="shortcut-label">Reports</span>
-                    </a>
-
-                    <a href="javascript:;" class="shortcut">
-                        <i class="shortcut-icon icon-comment"></i>
-                        <span class="shortcut-label">Comments</span>
-                    </a>
-
-                    <a href="javascript:;" class="shortcut">
-                        <i class="shortcut-icon icon-user"></i>
-                        <span class="shortcut-label">Users</span>
-                    </a>
-
-                    <a href="javascript:;" class="shortcut">
-                        <i class="shortcut-icon icon-file"></i>
-                        <span class="shortcut-label">Notes</span>
-                    </a>
-
-                    <a href="javascript:;" class="shortcut">
-                        <i class="shortcut-icon icon-picture"></i>
-                        <span class="shortcut-label">Photos</span>
-                    </a>
-
-                    <a href="javascript:;" class="shortcut">
-                        <i class="shortcut-icon icon-tag"></i>
-                        <span class="shortcut-label">Tags</span>
-                    </a>
                 </div> <!-- /shortcuts -->
 
             </div> <!-- /widget-content -->
@@ -134,4 +97,63 @@
 
     </div> <!-- /span6 -->
 
+</div>
+
+<div id="startNewGameModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Create a new game</h4>
+            </div>
+            <div class="modal-body" style="height: 400px;">
+                <form action="/" id="validation-form" role="form" class="form-horizontal col-md-12" novalidate="novalidate">
+
+                    <fieldset>
+
+                        <div class="form-group">
+                            <label for="selectGameType" class="col-lg-4">Game type</label>
+                            <div class="col-lg-8">
+                                <select ng-model="dashboard.newGame.type" id="selectGameType" class="form-control">
+                                    <option value="501">501</option>
+                                    <option value="401">401</option>
+                                    <option value="301">301</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="col-lg-4">Visibility</label>
+
+                            <div class="col-lg-8">
+
+                                <div class="radio">
+                                    <label>
+                                        <input ng-model="dashboard.newGame.visibility" type="radio" name="gameVisibility" id="optionGameVisibility1" value="1">
+                                        Public - everyone can join the game
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input ng-model="dashboard.newGame.visibility" type="radio" name="gameVisibility" id="optionGameVisibility2" value="0">
+                                        Private - i will add players to the game
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-lg-4"></div>
+                            <div class="col-lg-8">
+                                <button ng-click="dashboard.createNewGame()" type="button" class="btn btn-success"><i class="icon-gamepad"></i> Create game</button>&nbsp;&nbsp;
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>

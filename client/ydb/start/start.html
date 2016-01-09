@@ -29,9 +29,11 @@
 
             <div class="widget-content">
 
-                <a href="/register" class="btn btn-primary btn-register">Register</a>
+                <a ng-show="$root.currentUser" href="/dashboard" class="btn btn-primary btn-register">Check your dashboard</a>
 
-                <a href="/login" class="btn btn-success btn-register">Login</a>
+                <a ng-hide="$root.currentUser" href="/register" class="btn btn-primary btn-register">Register</a>
+
+                <a ng-hide="$root.currentUser" href="/login" class="btn btn-success btn-register">Login</a>
 
             </div> <!-- /widget-content -->
 
