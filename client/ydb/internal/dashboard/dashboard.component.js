@@ -7,8 +7,10 @@ angular.module('ydb').directive('dashboard', function() {
 
             $reactive(this).attach($scope);
 
+            // Subscribe to all game changes
             this.subscribe("games");
 
+            // The skeleton for new games
             this.newGame = {
                 owner: Meteor.user(),
                 running: false,
@@ -16,6 +18,9 @@ angular.module('ydb').directive('dashboard', function() {
                 players: []
             };
 
+            /**
+             * Informs the server to create a new game
+             */
             this.createNewGame = () => {
                 this.newGame.visibility = Boolean(this.newGame.visibility);
                 Meteor.call(
@@ -24,23 +29,19 @@ angular.module('ydb').directive('dashboard', function() {
                     (error, gameId) => {
                         if (error) {
                             // todo - error handling
-
                         } else {
-                            // Add the owner to the game
-                            Meteor.call(
-                                'addPlayerToGame',
-                                gameId,
-                                Meteor.userId(),
-                                (error, result) => {
-                                    console.log(error, result);
-                                }
-                            );
+                            this.addPlayerToGame(gameId);
                         }
 
                     }
                 );
             };
 
+            /**
+             * Adds the current user to the given game
+             *
+             * @param gameId - id of the game
+             */
             this.addPlayerToGame = (gameId) => {
                 Meteor.call(
                     'addPlayerToGame',
@@ -52,6 +53,9 @@ angular.module('ydb').directive('dashboard', function() {
                 );
             };
 
+            /**
+             * Defines our controllers helpers
+             */
             this.helpers({
                 games: () => {
                     return Games.find({});
