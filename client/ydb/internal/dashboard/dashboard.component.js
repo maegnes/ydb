@@ -48,7 +48,9 @@ angular.module('ydb').directive('dashboard', function() {
                     gameId,
                     Meteor.userId(),
                     (error, result) => {
-                        console.log(error, result);
+                        if (error) {
+                            // todo - errorhandling
+                        }
                     }
                 );
             };

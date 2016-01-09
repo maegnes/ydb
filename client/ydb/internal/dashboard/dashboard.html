@@ -56,7 +56,7 @@
                     <li ng-repeat="game in dashboard.games">
                         <div class="news-item-detail">
                             <a href="javascript:;" class="news-item-title">{{game.type}} created by {{game.owner.username}}</a>
-                            <p class="news-item-preview">Currently 5 players</p>
+                            <p class="news-item-preview">Currently {{game.players.length}} players</p>
                         </div>
                         <div class="news-item-detail">
                             <button ng-click="dashboard.addPlayerToGame(game._id);" class="btn btn-block">join game</button>
@@ -131,13 +131,13 @@
 
                                 <div class="radio">
                                     <label>
-                                        <input ng-model="dashboard.newGame.visibility" type="radio" name="gameVisibility" id="optionGameVisibility1" value="1">
+                                        <input ng-model="dashboard.newGame.visibility" type="radio" id="optionGameVisibility1" ng-value="1">
                                         Public - everyone can join the game
                                     </label>
                                 </div>
                                 <div class="radio">
                                     <label>
-                                        <input ng-model="dashboard.newGame.visibility" type="radio" name="gameVisibility" id="optionGameVisibility2" value="0">
+                                        <input ng-model="dashboard.newGame.visibility" type="radio" id="optionGameVisibility2" ng-value="0">
                                         Private - i will add players to the game
                                     </label>
                                 </div>

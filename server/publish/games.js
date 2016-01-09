@@ -11,11 +11,13 @@ Meteor.publish("games", function (options) {
             },
             {
                 $and: [
-                    {owner: Meteor.users.findOne(this.userId)}
+                    {"owner._id": this.userId}
                 ]
             }
         ]
     };
+
+    console.log(selector);
 
     return Games.find(selector, options);
 
