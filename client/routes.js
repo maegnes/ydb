@@ -11,7 +11,7 @@ checkLogin = ($q) => {
     if (Meteor.userId()) {
         return $q.resolve();
     } else {
-        return $q.restrict();
+        return $q.reject('NOT_LOGGED_IN');
     }
 };
 
@@ -39,6 +39,13 @@ angular.module('ydb')
                     checkLogin
                 }
             })
+            .state('game', {
+                url: '/game/:gameId',
+                template: '<game></game>',
+                resolve: {
+                    checkLogin
+                }
+            })
             .state('login', {
                 url: '/login',
                 template: '<login></login>',
@@ -57,8 +64,15 @@ angular.module('ydb')
     })
     .run(function ($rootScope, $state) {
         $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
-            if (error === 'ALREADY_AUTHENTICATED') {
-                $state.go('start');
+            switch (error) {
+                case 'ALREADY_AUTHENTICATED':
+                    $state.go('dashboard');
+                    break;
+                case 'NOT_LOGGED_IN':
+                    $state.go('login');
+                    break;
+                default:
+                    $state.go('start');
             }
         });
     });

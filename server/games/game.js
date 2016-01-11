@@ -57,6 +57,30 @@ Meteor.methods({
                 }
             }
         );
+    },
+
+    /**
+     * Removes the given player from the given game
+     *
+     * @param gameId
+     * @param playerId
+     */
+    removePlayerFromGame: (gameId, playerId) => {
+
+        console.log(gameId, playerId);
+
+        Games.update(
+            {
+                _id: gameId
+            },
+            {
+                $pull: {
+                    players: {
+                        _id: playerId
+                    }
+                }
+            }
+        );
 
     }
 });

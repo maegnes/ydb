@@ -55,8 +55,8 @@
     padding: 0 2em 0 1.5em;
     padding-bottom: 1em;
     margin-bottom: 1em;
-
     border-bottom: 1px dotted #CCC;
+    width: 100%;
 }
 
 .news-items li:last-child {
@@ -69,11 +69,12 @@
 }
 
 .news-item-detail {
-    display: table-cell;
+    float: left;
+    margin-left: 15px;
 }
 
 .news-item-title {
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
 }
 

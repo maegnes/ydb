@@ -19,25 +19,16 @@
                     </div> <!-- /stat -->
 
                     <div class="stat">
-                        <span class="stat-value">100</span>
+                        <span class="stat-value">60</span>
                         Wins
                     </div> <!-- /stat -->
 
+                    <div class="stat">
+                        <span class="stat-value">40,55</span>
+                        3D Average
+                    </div> <!-- /stat -->
+
                 </div> <!-- /stats -->
-
-
-                <div id="chart-stats" class="stats">
-
-                    <div class="stat stat-chart">
-                        <div id="donut-chart" class="chart-holder" style="padding: 0px; position: relative;"><canvas class="base" width="260" height="100"></canvas><canvas class="overlay" width="260" height="100" style="position: absolute; left: 0px; top: 0px;"></canvas><div class="legend"><div style="position: absolute; width: 53px; height: 72px; top: 5px; right: 5px; opacity: 0.85; background-color: rgb(255, 255, 255);"> </div><table style="position:absolute;top:5px;right:5px;;font-size:smaller;color:#545454"><tbody><tr><td class="legendColorBox"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid rgb(255,153,0);overflow:hidden"></div></div></td><td class="legendLabel">Series 1</td></tr><tr><td class="legendColorBox"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid rgb(34,34,34);overflow:hidden"></div></div></td><td class="legendLabel">Series 2</td></tr><tr><td class="legendColorBox"><div style="border:1px solid #ccc;padding:1px"><div style="width:4px;height:0;border:5px solid rgb(119,119,119);overflow:hidden"></div></div></td><td class="legendLabel">Series 3</td></tr></tbody></table></div></div> <!-- #donut -->
-                    </div> <!-- /substat -->
-
-                    <div class="stat stat-time">
-                        <span class="stat-value">00:28:13</span>
-                        Average Time on Site
-                    </div> <!-- /substat -->
-
-                </div> <!-- /substats -->
 
             </div> <!-- /widget-content -->
 
@@ -52,14 +43,26 @@
             </div> <!-- /widget-header -->
 
             <div class="widget-content">
+                <div ng-show="dashboard.games.length <= 0" class="alert alert-info margin25">
+                    Currently there are no games available.
+                </div>
                 <ul class="news-items">
                     <li ng-repeat="game in dashboard.games">
                         <div class="news-item-detail">
-                            <a href="javascript:;" class="news-item-title">{{game.type}} created by {{game.owner.username}}</a>
-                            <p class="news-item-preview">Currently {{game.players.length}} players</p>
+                            <span ng-if="dashboard.hasPlayerJoinedGame(game._id);">
+                                <button ng-hide="game.owner._id == $root.currentUser._id" ng-click="dashboard.removePlayerFromGame(game._id);" class="btn btn-success">LEAVE</button>
+                            </span>
+                            <span ng-if="!dashboard.hasPlayerJoinedGame(game._id);">
+                                <button ng-hide="game.owner._id == $root.currentUser._id" ng-click="dashboard.addPlayerToGame(game._id);" class="btn btn-success">JOIN</button>
+                            </span>
+                            <button ng-show="game.owner._id == $root.currentUser._id" ng-click="dashboard.addPlayerToGame(game._id);" class="btn btn-danger">START</button>
                         </div>
                         <div class="news-item-detail">
-                            <button ng-click="dashboard.addPlayerToGame(game._id);" class="btn btn-block">join game</button>
+                            <i ng-show="game.visibility" class="icon-unlock"></i>
+                            <i ng-hide="game.visibility" class="icon-lock"></i>
+                            -
+                            <a href="javascript:;" class="news-item-title">{{game.type}} created by {{game.owner.username}}</a>
+                            <p class="news-item-preview">Currently {{game.players.length}} players</p>
                         </div>
                     </li>
                 </ul>
@@ -86,7 +89,7 @@
                 <div class="shortcuts">
                     <a href="#startNewGameModal" data-toggle="modal" class="shortcut">
                         <i class="shortcut-icon icon-list-alt"></i>
-                        <span class="shortcut-label">Start game</span>
+                        <span class="shortcut-label">NEW GAME</span>
                     </a>
 
                 </div> <!-- /shortcuts -->

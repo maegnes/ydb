@@ -12,6 +12,7 @@ angular.module('ydb').directive('dashboard', function() {
 
             // The skeleton for new games
             this.newGame = {
+                created: new Date(),
                 owner: Meteor.user(),
                 running: false,
                 finished: false,
@@ -53,6 +54,39 @@ angular.module('ydb').directive('dashboard', function() {
                         }
                     }
                 );
+            };
+
+            /**
+             * Removes the current player from the given game
+             *
+             * @param gameId
+             */
+            this.removePlayerFromGame = (gameId) => {
+                Meteor.call(
+                    'removePlayerFromGame',
+                    gameId,
+                    Meteor.userId(),
+                    (error, result) => {
+                        console.log(error, result);
+                    }
+                );
+            };
+
+            /**
+             * Checks if the player has already joined the given game
+             *
+             * @param gameId
+             * @returns {boolean}
+             */
+            this.hasPlayerJoinedGame = (gameId) => {
+                let game = Games.findOne(gameId);
+                let joinedGame = false;
+                game.players.forEach(function(player) {
+                    if (player._id == Meteor.userId()) {
+                        joinedGame = true;
+                    }
+                });
+                return joinedGame;
             };
 
             /**
