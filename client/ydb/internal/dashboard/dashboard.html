@@ -72,9 +72,11 @@
                                 <button ng-show="!game.monitor" disabled type="button" class="btn btn-info">
                                     <i class="icon-bullseye"></i> STARTED
                                 </button>
-                                <button ng-show="game.monitor" type="button" class="btn btn-info">
-                                    <i class="icon-eye-open"></i> WATCH
-                                </button>
+                                <a ui-sref="game({ gameId: game._id })">
+                                    <button ng-show="game.monitor" type="button" class="btn btn-info">
+                                        <i class="icon-eye-open"></i> WATCH
+                                    </button>
+                                </a>
                             </span>
                         </div>
                         <div class="news-item-detail">
@@ -88,6 +90,12 @@
                 </ul>
 
             </div> <!-- /widget-content -->
+
+            <ul>
+                <li ng-repeat="joinedGame in dashboard.joinedGames">
+                    {{joinedGame.type}} by {{joinedGame.owner.username}}
+                </li>
+            </ul>
 
         </div> <!-- /widget -->
 
@@ -112,7 +120,10 @@
                         <i class="shortcut-icon icon-list-alt"></i>
                         <span class="shortcut-label">NEW GAME</span>
                     </a>
-
+                    <a href="#startNewGameModal" data-toggle="modal" class="shortcut">
+                        <i class="shortcut-icon icon-list-ol"></i>
+                        <span class="shortcut-label">PRACTICE</span>
+                    </a>
                 </div> <!-- /shortcuts -->
 
             </div> <!-- /widget-content -->

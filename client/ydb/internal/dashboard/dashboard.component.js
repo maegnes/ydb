@@ -20,6 +20,26 @@ angular.module('ydb').directive('dashboard', function() {
                 monitor: false
             };
 
+            this.observeChanges = () => {
+                let games = Games.find({
+                    players: {
+                        $elemMatch: {
+                            _id: Meteor.userId()
+                        }
+                    }
+                });
+                let handle = games.observeChanges({
+                    changed: (id, game) => {
+                        if(game.running) {
+                            $state.go('game', {
+                                gameId: id
+                            });
+                            handle.stop();
+                        }
+                    }
+                });
+            };
+
             /**
              * Informs the server to create a new game
              */
@@ -112,6 +132,9 @@ angular.module('ydb').directive('dashboard', function() {
                     return Games.find({finished: false});
                 }
             });
+
+            // Tell the controller to observe changes on joined games
+            this.observeChanges();
         }
     }
 });

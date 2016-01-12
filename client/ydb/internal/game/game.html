@@ -1,1 +1,83 @@
-<h1>Your game</h1>
+<div class="row">
+
+    <div class="col-md-7">
+
+        <div class="widget stacked">
+
+            <div class="widget-header">
+                <i class="icon-th-large"></i>
+
+                <h3>{{game.currentGame.type}}</h3>
+            </div> <!-- /widget-header -->
+
+            <div class="widget-content">
+
+                <div class="pricing-plans plans-3">
+
+                    <div ng-repeat="player in game.currentGame.players" class="plan-container">
+                        <div class="plan stacked">
+                            <div class="plan-header">
+
+                                <div class="plan-title">
+                                    {{player.user.username}}
+                                </div> <!-- /plan-title -->
+
+                                <div class="plan-price">
+                                    <span class="note">$</span>125<span class="term">Per Month</span>
+                                </div> <!-- /plan-price -->
+
+                            </div> <!-- /plan-header -->
+
+                            <div class="plan-features">
+                                <ul>
+                                    <li><strong>Free</strong> setup</li>
+                                    <li><strong>Unlimited</strong> Website</li>
+                                </ul>
+                            </div> <!-- /plan-features -->
+
+                        </div> <!-- /plan -->
+
+                    </div> <!-- /plan-container -->
+
+                </div> <!-- /pricing-plans -->
+
+                <div class="clear"></div>
+
+            </div> <!-- /widget-content -->
+
+        </div> <!-- /widget -->
+
+    </div> <!-- /span8 -->
+
+    <div class="col-md-5">
+
+        <div id="dartboard-width" class="widget widget-nopad stacked">
+            <div class="widget-header">
+                <i class="icon-th-large"></i>
+
+                <h3>Mark your scores</h3>
+            </div> <!-- /widget-header -->
+
+            <div class="widget-content" id="db-container">
+                <canvas style="position: absolute;" id="dartboard-container"></canvas>
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+<script>
+    board = new Dartboard(
+            document.getElementById("db-container"),
+            document.getElementById("dartboard-container"),
+            function(amounts, thrownDarts, scores) {
+                console.log(scores);
+            }
+    );
+    board.manualScale(document.getElementById('dartboard-width').offsetWidth - 2);
+    board.init();
+    board.draw();
+</script>

@@ -43,7 +43,8 @@ Meteor.methods({
         // Create the player element
         let player = {
             _id: user._id,
-            scores: []
+            scores: [],
+            user: user
         };
 
         // Update mongo database
