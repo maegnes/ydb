@@ -65,6 +65,10 @@
                                     </button>
                                 </span>
                                 <button ng-disabled="game.running" ng-show="game.owner._id == $root.currentUser._id"
+                                        ng-click="dashboard.deleteGame(game._id);" class="btn btn-default">
+                                    <i class="icon-trash"></i>
+                                </button>
+                                <button ng-hide="game.running" ng-show="game.owner._id == $root.currentUser._id"
                                         ng-click="dashboard.startGame(game._id);" class="btn btn-danger">START
                                 </button>
                             </span>

@@ -116,5 +116,18 @@ Meteor.methods({
             }
         );
 
+    },
+
+    deleteGame: (gameId, userId) => {
+        console.log(userId);
+        let game = Games.findOne({
+            _id: gameId,
+            "owner._id": {
+                $eq: userId
+            }
+        });
+        if (game) {
+            Games.remove(gameId);
+        }
     }
 });

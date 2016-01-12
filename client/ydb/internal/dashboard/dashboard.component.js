@@ -108,6 +108,19 @@ angular.module('ydb').directive('dashboard', function() {
             };
 
             /**
+             * Deletes a game
+             * 
+             * @param gameId
+             */
+            this.deleteGame = (gameId) => {
+                Meteor.call(
+                    'deleteGame',
+                    gameId,
+                    Meteor.userId()
+                );
+            };
+
+            /**
              * Checks if the player has already joined the given game
              *
              * @param gameId
