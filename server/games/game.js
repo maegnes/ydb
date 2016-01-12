@@ -67,7 +67,19 @@ Meteor.methods({
      */
     removePlayerFromGame: (gameId, playerId) => {
 
-        console.log(gameId, playerId);
+        let game = Games.findOne(gameId);
+
+        if (!game) {
+            throw new Meteor.Error("The game does not exist!")
+        }
+
+        if (game.started) {
+            throw new Meteor.Error("This game is already started!");
+        }
+
+        if (game.finished) {
+            throw new Meteor.Error("This game is already finished!");
+        }
 
         Games.update(
             {
@@ -78,6 +90,27 @@ Meteor.methods({
                     players: {
                         _id: playerId
                     }
+                }
+            }
+        );
+
+    },
+
+    /**
+     * Starts the given game
+     *
+     * @param gameId
+     * @param userId
+     */
+    startGame: (gameId, userId) => {
+
+        Games.update(
+            {
+                _id: gameId
+            },
+            {
+                $set: {
+                    running: true
                 }
             }
         );

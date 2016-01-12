@@ -6,6 +6,7 @@
 
             <div class="widget-header">
                 <i class="icon-star"></i>
+
                 <h3>Quick Stats</h3>
             </div> <!-- /widget-header -->
 
@@ -39,29 +40,48 @@
 
             <div class="widget-header">
                 <i class="icon-list-alt"></i>
+
                 <h3>Current games</h3>
             </div> <!-- /widget-header -->
 
             <div class="widget-content">
-                <div ng-show="dashboard.games.length <= 0" class="alert alert-info margin25">
+                <div ng-show="dashboard.activeGames.length <= 0" class="alert alert-info margin25">
                     Currently there are no games available.
                 </div>
                 <ul class="news-items">
-                    <li ng-repeat="game in dashboard.games">
+                    <li ng-repeat="game in dashboard.activeGames">
                         <div class="news-item-detail">
-                            <span ng-if="dashboard.hasPlayerJoinedGame(game._id);">
-                                <button ng-hide="game.owner._id == $root.currentUser._id" ng-click="dashboard.removePlayerFromGame(game._id);" class="btn btn-success">LEAVE</button>
+                            <span ng-if="!game.running">
+                                <span ng-if="dashboard.hasPlayerJoinedGame(game._id);">
+                                    <button ng-hide="game.owner._id == $root.currentUser._id"
+                                            ng-click="dashboard.removePlayerFromGame(game._id);"
+                                            class="btn btn-success">
+                                        LEAVE
+                                    </button>
+                                </span>
+                                <span ng-if="!dashboard.hasPlayerJoinedGame(game._id);">
+                                    <button ng-hide="game.owner._id == $root.currentUser._id"
+                                            ng-click="dashboard.addPlayerToGame(game._id);" class="btn btn-success">JOIN
+                                    </button>
+                                </span>
+                                <button ng-disabled="game.running" ng-show="game.owner._id == $root.currentUser._id"
+                                        ng-click="dashboard.startGame(game._id);" class="btn btn-danger">START
+                                </button>
                             </span>
-                            <span ng-if="!dashboard.hasPlayerJoinedGame(game._id);">
-                                <button ng-hide="game.owner._id == $root.currentUser._id" ng-click="dashboard.addPlayerToGame(game._id);" class="btn btn-success">JOIN</button>
+                            <span ng-if="game.running">
+                                <button ng-show="!game.monitor" disabled type="button" class="btn btn-info">
+                                    <i class="icon-bullseye"></i> STARTED
+                                </button>
+                                <button ng-show="game.monitor" type="button" class="btn btn-info">
+                                    <i class="icon-eye-open"></i> WATCH
+                                </button>
                             </span>
-                            <button ng-show="game.owner._id == $root.currentUser._id" ng-click="dashboard.addPlayerToGame(game._id);" class="btn btn-danger">START</button>
                         </div>
                         <div class="news-item-detail">
                             <i ng-show="game.visibility" class="icon-unlock"></i>
                             <i ng-hide="game.visibility" class="icon-lock"></i>
                             -
-                            <a href="javascript:;" class="news-item-title">{{game.type}} created by {{game.owner.username}}</a>
+                            <strong>{{game.type}} created by {{game.owner.username}}</strong>
                             <p class="news-item-preview">Currently {{game.players.length}} players</p>
                         </div>
                     </li>
@@ -81,6 +101,7 @@
 
             <div class="widget-header">
                 <i class="icon-bookmark"></i>
+
                 <h3>Quick Shortcuts</h3>
             </div> <!-- /widget-header -->
 
@@ -111,12 +132,14 @@
                 <h4 class="modal-title">Create a new game</h4>
             </div>
             <div class="modal-body" style="height: 400px;">
-                <form action="/" id="validation-form" role="form" class="form-horizontal col-md-12" novalidate="novalidate">
+                <form action="/" id="validation-form" role="form" class="form-horizontal col-md-12"
+                      novalidate="novalidate">
 
                     <fieldset>
 
                         <div class="form-group">
                             <label for="selectGameType" class="col-lg-4">Game type</label>
+
                             <div class="col-lg-8">
                                 <select ng-model="dashboard.newGame.type" id="selectGameType" class="form-control">
                                     <option value="501">501</option>
@@ -134,13 +157,15 @@
 
                                 <div class="radio">
                                     <label>
-                                        <input ng-model="dashboard.newGame.visibility" type="radio" id="optionGameVisibility1" ng-value="1">
+                                        <input ng-model="dashboard.newGame.visibility" type="radio"
+                                               id="optionGameVisibility1" ng-value="1">
                                         Public - everyone can join the game
                                     </label>
                                 </div>
                                 <div class="radio">
                                     <label>
-                                        <input ng-model="dashboard.newGame.visibility" type="radio" id="optionGameVisibility2" ng-value="0">
+                                        <input ng-model="dashboard.newGame.visibility" type="radio"
+                                               id="optionGameVisibility2" ng-value="0">
                                         Private - i will add players to the game
                                     </label>
                                 </div>
@@ -149,9 +174,26 @@
                         </div>
 
                         <div class="form-group">
+
+                            <label class="col-lg-4">Enable monitor?</label>
+
+                            <div class="col-lg-8">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="validateCheckbox" ng-model="dashboard.newGame.monitor" ng-value="1">
+                                        Yes, everyone can watch the game!
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <div class="col-lg-4"></div>
                             <div class="col-lg-8">
-                                <button ng-click="dashboard.createNewGame()" type="button" class="btn btn-success"><i class="icon-gamepad"></i> Create game</button>&nbsp;&nbsp;
+                                <button ng-click="dashboard.createNewGame()" type="button" class="btn btn-success"><i
+                                        class="icon-gamepad"></i> Create game
+                                </button>
+                                &nbsp;&nbsp;
                             </div>
                         </div>
                     </fieldset>

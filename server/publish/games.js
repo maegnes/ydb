@@ -17,8 +17,6 @@ Meteor.publish("games", function (options) {
         ]
     };
 
-    console.log(selector);
-
     return Games.find(selector, options);
 
 });

@@ -16,7 +16,8 @@ angular.module('ydb').directive('dashboard', function() {
                 owner: Meteor.user(),
                 running: false,
                 finished: false,
-                players: []
+                players: [],
+                monitor: false
             };
 
             /**
@@ -24,6 +25,7 @@ angular.module('ydb').directive('dashboard', function() {
              */
             this.createNewGame = () => {
                 this.newGame.visibility = Boolean(this.newGame.visibility);
+                this.newGame.monitor = Boolean(this.newGame.monitor);
                 Meteor.call(
                     'createGame',
                     this.newGame,
@@ -73,6 +75,19 @@ angular.module('ydb').directive('dashboard', function() {
             };
 
             /**
+             * Start the game
+             *
+             * @param gameId
+             */
+            this.startGame = (gameId) => {
+                Meteor.call(
+                    'startGame',
+                    gameId,
+                    Meteor.userId()
+                );
+            };
+
+            /**
              * Checks if the player has already joined the given game
              *
              * @param gameId
@@ -93,8 +108,8 @@ angular.module('ydb').directive('dashboard', function() {
              * Defines our controllers helpers
              */
             this.helpers({
-                games: () => {
-                    return Games.find({});
+                activeGames: () => {
+                    return Games.find({finished: false});
                 }
             });
         }

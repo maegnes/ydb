@@ -18,10 +18,10 @@ angular.module('ydb').directive('login', function () {
                     (error) => {
                         if (error) {
                             this.errorMessage = 'The login was not successful!';
+                            $scope.$apply();
                         } else {
                             $state.go('dashboard');
                         }
-                        $scope.$apply();
                     }
                 );
             };
