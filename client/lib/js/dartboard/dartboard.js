@@ -442,28 +442,28 @@ Dartboard = function (htmlContainer, canvasContainer, callbackFunction) {
     this.getScore = function (distance, field) {
         if (distance <= this.distDoubleBull) {
             this.hitAmounts.BULLSEYE++;
-            return [50, "Bullseye", 'D'];
+            return {score: 50, fieldName: "Bullseye", fieldType: 'D'};
         } else if (distance <= this.distSingleBull) {
             this.hitAmounts.SINGLEBULL++;
-            return [25, "Single Bull", 'S'];
+            return {score: 25, fieldName: "Single Bull", fieldType: 'S'};
         } else if (distance <= this.distInnerTriple) {
             this.hitAmounts.INNERSINGLE++;
-            return [field, "S" + field, 'S'];
+            return {score: field, fieldName: "S" + field, fieldType: 'S'};
         } else if (distance <= this.distOuterTriple) {
             this.hitAmounts.TRIPLE++;
-            return [field * 3, "T" + field, 'T'];
+            return {score: field * 3, fieldName: "T" + field, fieldType: 'T'};
         } else if (distance <= this.distInnerDouble) {
             this.hitAmounts.OUTERSINGLE++;
-            return [field, "S" + field, 'S'];
+            return {score: field, fieldName: "S" + field, fieldType: 'S'};
         } else if (distance <= this.distOuterDouble) {
             this.hitAmounts.DOUBLE++;
-            return [field * 2, "D" + field, 'D'];
+            return {score: field * 2, fieldName: "D" + field, fieldType: 'D'};
         } else if (distance <= this.distBoardEdge) {
             this.hitAmounts.MISSEDSCORES++;
-            return [0, "Missed Scores", 'N'];
+            return {score: 0, fieldName: "Missed Scores", fieldType: 'N'};
         } else {
             this.hitAmounts.MISSEDBOARD++;
-            return [0, "Missed Board", 'N'];
+            return {score: 0, fieldName: "Missed Board", fieldType: 'N'};
         }
     };
 
@@ -472,7 +472,8 @@ Dartboard = function (htmlContainer, canvasContainer, callbackFunction) {
      */
     this.notify = function () {
         if ('function' === typeof this.callback) {
-            this.callback(this.hitAmounts, this.thrownDarts, this.scores);
+            var lastScore = this.scores[this.scores.length - 1];
+            this.callback(this.hitAmounts, this.thrownDarts, this.scores, lastScore);
         }
     };
 
@@ -488,7 +489,6 @@ Dartboard = function (htmlContainer, canvasContainer, callbackFunction) {
         this.thrownDarts = 0;
         this.scores = [];
         this.resetHitAmounts();
-        this.notify();
         this.draw();
     };
 

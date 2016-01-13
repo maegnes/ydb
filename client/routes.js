@@ -41,7 +41,7 @@ angular.module('ydb')
             })
             .state('game', {
                 url: '/game/:gameId',
-                template: '<game></game>',
+                template: '<game id="gameContainer"></game>',
                 resolve: {
                     checkLogin
                 }

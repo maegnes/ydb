@@ -17,7 +17,57 @@ angular.module('ydb').directive('dashboard', function() {
                 running: false,
                 finished: false,
                 players: [],
-                monitor: false
+                monitor: false,
+                currentPlayer: null,
+                currentScores: []
+            };
+
+            /**
+             * Stores data for the player who should be added to the game
+             *
+             * @type {{}}
+             */
+            this.newPlayer = {
+                error: false
+            };
+
+            /**
+             * The game id for the add player operations
+             *
+             * @type {undefined}
+             */
+            this.gameId = undefined;
+
+            /**
+             * Sets the game id to add players
+             *
+             * @param gameId
+             */
+            this.setGameId = (gameId) => {
+                this.gameId = gameId;
+            };
+
+            /**
+             * Checks the username for the new player
+             */
+            this.checkUserName = () => {
+                Meteor.call(
+                    'checkPassword',
+                    this.newPlayer.userName,
+                    Package.sha.SHA256(this.newPlayer.pin),
+                    (err, res) => {
+                        if (res) {
+                            if (this.addPlayerToGame(this.gameId, res, Boolean(this.newPlayer.remote))) {
+                                this.newPlayer = {};
+                                this.setGameId(undefined);
+                                jQuery('#addNewPlayerModal').modal('hide');
+                            }
+                        } else {
+                            this.newPlayer.error = true;
+                            $scope.$apply();
+                        }
+                    }
+                );
             };
 
             this.observeChanges = () => {
@@ -53,7 +103,7 @@ angular.module('ydb').directive('dashboard', function() {
                         if (error) {
                             // todo - error handling
                         } else {
-                            this.addPlayerToGame(gameId);
+                            this.addPlayerToGame(gameId, Meteor.userId(), false);
                         }
 
                     }
@@ -64,12 +114,15 @@ angular.module('ydb').directive('dashboard', function() {
              * Adds the current user to the given game
              *
              * @param gameId - id of the game
+             * @param userId - id of the user
+             * @param remotePlayer - is the player a remote player
              */
-            this.addPlayerToGame = (gameId) => {
+            this.addPlayerToGame = (gameId, userId, remotePlayer) => {
                 Meteor.call(
                     'addPlayerToGame',
                     gameId,
-                    Meteor.userId(),
+                    userId,
+                    remotePlayer,
                     (error, result) => {
                         if (error) {
                             // todo - errorhandling
@@ -109,7 +162,7 @@ angular.module('ydb').directive('dashboard', function() {
 
             /**
              * Deletes a game
-             * 
+             *
              * @param gameId
              */
             this.deleteGame = (gameId) => {

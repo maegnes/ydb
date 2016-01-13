@@ -19,7 +19,7 @@ Meteor.methods({
      * @param gameId
      * @param playerId
      */
-    addPlayerToGame: (gameId, playerId) => {
+    addPlayerToGame: (gameId, playerId, remotePlayer) => {
 
         let user = Meteor.users.findOne(playerId);
         let game = Games.findOne(gameId);
@@ -43,8 +43,10 @@ Meteor.methods({
         // Create the player element
         let player = {
             _id: user._id,
+            remote: remotePlayer,
             scores: [],
-            user: user
+            user: user,
+            scoreRemaining: parseFloat(game.type)
         };
 
         // Update mongo database
@@ -105,19 +107,30 @@ Meteor.methods({
      */
     startGame: (gameId, userId) => {
 
+        let game = Games.findOne(gameId);
+
+        // Evaluate the random starting player
+        let startingPlayerIndex = Math.floor(Math.random() * game.players.length);
+
         Games.update(
             {
                 _id: gameId
             },
             {
                 $set: {
-                    running: true
+                    running: true,
+                    currentPlayer: game.players[startingPlayerIndex]._id
                 }
             }
         );
-
     },
 
+    /**
+     * Deletes the given game
+     *
+     * @param gameId
+     * @param userId
+     */
     deleteGame: (gameId, userId) => {
         console.log(userId);
         let game = Games.findOne({

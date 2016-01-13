@@ -1,5 +1,31 @@
 <div class="row">
 
+    <div class="col-md-12">
+
+        <div class="widget stacked">
+
+            <div class="widget-header">
+                <i class="icon-th-large"></i>
+
+                <h3>Current scores</h3>
+            </div> <!-- /widget-header -->
+
+            <div class="widget-content">
+                <div class="row">
+                    <span ng-if="game.currentGame.currentScores.length == 0">
+                        <div class="col-md-12 score">Waiting for scores...</div>
+                    </span>
+                    <div class="col-md-3"></div>
+                    <div ng-repeat="score in game.currentGame.currentScores" class="col-md-2 score">
+                        {{score.score}}
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
     <div class="col-md-7">
 
         <div class="widget stacked">
@@ -15,7 +41,7 @@
                 <div class="pricing-plans plans-3">
 
                     <div ng-repeat="player in game.currentGame.players" class="plan-container">
-                        <div class="plan stacked">
+                        <div class="plan stacked {{game.currentGame.currentPlayer == player._id ? 'orange' : ''}}">
                             <div class="plan-header">
 
                                 <div class="plan-title">
@@ -23,7 +49,8 @@
                                 </div> <!-- /plan-title -->
 
                                 <div class="plan-price">
-                                    <span class="note">$</span>125<span class="term">Per Month</span>
+                                    {{player.scoreRemaining}}
+                                    <span class="term">Remaining</span>
                                 </div> <!-- /plan-price -->
 
                             </div> <!-- /plan-header -->
@@ -63,8 +90,6 @@
             </div>
 
         </div>
-
-
     </div>
 
 </div>
@@ -73,11 +98,25 @@
     board = new Dartboard(
             document.getElementById("db-container"),
             document.getElementById("dartboard-container"),
-            function(amounts, thrownDarts, scores) {
-                console.log(scores);
+            function(amounts, thrownDarts, scores, lastScore) {
+                saveScore(lastScore);
+                if (3 == thrownDarts) {
+                    board.reset();
+                }
             }
     );
+
     board.manualScale(document.getElementById('dartboard-width').offsetWidth - 2);
     board.init();
     board.draw();
+
+    // Call angular controller method from outside
+    $(function() {
+        saveScore = function(lastScore) {
+            var scope = angular.element('#gameContainer').scope();
+            scope.$apply(function() {
+                scope.game.throw(lastScore);
+            });
+        };
+    });
 </script>

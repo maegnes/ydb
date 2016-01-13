@@ -11,12 +11,21 @@ angular.module('ydb').directive('game', function() {
 
             this.gameId = $stateParams.gameId;
 
+            this.currentPlayerObject = undefined;
+
+            this.throw = (scores) => {
+                Meteor.call(
+                    'X01throw',
+                    this.gameId,
+                    scores
+                );
+            };
+
             this.helpers({
                 currentGame: () => {
                     return Games.findOne(this.gameId);
                 }
             });
-
         }
     }
 });

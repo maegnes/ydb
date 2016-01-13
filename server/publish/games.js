@@ -13,6 +13,13 @@ Meteor.publish("games", function (options) {
                 $and: [
                     {"owner._id": this.userId}
                 ]
+            },
+            {
+                players: {
+                    $elemMatch: {
+                        _id: this.userId
+                    }
+                }
             }
         ]
     };
