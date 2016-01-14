@@ -24,6 +24,8 @@ Meteor.methods({
         let user = Meteor.users.findOne(playerId);
         let game = Games.findOne(gameId);
 
+        let gameWrapper = GameFactory.createGame(game);
+
         if (!user) {
             throw new Meteor.Error("This user does not exist!");
         }
@@ -32,34 +34,28 @@ Meteor.methods({
             throw new Meteor.Error("The game does not exist!")
         }
 
-        if (game.started) {
+        if (gameWrapper.isStarted()) {
             throw new Meteor.Error("This game is already started!");
         }
 
-        if (game.finished) {
+        if (gameWrapper.isFinished()) {
             throw new Meteor.Error("This game is already finished!");
         }
 
-        // Create the player element
-        let player = {
-            _id: user._id,
-            remote: remotePlayer,
-            scores: [],
-            user: user,
-            scoreRemaining: parseFloat(game.type)
-        };
+        if ("object" == typeof testGame) {
 
-        // Update mongo database
-        Games.update(
-            {
-                _id: game._id
-            },
-            {
-                $addToSet: {
-                    players: player
-                }
-            }
-        );
+            gameWrapper.addPlayer(user, remotePlayer);
+
+            // Update mongo database
+            Games.update(
+                {
+                    _id: game._id
+                },
+                testGame.game
+            );
+        } else {
+            throw new Meteor.Error('Game ' + gameId + ' is unknown!');
+        }
     },
 
     /**
@@ -108,21 +104,16 @@ Meteor.methods({
     startGame: (gameId, userId) => {
 
         let game = Games.findOne(gameId);
+        let gameWrapper = GameFactory.createGame(game);
 
-        // Evaluate the random starting player
-        let startingPlayerIndex = Math.floor(Math.random() * game.players.length);
-
-        Games.update(
-            {
-                _id: gameId
-            },
-            {
-                $set: {
-                    running: true,
-                    currentPlayer: game.players[startingPlayerIndex]._id
-                }
-            }
-        );
+        if (gameWrapper.start()) {
+            Games.update(
+                {
+                    _id: gameId
+                },
+                gameWrapper.game
+            );
+        }
     },
 
     /**
@@ -132,7 +123,6 @@ Meteor.methods({
      * @param userId
      */
     deleteGame: (gameId, userId) => {
-        console.log(userId);
         let game = Games.findOne({
             _id: gameId,
             "owner._id": {
