@@ -1,0 +1,42 @@
+<div class="col-md-5">
+
+    <div id="dartboard-width" class="widget widget-nopad stacked">
+        <div class="widget-header">
+            <i class="icon-rocket"></i>
+
+            <h3>Mark your scores</h3>
+        </div> <!-- /widget-header -->
+
+        <div class="widget-content" id="db-container">
+            <canvas style="position: absolute;" id="dartboard-container"></canvas>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    board = new Dartboard(
+            document.getElementById("db-container"),
+            document.getElementById("dartboard-container"),
+            function(amounts, thrownDarts, scores, lastScore) {
+                saveScore(lastScore);
+                if (3 == thrownDarts) {
+                    board.reset();
+                }
+            }
+    );
+
+    board.manualScale(document.getElementById('dartboard-width').offsetWidth - 2);
+    board.init();
+    board.draw();
+
+    // Call angular controller method from outside
+    $(function() {
+        saveScore = function(lastScore) {
+            var scope = angular.element('#gameContainer').scope();
+            scope.$apply(function() {
+                scope.game.throw(lastScore);
+            });
+        };
+    });
+</script>

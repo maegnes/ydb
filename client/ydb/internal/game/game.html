@@ -7,24 +7,29 @@
             <div class="widget-header">
                 <i class="icon-th-large"></i>
 
-                <h3>Current scores</h3>
+                <h3>Playing Leg {{game.currentGame.currentLeg + 1}} of Set {{game.currentGame.currentSet + 1}}</h3>
             </div> <!-- /widget-header -->
 
             <div class="widget-content">
                 <div class="row">
                     <span ng-if="game.currentGame.currentScores.length == 0">
-                        <div class="col-md-12 score">Waiting for scores...</div>
+                        <div class="col-md-12 col-xs-12 score">Waiting for scores...</div>
                     </span>
-                    <div class="col-md-3"></div>
-                    <div ng-repeat="score in game.currentGame.currentScores" class="col-md-2 score">
+                    <div class="col-md-3 hidden-phone"></div>
+                    <div ng-repeat="score in game.currentGame.currentScores" class="col-md-2 col-xs-4 score">
                         {{score.score}}
                     </div>
-                    <div class="col-md-3"></div>
+                    <div class="col-md-3 hidden-phone"></div>
                 </div>
             </div>
 
         </div>
     </div>
+</div>
+
+<div class="row">
+
+    <keyboard></keyboard>
 
     <div class="col-md-7">
 
@@ -57,7 +62,10 @@
 
                             <div class="plan-features">
                                 <ul>
-                                    <li><strong>Free</strong> setup</li>
+                                    <li>
+                                        <strong>Sets:</strong> {{player.setsWon}}
+                                        <strong>Legs:</strong> {{player.legsWon}}
+                                    </li>
                                     <li><strong>Unlimited</strong> Website</li>
                                 </ul>
                             </div> <!-- /plan-features -->
@@ -76,47 +84,4 @@
 
     </div> <!-- /span8 -->
 
-    <div class="col-md-5">
-
-        <div id="dartboard-width" class="widget widget-nopad stacked">
-            <div class="widget-header">
-                <i class="icon-rocket"></i>
-
-                <h3>Mark your scores</h3>
-            </div> <!-- /widget-header -->
-
-            <div class="widget-content" id="db-container">
-                <canvas style="position: absolute;" id="dartboard-container"></canvas>
-            </div>
-
-        </div>
-    </div>
-
 </div>
-
-<script>
-    board = new Dartboard(
-            document.getElementById("db-container"),
-            document.getElementById("dartboard-container"),
-            function(amounts, thrownDarts, scores, lastScore) {
-                saveScore(lastScore);
-                if (3 == thrownDarts) {
-                    board.reset();
-                }
-            }
-    );
-
-    board.manualScale(document.getElementById('dartboard-width').offsetWidth - 2);
-    board.init();
-    board.draw();
-
-    // Call angular controller method from outside
-    $(function() {
-        saveScore = function(lastScore) {
-            var scope = angular.element('#gameContainer').scope();
-            scope.$apply(function() {
-                scope.game.throw(lastScore);
-            });
-        };
-    });
-</script>

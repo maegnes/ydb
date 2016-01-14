@@ -18,6 +18,7 @@ Meteor.methods({
      *
      * @param gameId
      * @param playerId
+     * @param remotePlayer
      */
     addPlayerToGame: (gameId, playerId, remotePlayer) => {
 
@@ -42,7 +43,7 @@ Meteor.methods({
             throw new Meteor.Error("This game is already finished!");
         }
 
-        if ("object" == typeof testGame) {
+        if ("object" == typeof gameWrapper) {
 
             gameWrapper.addPlayer(user, remotePlayer);
 
@@ -51,7 +52,7 @@ Meteor.methods({
                 {
                     _id: game._id
                 },
-                testGame.game
+                gameWrapper.game
             );
         } else {
             throw new Meteor.Error('Game ' + gameId + ' is unknown!');
@@ -132,5 +133,28 @@ Meteor.methods({
         if (game) {
             Games.remove(gameId);
         }
+    },
+
+    /**
+     * Being called after every throw to the board
+     *
+     * @param gameId
+     * @param scores
+     */
+    score: (gameId, scores) => {
+
+        let game = Games.findOne(gameId);
+        let indexCurrentPlayer = 0;
+
+        let gameWrapper = GameFactory.createGame(game);
+
+        gameWrapper.score(scores);
+
+        Games.update(
+            {
+                _id: gameId
+            },
+            gameWrapper.game
+        );
     }
 });

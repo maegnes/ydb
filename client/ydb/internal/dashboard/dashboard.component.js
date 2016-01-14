@@ -19,7 +19,10 @@ angular.module('ydb').directive('dashboard', function() {
                 players: [],
                 monitor: false,
                 currentPlayer: null,
-                currentScores: []
+                currentScores: [],
+                currentRoundDartsThrown: 0,
+                currentLeg: 0,
+                currentSet: 0
             };
 
             /**

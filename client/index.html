@@ -132,9 +132,9 @@
         <div class="row">
 
             <div class="col-md-12">
-
-                <h4>TBD</h4>
-
+                <span ng-show="connectedToBackend() === true" class="label label-success">Backend connection established!</span>
+                <span ng-show="connectedToBackend() === false" class="label label-danger">Not connected to the backend!</span>
+                <br/><br/>
             </div> <!-- /row -->
 
         </div> <!-- /container -->

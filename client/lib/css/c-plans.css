@@ -326,15 +326,19 @@
 }
 
 .score {
-	font-size: 60px;
-	font-weight: bold;
+	font-size: 3em;
+	font-weight: bolder;
 	text-align: center;
 	padding: 10px;
 }
 
+.keyboard button {
+	margin: 5px;
+}
 
-
-
+.keyboard button.number {
+	width: 50px;
+}
 
 /*------------------------------------------------------------------
 [2. Min Width: 767px / Max Width: 979px]
@@ -345,8 +349,8 @@
 	.pricing-plans .plan-container {
 	    width: 50% !important;
 	    margin-bottom: 2em;
-	}	
-	
+	}
+
 }
 
 
@@ -356,6 +360,11 @@
 	.pricing-plans .plan-container {
 	    width: 100% !important;
 	    margin-bottom: 2em;
+	}
+
+	.score {
+		margin: 5px;
+		font-size: 1.9em;
 	}
 
 }

@@ -15,7 +15,7 @@ angular.module('ydb').directive('game', function() {
 
             this.throw = (scores) => {
                 Meteor.call(
-                    'X01throw',
+                    'score',
                     this.gameId,
                     scores
                 );
