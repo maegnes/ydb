@@ -7,14 +7,28 @@ angular.module('ydb').directive('game', function() {
 
             $reactive(this).attach($scope);
 
+            // Subscribe our games to retrieve real time updates
             this.subscribe("games");
 
+            /**
+             * Stores the current game id from the url
+             *
+             * @type {*|undefined}
+             */
             this.gameId = $stateParams.gameId;
 
+            /**
+             * Listen for the throwEvent. Is being emitted by dartboard or keyboard tracker
+             */
             $scope.$on("throwEvent", function (event, score) {
                 $scope.throw(score);
             });
 
+            /**
+             * Pass the throw to the server
+             *
+             * @param scores
+             */
             $scope.throw = (scores) => {
                 Meteor.call(
                     'score',
@@ -23,9 +37,9 @@ angular.module('ydb').directive('game', function() {
                 );
             };
 
-            $scope.init = () => {
-            };
-
+            /**
+             * Helpers
+             */
             this.helpers({
                 currentGame: () => {
                     let games = Games.find({_id:this.gameId});
@@ -36,7 +50,7 @@ angular.module('ydb').directive('game', function() {
                                 if (game.currentPlayer !== undefined) {
                                     $scope.$broadcast("playerHasChanged", game);
                                 }
-                                if (!game.running) {
+                                if (!game.finished) {
                                     handle.stop();
                                 }
                             }

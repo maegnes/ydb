@@ -55,8 +55,12 @@ angular.module('ydb')
             })
             .state('logout', {
                 url: '/logout',
-                controller: () => {
-                    Meteor.logout();
+                controller: ($state) => {
+                    Meteor.logout(
+                        () => {
+                            $state.go('start');
+                        }
+                    );
                 }
             });
 

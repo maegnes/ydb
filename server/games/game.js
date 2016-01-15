@@ -144,17 +144,34 @@ Meteor.methods({
     score: (gameId, scores) => {
 
         let game = Games.findOne(gameId);
-        let indexCurrentPlayer = 0;
-
         let gameWrapper = GameFactory.createGame(game);
 
-        gameWrapper.score(scores);
+        if (game.running && !gameWrapper.isLocked()) {
 
-        Games.update(
-            {
-                _id: gameId
-            },
-            gameWrapper.game
-        );
+            gameWrapper.score(scores);
+
+            Games.update(
+                {
+                    _id: gameId
+                },
+                gameWrapper.game
+            );
+
+            if (gameWrapper.game.message) {
+                Meteor.setTimeout(
+                    () => {
+                        gameWrapper.game.message = undefined;
+                        Games.update(
+                            {
+                                _id: gameId
+                            },
+                            gameWrapper.game
+                        );
+                    },
+                    gameWrapper.game.message.ms
+                );
+            }
+
+        }
     }
 });

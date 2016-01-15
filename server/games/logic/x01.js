@@ -34,7 +34,7 @@ X01 = class X01 {
         this.game.currentRoundDartsThrown++;
         try {
             this.subtractFromPlayerScore(score);
-            if (3 == this.game.currentRoundDartsThrown) {
+            if (3 == this.game.currentRoundDartsThrown && this.game.running) {
                 this.nextPlayer();
             }
         } catch(err) {
@@ -84,7 +84,12 @@ X01 = class X01 {
                 // Player checked out! Start new leg!
                 if (2 == player.legsWon) {
                     player.setsWon++;
-                    this.startNewSet();
+                    // Check if the game is ower
+                    if (player.setsWon == this.game.firstToSets) {
+                        this.finish();
+                    } else {
+                        this.startNewSet();
+                    }
                 } else {
                     player.legsWon++;
                     this.startNewLeg();
@@ -117,6 +122,7 @@ X01 = class X01 {
                 sum += score.score;
             }
         );
+
         this.getCurrentPlayerObject().scoreRemaining = this.startingPoints - sum;
 
         // Okay, now jump to the next player
@@ -192,6 +198,18 @@ X01 = class X01 {
     };
 
     /**
+     * Finishes a game
+     */
+    finish = () => {
+        this.game.winner = this.game.currentPlayer;
+        this.game.running = false;
+        this.game.finished = true;
+        this.game.currentScores = [];
+        this.getCurrentPlayerObject().legsWon = 0;
+        this.showMessage("Congrats on your fabulous victory, " + this.getCurrentPlayerObject().user.username + "!", 8000);
+    };
+
+    /**
      * Starts a new leg
      */
     startNewLeg = () => {
@@ -202,6 +220,19 @@ X01 = class X01 {
         this.game.currentLegBeginner = this.game.currentPlayerIndex;
         // Reset all remaining scores to the starting points (501, 401, 301)
         this.resetRemainingScores();
+        this.showMessage("Starting a new leg. Game on!", 3000);
+    };
+
+    /**
+     *
+     * @param message - the message
+     * @param ms - how long shall the message be displayed?
+     */
+    showMessage = (message, ms) => {
+        this.game.message = {
+            msg: message,
+            ms: ms
+        };
     };
 
     /**
@@ -217,6 +248,7 @@ X01 = class X01 {
         this.game.currentSetBeginner = this.game.currentPlayerIndex;
         this.resetRemainingScores();
         this.resetLegsWon();
+        this.showMessage("Starting a new set. Game on!", 3000);
     };
 
     /**
@@ -280,6 +312,13 @@ X01 = class X01 {
      */
     isFinished = () => {
         return (this.game.finished === true);
+    };
+
+    /**
+     * During an active message the game is locked
+     */
+    isLocked = () => {
+        return (this.game.message);
     };
 };
 

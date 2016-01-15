@@ -22,7 +22,8 @@ angular.module('ydb').directive('dashboard', function() {
                 currentScores: [],
                 currentRoundDartsThrown: 0,
                 currentLeg: 0,
-                currentSet: 0
+                currentSet: 0,
+                firstToSets: 2
             };
 
             /**
@@ -63,12 +64,11 @@ angular.module('ydb').directive('dashboard', function() {
                             if (this.addPlayerToGame(this.gameId, res, Boolean(this.newPlayer.remote))) {
                                 this.newPlayer = {};
                                 this.setGameId(undefined);
-                                jQuery('#addNewPlayerModal').modal('hide');
                             }
                         } else {
                             this.newPlayer.error = true;
-                            $scope.$apply();
                         }
+                        $scope.$apply();
                     }
                 );
             };

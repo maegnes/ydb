@@ -7,13 +7,23 @@
             <div class="widget-header">
                 <i class="icon-th-large"></i>
 
-                <h3>Playing Leg {{game.currentGame.currentLeg + 1}} of Set {{game.currentGame.currentSet + 1}}</h3>
+                <h3>
+                    <strong>
+                        Playing Leg {{game.currentGame.currentLeg + 1}} of Set {{game.currentGame.currentSet + 1}}
+                    </strong> (First to {{game.currentGame.firstToSets}} Sets)
+                </h3>
             </div> <!-- /widget-header -->
 
             <div class="widget-content">
                 <div class="row">
-                    <span ng-if="game.currentGame.currentScores.length == 0">
+                    <span ng-if="game.currentGame.message">
+                        <div class="col-md-12 col-xs-12 score">{{game.currentGame.message.msg}}</div>
+                    </span>
+                    <span ng-if="game.currentGame.currentScores.length == 0 && game.currentGame.running && !game.currentGame.message">
                         <div class="col-md-12 col-xs-12 score">Waiting for scores...</div>
+                    </span>
+                    <span ng-if="game.currentGame.finished && !game.currentGame.message">
+                        <div class="col-md-12 col-xs-12 score">GAME FINISHED</div>
                     </span>
                     <div class="col-md-3 hidden-phone"></div>
                     <div ng-repeat="score in game.currentGame.currentScores" class="col-md-2 col-xs-4 score">
@@ -46,11 +56,12 @@
                 <div class="pricing-plans plans-3">
 
                     <div ng-repeat="player in game.currentGame.players" class="plan-container">
-                        <div class="plan stacked {{game.currentGame.currentPlayer == player._id ? 'orange' : ''}}">
+                        <div class="plan stacked {{game.currentGame.running && game.currentGame.currentPlayer == player._id ? 'orange' : ((game.currentGame.winner == player._id) ? 'green' : '')}}">
                             <div class="plan-header">
 
                                 <div class="plan-title">
-                                    {{player.user.username}}
+                                    <i class="icon-trophy" ng-show="game.currentGame.winner == player.user._id"></i>
+                                    <i class="icon-circle-blank" ng-show="game.currentGame.running && player.user._id == game.currentGame.players[game.currentGame.currentLegBeginner].user._id"></i> {{player.user.username}}
                                 </div> <!-- /plan-title -->
 
                                 <div class="plan-price">
