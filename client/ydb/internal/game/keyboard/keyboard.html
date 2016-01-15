@@ -15,7 +15,7 @@
             </div>
             <div class="clear"></div>
             <button ng-repeat="n in [] | range:20" type="button" ng-click="keyboard.clickScore(n + 1);" class="btn btn-default number">{{n + 1}}</button>
-            <button type="button" class="btn btn-default number" ng-click="keyboard.clickScore(25);"><i class="icon-bullseye"></i></button>
+            <button type="button" ng-disabled="keyboard.isTriple" class="btn btn-default number" ng-click="keyboard.clickScore(25);"><i class="icon-bullseye"></i></button>
         </div>
 
     </div>

@@ -21,3 +21,7 @@ ydb.filter('range', function() {
         return input;
     };
 });
+
+ydb.factory('dartBoardCreator', function(){
+    return new Dartboard("", "");
+});

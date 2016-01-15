@@ -11,9 +11,11 @@ angular.module('ydb').directive('game', function() {
 
             this.gameId = $stateParams.gameId;
 
-            this.currentPlayerObject = undefined;
+            $scope.$on("throwEvent", function (event, score) {
+                $scope.throw(score);
+            });
 
-            this.throw = (scores) => {
+            $scope.throw = (scores) => {
                 Meteor.call(
                     'score',
                     this.gameId,
@@ -21,9 +23,24 @@ angular.module('ydb').directive('game', function() {
                 );
             };
 
+            $scope.init = () => {
+            };
+
             this.helpers({
                 currentGame: () => {
-                    return Games.findOne(this.gameId);
+                    let games = Games.find({_id:this.gameId});
+                    if (games.count() > 0) {
+                        let game = games.fetch()[0];
+                        let handle = games.observeChanges({
+                            changed: (id, game) => {
+                                if (game.currentPlayer !== undefined) {
+                                    $scope.$broadcast("playerHasChanged", game);
+                                }
+                            }
+                        });
+                        return game;
+                    }
+                    return undefined;
                 }
             });
         }
