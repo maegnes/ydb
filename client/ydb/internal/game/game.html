@@ -11,6 +11,7 @@
                     <strong>
                         Playing Leg {{game.currentGame.currentLeg + 1}} of Set {{game.currentGame.currentSet + 1}}
                     </strong> (First to {{game.currentGame.firstToSets}} Sets)
+                    - it's {{getCurrentPlayer().user.username}}'s turn.
                 </h3>
             </div> <!-- /widget-header -->
 
@@ -27,7 +28,7 @@
                     </span>
                     <div class="col-md-3 hidden-phone"></div>
                     <div ng-repeat="score in game.currentGame.currentScores" class="col-md-2 col-xs-4 score">
-                        {{score.score}}
+                        {{score.fieldName}}
                     </div>
                     <div class="col-md-3 hidden-phone"></div>
                 </div>
@@ -39,7 +40,7 @@
 
 <div class="row">
 
-    <keyboard></keyboard>
+    <keyboard ng-show="(game.currentGame.currentPlayer == $root.currentUser._id) || ((!game.currentGame.players[game.currentGame.currentPlayerIndex].remote) && (game.currentGame.owner._id == $root.currentUser._id))"></keyboard>
 
     <div class="col-md-7">
 
@@ -66,7 +67,7 @@
 
                                 <div class="plan-price">
                                     {{player.scoreRemaining}}
-                                    <span class="term">Remaining</span>
+                                    <span ng-hide="1==1" class="term">T20 - T19 - Tops</span>
                                 </div> <!-- /plan-price -->
 
                             </div> <!-- /plan-header -->

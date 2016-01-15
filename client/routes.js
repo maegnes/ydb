@@ -23,7 +23,10 @@ angular.module('ydb')
         $stateProvider
             .state('start', {
                 url: '/index',
-                template: '<start></start>'
+                template: '<start></start>',
+                resolve: {
+                    checkAlreadyLoggedIn
+                }
             })
             .state('registerPage', {
                 url: '/register',

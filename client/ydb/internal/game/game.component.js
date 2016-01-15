@@ -17,6 +17,8 @@ angular.module('ydb').directive('game', function() {
              */
             this.gameId = $stateParams.gameId;
 
+            $scope.ourGame = undefined;
+
             /**
              * Listen for the throwEvent. Is being emitted by dartboard or keyboard tracker
              */
@@ -38,6 +40,28 @@ angular.module('ydb').directive('game', function() {
             };
 
             /**
+             * Returns the current game object
+             *
+             * @returns {undefined|*}
+             */
+            $scope.getGame = () => {
+                if ($scope.ourGame) {
+                    return $scope.ourGame;
+                }
+            };
+
+            /**
+             * Returns the current player
+             *
+             * @returns {*}
+             */
+            $scope.getCurrentPlayer = () => {
+                if ($scope.ourGame) {
+                    return $scope.ourGame.players[$scope.ourGame.currentPlayerIndex];
+                }
+            };
+
+            /**
              * Helpers
              */
             this.helpers({
@@ -45,6 +69,7 @@ angular.module('ydb').directive('game', function() {
                     let games = Games.find({_id:this.gameId});
                     if (games.count() > 0) {
                         let game = games.fetch()[0];
+                        $scope.ourGame = game;
                         let handle = games.observeChanges({
                             changed: (id, game) => {
                                 if (game.currentPlayer !== undefined) {

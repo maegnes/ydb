@@ -61,7 +61,7 @@ X01 = class X01 {
         if (newScore >= 0) {
 
             // If the score is 0 check if he reached it with a double - otherwise throw thrown over error
-            if (0 == newScore && 'D' != score.fieldType) {
+            if ((1 == newScore) || (0 == newScore && 'D' != score.fieldType)) {
                 throw this.ERROR_THROWN_OVER;
             }
 
@@ -206,7 +206,7 @@ X01 = class X01 {
         this.game.finished = true;
         this.game.currentScores = [];
         this.getCurrentPlayerObject().legsWon = 0;
-        this.showMessage("Congrats on your fabulous victory, " + this.getCurrentPlayerObject().user.username + "!", 8000);
+        this.showMessage("Fabulous victory, " + this.getCurrentPlayerObject().user.username + "!", 8000);
     };
 
     /**
@@ -332,7 +332,7 @@ X501 = class X501 extends X01 {
         super(game);
     }
     get startingPoints() {
-        return 100;
+        return 501;
     }
 };
 
