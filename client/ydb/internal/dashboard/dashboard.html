@@ -80,9 +80,11 @@
                                 </button>
                             </span>
                             <span ng-if="game.running">
-                                <button ng-show="!game.monitor" disabled type="button" class="btn btn-info">
-                                    <i class="icon-bullseye"></i> STARTED
-                                </button>
+                                <a ui-sref="game({ gameId: game._id })">
+                                    <button ng-show="!game.monitor" type="button" class="btn btn-info">
+                                        <i class="icon-bullseye"></i> STARTED
+                                    </button>
+                                </a>
                                 <a ui-sref="game({ gameId: game._id })">
                                     <button ng-show="game.monitor" type="button" class="btn btn-info">
                                         <i class="icon-eye-open"></i> WATCH

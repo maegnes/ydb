@@ -36,6 +36,9 @@ angular.module('ydb').directive('game', function() {
                                 if (game.currentPlayer !== undefined) {
                                     $scope.$broadcast("playerHasChanged", game);
                                 }
+                                if (!game.running) {
+                                    handle.stop();
+                                }
                             }
                         });
                         return game;
