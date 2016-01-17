@@ -13,6 +13,7 @@ X01 = class X01 {
 
     constructor(game) {
         this.game = game;
+        this.checkoutCalculator = new CheckoutPath();
     }
 
     /**
@@ -34,6 +35,7 @@ X01 = class X01 {
         this.game.currentRoundDartsThrown++;
         try {
             this.subtractFromPlayerScore(score);
+            this.handleCheckoutPath();
             if (3 == this.game.currentRoundDartsThrown && this.game.running) {
                 this.nextPlayer();
             }
@@ -42,6 +44,30 @@ X01 = class X01 {
                 case this.ERROR_THROWN_OVER:
                     this.setNoScore();
                     break;
+            }
+        }
+    };
+
+    handleCheckoutPath = () => {
+        // Check a possible checkout
+        if (this.getCurrentPlayerObject().scoreRemaining <= 170) {
+            let remaining = (3 - (this.game.currentRoundDartsThrown));
+            // If no more dart is remaining calculate it for the next round
+            if (0 == remaining) {
+                remaining = 3;
+            }
+            this.checkoutCalculator.calculate(this.getCurrentPlayerObject().scoreRemaining, remaining);
+            if (this.checkoutCalculator.isCheckoutPossible()) {
+                let paths = this.checkoutCalculator.getPaths();
+                if (paths.ONE.length > 0) {
+                    this.getCurrentPlayerObject().checkoutPath = paths.ONE[0];
+                } else if (paths.TWO.length > 0) {
+                    this.getCurrentPlayerObject().checkoutPath = paths.TWO[0];
+                } else {
+                    this.getCurrentPlayerObject().checkoutPath = paths.THREE[0];
+                }
+            } else {
+                this.getCurrentPlayerObject().checkoutPath = undefined;
             }
         }
     };
@@ -71,7 +97,6 @@ X01 = class X01 {
             if (undefined === this.getCurrentPlayerScores()) {
                 this.getCurrentPlayerObject().scores[this.game.currentSet] = [];
                 this.getCurrentPlayerObject().scores[this.game.currentSet][this.game.currentLeg] = [];
-                console.log(this.getCurrentPlayerScores());
             }
 
             // Add score to current score to show it to the other players
@@ -142,6 +167,8 @@ X01 = class X01 {
         this.game.currentRoundDartsThrown = 0;
 
         this.setNextPlayer();
+
+        this.handleCheckoutPath();
     };
 
     /**
@@ -258,6 +285,7 @@ X01 = class X01 {
         this.game.players.forEach(
             (player) => {
                 player.scoreRemaining = this.startingPoints;
+                player.checkoutPath = undefined;
             }
         );
     };

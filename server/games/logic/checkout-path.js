@@ -74,6 +74,15 @@ CheckoutPath = class CheckoutPath {
     };
 
     /**
+     * Returns the calculated checkout paths
+     *
+     * @returns {{ONE: Array, TWO: Array, THREE: Array}}
+     */
+    getPaths = () => {
+        return this.paths;
+    };
+
+    /**
      * Recursive solution to calculate the checkout paths
      *
      * @param points
@@ -132,4 +141,8 @@ CheckoutPath = class CheckoutPath {
             }
         });
     };
+
+    isCheckoutPossible = () => {
+        return !(this.paths.ONE.length == 0 && this.paths.TWO.length == 0 && this.paths.THREE.length == 0);
+    }
 };
