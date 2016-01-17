@@ -61,6 +61,12 @@ angular.module('ydb').directive('game', function() {
                 }
             };
 
+            $scope.scoringLocked = () => {
+                if ($scope.ourGame) {
+                    return ($scope.ourGame.message || $scope.ourGame.finished);
+                }
+            };
+
             /**
              * Helpers
              */

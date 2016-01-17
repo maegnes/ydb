@@ -9,13 +9,13 @@
 
         <div class="widget-content text-center keyboard" id="db-container">
             <div class="btn-group" role="group" aria-label="...">
-                <button ng-click="keyboard.clickDouble();" type="button" class="btn" ng-class="keyboard.isDouble ? 'btn-danger' : 'btn-default'">DOUBLE</button>
-                <button ng-click="keyboard.clickTriple();" type="button" class="btn" ng-class="keyboard.isTriple ? 'btn-danger' : 'btn-default'">TRIPLE</button>
-                <button ng-disabled="keyboard.isDouble || keyboard.isTriple" ng-click="keyboard.clickScore(0);" type="button" class="btn btn-default">NO SCORE</button>
+                <button ng-disabled="scoringLocked()" ng-click="keyboard.clickDouble();" type="button" class="btn" ng-class="keyboard.isDouble ? 'btn-danger' : 'btn-default'">DOUBLE</button>
+                <button ng-disabled="scoringLocked()" ng-click="keyboard.clickTriple();" type="button" class="btn" ng-class="keyboard.isTriple ? 'btn-danger' : 'btn-default'">TRIPLE</button>
+                <button ng-disabled="keyboard.isDouble || keyboard.isTriple || scoringLocked()" ng-click="keyboard.clickScore(0);" type="button" class="btn btn-default">NO SCORE</button>
             </div>
             <div class="clear"></div>
-            <button ng-repeat="n in [] | range:20" type="button" ng-click="keyboard.clickScore(n + 1);" class="btn btn-default number">{{n + 1}}</button>
-            <button type="button" ng-disabled="keyboard.isTriple" class="btn btn-default number" ng-click="keyboard.clickScore(25);"><i class="icon-bullseye"></i></button>
+            <button ng-disabled="scoringLocked();" ng-repeat="n in [] | range:20" type="button" ng-click="keyboard.clickScore(n + 1);" class="btn btn-default number">{{n + 1}}</button>
+            <button type="button" ng-disabled="keyboard.isTriple || scoringLocked()" class="btn btn-default number" ng-click="keyboard.clickScore(25);"><i class="icon-bullseye"></i></button>
         </div>
 
     </div>

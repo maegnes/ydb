@@ -363,3 +363,17 @@ X301 = class X301 extends X01 {
         return 301;
     }
 };
+
+/**
+ * Class for the 201 game
+ *
+ * @type {201}
+ */
+X201 = class X201 extends X01 {
+    constructor(game) {
+        super(game);
+    }
+    get startingPoints() {
+        return 201;
+    }
+};

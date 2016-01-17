@@ -3,12 +3,16 @@ angular.module('ydb').directive('dashboard', function() {
         restrict: 'E',
         templateUrl: 'client/ydb/internal/dashboard/dashboard.html',
         controllerAs: 'dashboard',
-        controller: function($scope, $reactive, $state) {
+        controller: function($scope, $reactive, $state, availableGameModes, availableGameTypes) {
 
             $reactive(this).attach($scope);
 
             // Subscribe to all game changes
             this.subscribe("games");
+
+            $scope.types = availableGameTypes;
+
+            $scope.modes = availableGameModes;
 
             // The skeleton for new games
             this.newGame = {
@@ -23,7 +27,8 @@ angular.module('ydb').directive('dashboard', function() {
                 currentRoundDartsThrown: 0,
                 currentLeg: 0,
                 currentSet: 0,
-                firstToSets: 2
+                firstToSets: 1,
+                type: 501
             };
 
             /**
@@ -107,6 +112,7 @@ angular.module('ydb').directive('dashboard', function() {
                             // todo - error handling
                         } else {
                             this.addPlayerToGame(gameId, Meteor.userId(), false);
+                            $('#startNewGameModal').modal('hide');
                         }
 
                     }
@@ -127,8 +133,11 @@ angular.module('ydb').directive('dashboard', function() {
                     userId,
                     remotePlayer,
                     (error, result) => {
+                        console.log(error, result);
                         if (error) {
                             // todo - errorhandling
+                        } else {
+                            $('#addNewPlayerModal').modal('hide');
                         }
                     }
                 );

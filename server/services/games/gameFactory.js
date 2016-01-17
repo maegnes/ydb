@@ -10,14 +10,17 @@ GameFactory = class GameFactory {
      */
     static createGame(game) {
         switch (game.type) {
-            case '501':
+            case 501:
                 return new X501(game);
                 break;
-            case '401':
+            case 401:
                 return new X401(game);
                 break;
-            case '301':
+            case 301:
                 return new X301(game);
+                break;
+            case 201:
+                return new X201(game);
                 break;
             default:
                 throw new Error('Unknown game type ' + game.type);
