@@ -51,20 +51,25 @@ CheckoutPath = class CheckoutPath {
      * Creates the fields and their values
      */
     constructor() {
-        // Create the possible scores
         for (var i = 1; i <= 20; i++) {
-            this.singles.push({
-                value: i,
-                name: 'S' + i
-            });
-            this.doubles.push({
-                value: 2 * i,
-                name: 'D' + i
-            });
-            this.triples.push({
-                value: 3 * i,
-                name: 'T' + i
-            });
+            this.singles.push(
+                {
+                    value: i,
+                    name: 'S' + i
+                }
+            );
+            this.doubles.push(
+                {
+                    value: 2 * i,
+                    name: 'D' + i
+                }
+            );
+            this.triples.push(
+                {
+                    value: 3 * i,
+                    name: 'T' + i
+                }
+            );
         }
     };
 
@@ -76,11 +81,12 @@ CheckoutPath = class CheckoutPath {
      * @param path
      */
     calculate = (points, dartsRemaining, path = []) => {
-        let finalPath = [];
+
         if (0 == dartsRemaining) {
             return;
         }
-        // Last throw must be a double
+
+        // Sub doubles
         this.triples.forEach((score) => {
             let myPath = path.slice();
             let newScore = points - score.value;
@@ -90,6 +96,8 @@ CheckoutPath = class CheckoutPath {
             myPath.push(score);
             this.calculate(newScore, dartsRemaining - 1, myPath)
         });
+
+        // Sub singles
         this.singles.forEach((score) => {
             let myPath = path.slice();
             let newScore = points - score.value;
@@ -99,6 +107,8 @@ CheckoutPath = class CheckoutPath {
             myPath.push(score);
             this.calculate(newScore, dartsRemaining - 1, myPath);
         });
+
+        // Sub triples
         this.doubles.forEach((score) => {
             let myPath = path.slice();
             let newScore = points - score.value;
@@ -107,16 +117,15 @@ CheckoutPath = class CheckoutPath {
             }
             myPath.push(score);
             if (0 == newScore) {
-                finalPath.push(myPath);
-                switch (finalPath[0].length) {
+                switch (myPath.length) {
                     case 1:
-                        this.paths.ONE.push(finalPath[0]);
+                        this.paths.ONE.push(myPath);
                         break;
                     case 2:
-                        this.paths.TWO.push(finalPath[0]);
+                        this.paths.TWO.push(myPath);
                         break;
                     case 3:
-                        this.paths.THREE.push(finalPath[0]);
+                        this.paths.THREE.push(myPath);
                 }
             } else {
                 this.calculate(newScore, dartsRemaining - 1, myPath);
