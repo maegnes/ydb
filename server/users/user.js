@@ -27,47 +27,12 @@ Meteor.methods({
     },
 
     /**
-     * Returns quick stats for a given user
      *
      * @param userId
-     * @returns {{new: number, old: number}}
+     * @returns {{gamesPlayed, gamesWon, pctWon}|{gamesPlayed: *, gamesWon: number, pctWon: number}}
      */
     getQuickStats: (userId) => {
-        let selector = {
-                $and: [
-                    {
-                        $and: [
-                            {finished: true}
-                        ]
-                    },
-                    {
-                        players: {
-                            $elemMatch: {
-                                _id: userId
-                            }
-                        }
-                    },
-                    {
-                        $where: "this.players.length > 1"
-                    }
-                ]
-            }
-            ;
-        let games = Games.find(selector);
-        let gamesPlayed = games.count();
-        let gamesWon = 0;
-        games.forEach(
-            (game) => {
-                if (game.winner === userId) {
-                    gamesWon++;
-                }
-            }
-        );
-        return {
-            gamesPlayed: gamesPlayed,
-            gamesWon: gamesWon,
-            pctWon: Math.round((100 / gamesPlayed) * gamesWon)
-        }
+        return UserStats.getQuickStats(userId);
     }
 })
 ;

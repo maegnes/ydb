@@ -73,6 +73,17 @@ X01 = class X01 {
     };
 
     /**
+     * Updates the three dart average for the current player
+     */
+    updateAverage = () => {
+        let avgData = UserStats.getThreeDartsAverage(
+            this.getCurrentPlayerObject().user._id,
+            this.game._id
+        );
+        this.getCurrentPlayerObject().TDAVG = avgData.TDAVG;
+    };
+
+    /**
      * Subtracts the given score from the players remaining points
      *
      * @param score
@@ -161,6 +172,8 @@ X01 = class X01 {
 
         this.handleCheckoutPath();
 
+        this.updateAverage();
+
         let indexNextPlayer = 0;
 
         // Reset the current scores
@@ -229,6 +242,7 @@ X01 = class X01 {
      * Finishes a game
      */
     finish = () => {
+        this.updateAverage();
         this.game.winner = this.game.currentPlayer;
         this.game.running = false;
         this.game.finished = true;

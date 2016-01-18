@@ -98,6 +98,9 @@ angular.module('ydb').directive('dashboard', function () {
                 });
             };
 
+            /**
+             * Load the quick stats from the server
+             */
             $scope.loadQuickStats = () => {
                 Meteor.call(
                     'getQuickStats',

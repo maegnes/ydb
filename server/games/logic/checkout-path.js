@@ -55,7 +55,7 @@ CheckoutPath = class CheckoutPath {
             this.singles.push(
                 {
                     value: i,
-                    name:  i
+                    name: i
                 }
             );
             this.doubles.push(
@@ -95,36 +95,39 @@ CheckoutPath = class CheckoutPath {
             return;
         }
 
+        if (dartsRemaining >= 2) {
+            // Sub triples
+            this.triples.forEach((score) => {
+                let myPath = path.slice();
+                let newScore = points - score.value;
+                if (newScore <= 0) {
+                    return;
+                }
+                // We do not need a double hit for a score <= 20 - replace with single hit
+                if (score.value <= 20) {
+                    score = {
+                        value: score.value,
+                        name: score.value
+                    };
+                }
+                myPath.push(score);
+                this.calculate(newScore, dartsRemaining - 1, myPath)
+            });
+
+            // Sub singles
+            this.singles.forEach((score) => {
+                let myPath = path.slice();
+                let newScore = points - score.value;
+                if (newScore <= 0) {
+                    return;
+                }
+                myPath.push(score);
+                this.calculate(newScore, dartsRemaining - 1, myPath);
+            });
+
+        }
+
         // Sub doubles
-        this.triples.forEach((score) => {
-            let myPath = path.slice();
-            let newScore = points - score.value;
-            if (newScore <= 0) {
-                return;
-            }
-            // We do not need a double hit for a score <= 20 - replace with single hit
-            if (score.value <= 20) {
-                score = {
-                    value: score.value,
-                    name: score.value
-                };
-            }
-            myPath.push(score);
-            this.calculate(newScore, dartsRemaining - 1, myPath)
-        });
-
-        // Sub singles
-        this.singles.forEach((score) => {
-            let myPath = path.slice();
-            let newScore = points - score.value;
-            if (newScore <= 0) {
-                return;
-            }
-            myPath.push(score);
-            this.calculate(newScore, dartsRemaining - 1, myPath);
-        });
-
-        // Sub triples
         this.doubles.forEach((score) => {
             let myPath = path.slice();
             let newScore = points - score.value;
@@ -132,11 +135,13 @@ CheckoutPath = class CheckoutPath {
                 return;
             }
             // We do not need a triple hit for a score <= 20 - replace with single hit
-            if (score.value <= 20 && dartsRemaining > 1) {
-                score = {
-                    value: score.value,
-                    name: score.value
-                };
+            if (score.value <= 20) {
+                if (newScore > 20) {
+                    score = {
+                        value: score.value,
+                        name: score.value
+                    };
+                }
             }
             myPath.push(score);
             if (0 == newScore) {
