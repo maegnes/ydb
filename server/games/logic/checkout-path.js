@@ -55,7 +55,7 @@ CheckoutPath = class CheckoutPath {
             this.singles.push(
                 {
                     value: i,
-                    name: 'S' + i
+                    name:  i
                 }
             );
             this.doubles.push(
@@ -102,6 +102,13 @@ CheckoutPath = class CheckoutPath {
             if (newScore <= 0) {
                 return;
             }
+            // We do not need a double hit for a score <= 20 - replace with single hit
+            if (score.value <= 20) {
+                score = {
+                    value: score.value,
+                    name: score.value
+                };
+            }
             myPath.push(score);
             this.calculate(newScore, dartsRemaining - 1, myPath)
         });
@@ -124,6 +131,13 @@ CheckoutPath = class CheckoutPath {
             if (newScore < 0) {
                 return;
             }
+            // We do not need a triple hit for a score <= 20 - replace with single hit
+            if (score.value <= 20 && dartsRemaining > 1) {
+                score = {
+                    value: score.value,
+                    name: score.value
+                };
+            }
             myPath.push(score);
             if (0 == newScore) {
                 switch (myPath.length) {
@@ -144,5 +158,16 @@ CheckoutPath = class CheckoutPath {
 
     isCheckoutPossible = () => {
         return !(this.paths.ONE.length == 0 && this.paths.TWO.length == 0 && this.paths.THREE.length == 0);
-    }
+    };
+
+    /**
+     * Finds a score in the given array
+     */
+    findScore = (searchIn, scoreValue) => {
+        return searchIn.map(
+            (s) => {
+                return s.value;
+            }
+        ).indexOf(scoreValue);
+    };
 };

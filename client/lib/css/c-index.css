@@ -8,9 +8,8 @@
 
 .stats .stat {
     display: table-cell;
-    width: 40%;
+    width: 25%;
     vertical-align: top;
-
     font-size: 11px;
     font-weight: bold;
     color: #999;
@@ -19,10 +18,8 @@
 .stat-value {
     display: block;
     margin-bottom: .55em;
-
     font-size: 30px;
     font-weight: bold;
-    letter-spacing: -2px;
     color: #444;
 }
 

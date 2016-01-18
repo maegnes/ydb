@@ -9,9 +9,8 @@
 
                 <h3>
                     <strong>
-                        Playing Leg {{game.currentGame.currentLeg + 1}} of Set {{game.currentGame.currentSet + 1}}
+                        Leg {{game.currentGame.currentLeg + 1}} of Set {{game.currentGame.currentSet + 1}}
                     </strong> (First to {{game.currentGame.firstToSets}} Sets)
-                    - it's {{getCurrentPlayer().user.username}}'s turn.
                 </h3>
             </div> <!-- /widget-header -->
 
@@ -21,7 +20,7 @@
                         <div class="col-md-12 col-xs-12 score">{{game.currentGame.message.msg}}</div>
                     </span>
                     <span ng-if="game.currentGame.currentScores.length == 0 && game.currentGame.running && !game.currentGame.message">
-                        <div class="col-md-12 col-xs-12 score">Waiting for scores...</div>
+                        <div class="col-md-12 col-xs-12 score">Waiting for {{getCurrentPlayer().user.username}}..</div>
                     </span>
                     <span ng-if="game.currentGame.finished && !game.currentGame.message">
                         <div class="col-md-12 col-xs-12 score">GAME FINISHED</div>
@@ -68,7 +67,7 @@
                                 <div class="plan-price">
                                     {{player.scoreRemaining}}
                                     <span class="term">
-                                        <span ng-repeat="field in player.checkoutPath">{{field.name}} <span ng-hide="$last">-</span></span>
+                                        <span ng-repeat="field in player.checkoutPath">{{field.name}}<span ng-hide="$last"> - </span></span>
                                     </span>
                                 </div> <!-- /plan-price -->
 

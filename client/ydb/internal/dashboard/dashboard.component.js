@@ -1,9 +1,9 @@
-angular.module('ydb').directive('dashboard', function() {
+angular.module('ydb').directive('dashboard', function () {
     return {
         restrict: 'E',
         templateUrl: 'client/ydb/internal/dashboard/dashboard.html',
         controllerAs: 'dashboard',
-        controller: function($scope, $reactive, $state, availableGameModes, availableGameTypes) {
+        controller: function ($scope, $reactive, $state, availableGameModes, availableGameTypes) {
 
             $reactive(this).attach($scope);
 
@@ -16,8 +16,8 @@ angular.module('ydb').directive('dashboard', function() {
 
             // The skeleton for new games
             this.newGame = {
+                visibility: true,
                 created: new Date(),
-                owner: Meteor.user(),
                 running: false,
                 finished: false,
                 players: [],
@@ -88,7 +88,7 @@ angular.module('ydb').directive('dashboard', function() {
                 });
                 let handle = games.observeChanges({
                     changed: (id, game) => {
-                        if(game.running) {
+                        if (game.running) {
                             $state.go('game', {
                                 gameId: id
                             });
@@ -98,12 +98,24 @@ angular.module('ydb').directive('dashboard', function() {
                 });
             };
 
+            $scope.loadQuickStats = () => {
+                Meteor.call(
+                    'getQuickStats',
+                    Meteor.userId(),
+                    (err, res) => {
+                        $scope.quickStats = res;
+                        $scope.$apply();
+                    }
+                );
+            };
+
             /**
              * Informs the server to create a new game
              */
             this.createNewGame = () => {
                 this.newGame.visibility = Boolean(this.newGame.visibility);
                 this.newGame.monitor = Boolean(this.newGame.monitor);
+                this.newGame.owner = Meteor.user();
                 Meteor.call(
                     'createGame',
                     this.newGame,
@@ -133,9 +145,8 @@ angular.module('ydb').directive('dashboard', function() {
                     userId,
                     remotePlayer,
                     (error, result) => {
-                        console.log(error, result);
                         if (error) {
-                            // todo - errorhandling
+                            console.log(error);
                         } else {
                             $('#addNewPlayerModal').modal('hide');
                         }
@@ -194,7 +205,7 @@ angular.module('ydb').directive('dashboard', function() {
             this.hasPlayerJoinedGame = (gameId) => {
                 let game = Games.findOne(gameId);
                 let joinedGame = false;
-                game.players.forEach(function(player) {
+                game.players.forEach(function (player) {
                     if (player._id == Meteor.userId()) {
                         joinedGame = true;
                     }
@@ -213,6 +224,8 @@ angular.module('ydb').directive('dashboard', function() {
 
             // Tell the controller to observe changes on joined games
             this.observeChanges();
+
+            $scope.loadQuickStats();
         }
     }
 });

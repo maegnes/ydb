@@ -15,18 +15,23 @@
                 <div class="stats">
 
                     <div class="stat">
-                        <span class="stat-value">123</span>
+                        <span class="stat-value">{{quickStats.gamesPlayed}}</span>
                         Games
                     </div> <!-- /stat -->
 
                     <div class="stat">
-                        <span class="stat-value">60</span>
+                        <span class="stat-value">{{quickStats.gamesWon}}</span>
                         Wins
                     </div> <!-- /stat -->
 
                     <div class="stat">
-                        <span class="stat-value">40,55</span>
-                        3D Average
+                        <span class="stat-value">{{quickStats.pctWon}}%</span>
+                        % Win
+                    </div>
+
+                    <div class="stat">
+                        <span class="stat-value">40.55</span>
+                        3D AVG
                     </div> <!-- /stat -->
 
                 </div> <!-- /stats -->
@@ -55,7 +60,7 @@
                                 <span ng-if="dashboard.hasPlayerJoinedGame(game._id);">
                                     <button ng-hide="game.owner._id == $root.currentUser._id"
                                             ng-click="dashboard.removePlayerFromGame(game._id);"
-                                            class="btn btn-success">
+                                            class="btn btn-success col-xs-12">
                                         LEAVE
                                     </button>
                                 </span>
@@ -96,8 +101,7 @@
                             <i ng-show="game.visibility" class="icon-unlock"></i>
                             <i ng-hide="game.visibility" class="icon-lock"></i>
                             -
-                            <strong>{{game.type}} created by {{game.owner.username}} @ {{game.created | date : 'dd.MM.yyyy HH:mm'}}</strong>
-
+                            <strong>{{game.type}} by {{game.owner.username}} @ {{game.created | date : 'dd.MM.yyyy HH:mm'}}</strong>
                             <p class="news-item-preview">Currently {{game.players.length}} players</p>
                         </div>
                     </li>
@@ -124,7 +128,7 @@
             <div class="widget-header">
                 <i class="icon-bookmark"></i>
 
-                <h3>Quick Shortcuts</h3>
+                <h3>Navigation</h3>
             </div> <!-- /widget-header -->
 
             <div class="widget-content">

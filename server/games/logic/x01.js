@@ -158,6 +158,9 @@ X01 = class X01 {
      * Jumps to the next player
      */
     nextPlayer = () => {
+
+        this.handleCheckoutPath();
+
         let indexNextPlayer = 0;
 
         // Reset the current scores
@@ -167,8 +170,6 @@ X01 = class X01 {
         this.game.currentRoundDartsThrown = 0;
 
         this.setNextPlayer();
-
-        this.handleCheckoutPath();
     };
 
     /**
