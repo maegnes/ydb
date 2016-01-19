@@ -91,6 +91,14 @@ angular.module('ydb').directive('game', function() {
                     return undefined;
                 }
             });
+
+            Meteor.call(
+                'statsTest', 'W494nLEFG629QFmMw', (res, err) => {
+                    console.log(res, err);
+                }
+            );
+
+
         }
     }
 });

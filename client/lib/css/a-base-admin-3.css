@@ -737,6 +737,11 @@ h6 {
 .widget.widget-nopad .widget-content {
   padding: 0;
 }
+
+.widget.widget-lesspad .widget-content {
+  padding: 10px 0;
+}
+
 .widget .widget-content:before,
 .widget .widget-content:after {
   content: " ";

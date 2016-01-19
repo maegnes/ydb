@@ -3,6 +3,12 @@
  */
 Meteor.methods({
 
+    statsTest: (gameId) => {
+        let game = Games.findOne(gameId);
+        let statExport = new StatsExport();
+        statExport.extract(game);
+    },
+
     /**
      * Creates a new game based on the given data and returns the id of the created game
      *
@@ -106,6 +112,17 @@ Meteor.methods({
 
         let game = Games.findOne(gameId);
         let gameWrapper = GameFactory.createGame(game);
+
+        // Observe the game to save stats after game is finished
+        let query = Games.find({_id: gameId});
+        let handle = query.observeChanges({
+            changed: (id, fields) => {
+                if (fields.finished) {
+
+                    handle.stop();
+                }
+            }
+        });
 
         if (gameWrapper.start()) {
             Games.update(

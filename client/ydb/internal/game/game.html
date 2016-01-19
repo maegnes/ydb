@@ -79,7 +79,7 @@
                                         <strong>Sets:</strong> {{player.setsWon}}
                                         <strong>Legs:</strong> {{player.legsWon}}
                                     </li>
-                                    <li><strong>3D AVG:</strong> {{player.TDAVG | number : 2}}</li>
+                                    <li ng-if="player.TDAVG"><strong>3D AVG:</strong> {{player.TDAVG | number : 2}}</li>
                                 </ul>
                             </div> <!-- /plan-features -->
 

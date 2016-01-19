@@ -2,7 +2,7 @@
 
     <div class="col-md-6 col-xs-12">
 
-        <div class="widget stacked">
+        <div class="widget widget-lesspad stacked">
 
             <div class="widget-header">
                 <i class="icon-star"></i>
@@ -12,29 +12,32 @@
 
             <div class="widget-content">
 
-                <div class="stats">
-
-                    <div class="stat">
-                        <span class="stat-value">{{quickStats.gamesPlayed}}</span>
-                        Games
-                    </div> <!-- /stat -->
-
-                    <div class="stat">
-                        <span class="stat-value">{{quickStats.gamesWon}}</span>
-                        Wins
-                    </div> <!-- /stat -->
-
-                    <div class="stat">
-                        <span class="stat-value">{{quickStats.pctWon}}%</span>
-                        % Win
+                <div class="stats row">
+                    <div class="col-lg-3 col-xs-3">
+                        <div class="stat text-center">
+                            <span class="stat-value">{{quickStats.gamesPlayed}}</span>
+                            Games
+                        </div> <!-- /stat -->
                     </div>
-
-                    <div class="stat">
-                        <span class="stat-value">{{quickStats.avg.TDAVG | number : 2}}</span>
-                        3D AVG
-                    </div> <!-- /stat -->
-
-                </div> <!-- /stats -->
+                    <div class="col-lg-3 col-xs-3">
+                        <div class="stat text-center">
+                            <span class="stat-value">{{quickStats.gamesWon}}</span>
+                            Wins
+                        </div> <!-- /stat -->
+                    </div>
+                    <div class="col-lg-3 col-xs-3">
+                        <div class="stat text-center">
+                            <span class="stat-value">{{quickStats.pctWon}}%</span>
+                            % Win
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-xs-3">
+                        <div class="stat text-center">
+                            <span class="stat-value">{{quickStats.avg.TDAVG | number : 2}}</span>
+                            3D AVG
+                        </div> <!-- /stat -->
+                    </div>
+                </div>
 
             </div> <!-- /widget-content -->
 
@@ -135,12 +138,16 @@
 
                 <div class="shortcuts">
                     <a href="#startNewGameModal" data-toggle="modal" class="shortcut">
-                        <i class="shortcut-icon icon-list-alt"></i>
+                        <i class="shortcut-icon icon-gamepad"></i>
                         <span class="shortcut-label">NEW GAME</span>
                     </a>
                     <a href="#startNewGameModal" data-toggle="modal" class="shortcut">
                         <i class="shortcut-icon icon-list-ol"></i>
                         <span class="shortcut-label">PRACTICE</span>
+                    </a>
+                    <a href="#startNewGameModal" data-toggle="modal" class="shortcut">
+                        <i class="shortcut-icon icon-bar-chart"></i>
+                        <span class="shortcut-label">STATISTICS</span>
                     </a>
                 </div> <!-- /shortcuts -->
 

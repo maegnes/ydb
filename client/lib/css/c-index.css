@@ -3,7 +3,6 @@
     display: table;
     padding: 0 0 0 10px;
     margin-top: .5em;
-    margin-bottom: 1.9em;
 }
 
 .stats .stat {
@@ -147,10 +146,7 @@
     }
 
     .stats {
-        float: left;
-
         display: block;
-
         margin-bottom: 0;
     }
 
