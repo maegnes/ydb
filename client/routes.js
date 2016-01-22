@@ -49,6 +49,13 @@ angular.module('ydb')
                     checkLogin
                 }
             })
+            .state('stats', {
+                url: '/stats',
+                template: '<stats></stats>',
+                resolve: {
+                    checkLogin
+                }
+            })
             .state('login', {
                 url: '/login',
                 template: '<login></login>',

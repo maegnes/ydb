@@ -107,8 +107,7 @@
 }
 
 .plan-features li {	
-	padding: 1em 0;
-	margin: 0 2em;
+	padding: 0.5em 0;
 	text-align: center;
 	border-bottom: 1px dotted #CCC;
 	font-size: 1.2em;

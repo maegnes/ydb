@@ -80,6 +80,9 @@
                                         <strong>Legs:</strong> {{player.legsWon}}
                                     </li>
                                     <li ng-if="player.TDAVG"><strong>3D AVG:</strong> {{player.TDAVG | number : 2}}</li>
+                                    <li ng-if="player.checkoutAttempts > 0">
+                                        <strong>Checkout:</strong> {{player.checkouts}}/{{player.checkoutAttempts}} {{(player.checkouts/player.checkoutAttempts) * 100 | number : 2}}%
+                                    </li>
                                 </ul>
                             </div> <!-- /plan-features -->
 

@@ -1,15 +1,11 @@
 /**
- * Exports statistics information of a given game into a separate collection for better calculation
+ * Exports statistics information of a given game into a separate collection for better aggregation
  *
  * @type {StatsExport}
  */
 StatsExport = class StatsExport {
 
     userStats = {};
-
-    constructor() {
-        this.resetStats();
-    }
 
     resetStats = () => {
         this.userStats.thrownDarts = 0;
@@ -26,6 +22,8 @@ StatsExport = class StatsExport {
      * @param game
      */
     extract = (game) => {
+
+        this.resetStats();
 
         if ("object" === typeof game) {
 

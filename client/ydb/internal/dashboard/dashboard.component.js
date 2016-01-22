@@ -106,6 +106,7 @@ angular.module('ydb').directive('dashboard', function () {
                     'getQuickStats',
                     Meteor.userId(),
                     (err, res) => {
+                        console.log(res);
                         $scope.quickStats = res;
                         $scope.$apply();
                     }
@@ -228,6 +229,7 @@ angular.module('ydb').directive('dashboard', function () {
             // Tell the controller to observe changes on joined games
             this.observeChanges();
 
+            // Load quick stats
             $scope.loadQuickStats();
         }
     }

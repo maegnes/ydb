@@ -1,5 +1,5 @@
 /**
- * Main class for our X01 games logic
+ * Internal game logic for X01 games (501, 401, 301, 201)
  *
  * @type {X01}
  */
@@ -34,6 +34,12 @@ X01 = class X01 {
     score = (score) => {
         this.game.currentRoundDartsThrown++;
         try {
+            // If just one dart left it is a checkout attempt
+            if (this.getCurrentPlayerObject().checkoutPath) {
+                if (1 == this.getCurrentPlayerObject().checkoutPath.length) {
+                    this.getCurrentPlayerObject().checkoutAttempts++;
+                }
+            }
             this.subtractFromPlayerScore(score);
             this.handleCheckoutPath();
             if (3 == this.game.currentRoundDartsThrown && this.game.running) {
@@ -76,7 +82,7 @@ X01 = class X01 {
      * Updates the three dart average for the current player
      */
     updateAverage = () => {
-        let avgData = UserStats.getThreeDartsAverage(
+        let avgData = UserStats.getAverages(
             this.getCurrentPlayerObject().user._id,
             this.game._id
         );
@@ -117,7 +123,9 @@ X01 = class X01 {
             this.getCurrentPlayerScores().push(score);
 
             if (0 == newScore) {
-                // Player checked out! Start new leg!
+                // Player checked out!
+                player.checkouts++;
+                // Start new leg!
                 if (2 == player.legsWon) {
                     player.setsWon++;
                     // Check if the game is ower
@@ -174,8 +182,6 @@ X01 = class X01 {
 
         this.updateAverage();
 
-        let indexNextPlayer = 0;
-
         // Reset the current scores
         this.game.currentScores = [];
 
@@ -217,7 +223,9 @@ X01 = class X01 {
             user: user,
             scoreRemaining: this.startingPoints,
             legsWon: 0,
-            setsWon: 0
+            setsWon: 0,
+            checkoutAttempts: 0,
+            checkouts: 0
         };
         this.game.players.push(player);
     };
@@ -228,13 +236,15 @@ X01 = class X01 {
      * @returns {boolean}
      */
     start = () => {
+        // Select a random starting player
         let startingPlayerIndex = Math.floor(Math.random() * this.game.players.length);
+        // Set game related information
         this.game.running = true;
         this.game.currentPlayer = this.game.players[startingPlayerIndex]._id;
         this.game.currentPlayerIndex = startingPlayerIndex;
-        this.game.currentScores = [];
         this.game.currentLegBeginner = startingPlayerIndex;
         this.game.currentSetBeginner = startingPlayerIndex;
+        this.game.currentScores = [];
         return true;
     };
 
@@ -288,13 +298,15 @@ X01 = class X01 {
         this.setNextPlayer(this.game.currentLegBeginner);
         this.game.currentLegBeginner = this.game.currentPlayerIndex;
         this.game.currentSetBeginner = this.game.currentPlayerIndex;
+
+        // Reset leg related information and show information message
         this.resetRemainingScores();
         this.resetLegsWon();
         this.showMessage("Starting a new set. Game on!", 3000);
     };
 
     /**
-     * Resets the remaining points of all players to the starting points
+     * Resets the remaining score of all players back to the starting points
      */
     resetRemainingScores = () => {
         this.game.players.forEach(
@@ -306,7 +318,7 @@ X01 = class X01 {
     };
 
     /**
-     * Resets the won legs information after a set has been finished
+     * Resets the won legs information after a set has been finished to 0
      */
     resetLegsWon = () => {
         this.game.players.forEach(
@@ -410,7 +422,7 @@ X301 = class X301 extends X01 {
 /**
  * Class for the 201 game
  *
- * @type {201}
+ * @type {X201}
  */
 X201 = class X201 extends X01 {
     constructor(game) {

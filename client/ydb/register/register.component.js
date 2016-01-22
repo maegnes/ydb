@@ -16,7 +16,7 @@ angular.module('ydb').directive('register', function() {
                     if (error) {
                         alert("Error occured");
                     } else {
-                        $state.path('start');
+                        $state.go('dashboard');
                     }
                 }
                 );

@@ -134,7 +134,7 @@ CheckoutPath = class CheckoutPath {
             if (newScore < 0) {
                 return;
             }
-            // We do not need a triple hit for a score <= 20 - replace with single hit
+            // We do not need a double hit for a score <= 20 - replace with single hit
             if (score.value <= 20) {
                 if (newScore > 20) {
                     score = {
@@ -163,16 +163,5 @@ CheckoutPath = class CheckoutPath {
 
     isCheckoutPossible = () => {
         return !(this.paths.ONE.length == 0 && this.paths.TWO.length == 0 && this.paths.THREE.length == 0);
-    };
-
-    /**
-     * Finds a score in the given array
-     */
-    findScore = (searchIn, scoreValue) => {
-        return searchIn.map(
-            (s) => {
-                return s.value;
-            }
-        ).indexOf(scoreValue);
     };
 };

@@ -27,12 +27,22 @@ Meteor.methods({
     },
 
     /**
+     * Returns the quick stats
      *
      * @param userId
      * @returns {{gamesPlayed, gamesWon, pctWon}|{gamesPlayed: *, gamesWon: number, pctWon: number}}
      */
     getQuickStats: (userId) => {
         return UserStats.getQuickStats(userId);
+    },
+
+    /**
+     * Returns the checkout percentage for the given user
+     *
+     * @param userId
+     * @param gameId
+     */
+    getCheckoutPercentage: (userId, gameId = 0) => {
+        return UserStats.getCheckoutPercentage(userId, gameId);
     }
-})
-;
+});
