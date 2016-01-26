@@ -51,6 +51,9 @@ X01 = class X01 {
                     this.setNoScore();
                     break;
             }
+        } finally {
+            this.save();
+            this.updateAverages();
         }
     };
 
@@ -81,12 +84,19 @@ X01 = class X01 {
     /**
      * Updates the three dart average for the current player
      */
-    updateAverage = () => {
-        let avgData = UserStats.getAverages(
-            this.getCurrentPlayerObject().user._id,
-            this.game._id
+    updateAverages = () => {
+        this.game.players.forEach(
+            (player) => {
+                let avgData = UserStats.getAverages(
+                    player._id,
+                    this.game._id
+                );
+                if (avgData !== undefined) {
+                    player.TDAVG = avgData.TDAVG;
+                }
+            }
         );
-        this.getCurrentPlayerObject().TDAVG = avgData.TDAVG;
+        this.save();
     };
 
     /**
@@ -180,8 +190,6 @@ X01 = class X01 {
 
         this.handleCheckoutPath();
 
-        this.updateAverage();
-
         // Reset the current scores
         this.game.currentScores = [];
 
@@ -225,7 +233,8 @@ X01 = class X01 {
             legsWon: 0,
             setsWon: 0,
             checkoutAttempts: 0,
-            checkouts: 0
+            checkouts: 0,
+            TDAVG: 0
         };
         this.game.players.push(player);
     };
@@ -252,7 +261,6 @@ X01 = class X01 {
      * Finishes a game
      */
     finish = () => {
-        this.updateAverage();
         this.game.winner = this.game.currentPlayer;
         this.game.running = false;
         this.game.finished = true;
@@ -374,6 +382,18 @@ X01 = class X01 {
      */
     isLocked = () => {
         return (this.game.message);
+    };
+
+    /**
+     * Save the given game
+     */
+    save = () => {
+        Games.update(
+            {
+                _id: this.game._id
+            },
+            this.game
+        );
     };
 };
 

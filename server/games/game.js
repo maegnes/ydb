@@ -163,23 +163,11 @@ Meteor.methods({
 
             gameWrapper.score(scores);
 
-            Games.update(
-                {
-                    _id: gameId
-                },
-                gameWrapper.game
-            );
-
             if (gameWrapper.game.message) {
                 Meteor.setTimeout(
                     () => {
                         gameWrapper.game.message = undefined;
-                        Games.update(
-                            {
-                                _id: gameId
-                            },
-                            gameWrapper.game
-                        );
+                        gameWrapper.save();
                     },
                     gameWrapper.game.message.ms
                 );
