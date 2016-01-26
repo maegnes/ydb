@@ -12,7 +12,7 @@
 
             <div class="widget-content">
 
-                <form id="register-form">
+                <form id="register-form" ng-submit="login.login();">
                     <div ng-show="login.errorMessage" class="alert alert-danger">{{login.errorMessage}}</div>
                     <div class="form-group">
                         <label for="txtUsername">Username</label>
@@ -24,7 +24,7 @@
                         <input type="password" class="form-control" id="txtPassword"
                                ng-model="login.user.password" placeholder="Password">
                     </div>
-                    <button type="button" class="btn btn-default" ng-click="login.login();">Login</button>
+                    <button type="submit" class="btn btn-default">Login</button>
                 </form>
             </div>
         </div>

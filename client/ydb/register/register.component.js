@@ -1,26 +1,39 @@
-angular.module('ydb').directive('register', function() {
+angular.module('ydb').directive('register', () => {
     return {
         restrict: 'E',
         templateUrl: 'client/ydb/register/register.html',
         controllerAs: 'register',
         controller: function($scope, $reactive, $state) {
-            $reactive(this).attach($scope);
 
+            this.errorMessage = undefined;
+
+            /**
+             * Model for the new user
+             *
+             * @type {{}}
+             */
             this.newUser = {};
 
+            /**
+             * Create user account
+             */
             this.addUser = () => {
-                Accounts.createUser({
-                    username: this.newUser.username,
-                    password: this.newUser.password
-                }, (error) => {
-                    if (error) {
-                        alert("Error occured");
-                    } else {
-                        $state.go('dashboard');
-                    }
+                try {
+                    Accounts.createUser({
+                        username: this.newUser.username,
+                        password: this.newUser.password
+                    }, (error) => {
+                        if (error) {
+                            this.errorMessage = "The registration was not successful. Please check your input.";
+                            $scope.$apply();
+                        } else {
+                            $state.go('dashboard');
+                        }
+                    });
+                    this.newUser = {};
+                } catch(error) {
+                    this.errorMessage = "The registration was not successful. Please check your input.";
                 }
-                );
-                this.newUser = {};
             }
         }
     }
