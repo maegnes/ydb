@@ -16,7 +16,7 @@ angular.module('ydb').directive('dartboard', function() {
             $scope.dartBoard.draw();
 
             $scope.dartBoard.callback = (amounts, thrownDarts, scores, lastScore) => {
-                $scope.$broadcast("throwEvent", lastScore);
+                $scope.$parent.$broadcast("throwEvent", lastScore);
             };
 
             $scope.$on("playerHasChanged", (res, dasd) => {

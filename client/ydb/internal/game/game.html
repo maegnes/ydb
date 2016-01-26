@@ -39,9 +39,10 @@
 
 <div class="row">
 
-    <keyboard ng-show="(game.currentGame.currentPlayer == $root.currentUser._id) || ((!game.currentGame.players[game.currentGame.currentPlayerIndex].remote) && (game.currentGame.owner._id == $root.currentUser._id))"></keyboard>
+    <keypad ng-if="game.user.profile.scoreTracking == 'keypad'" ng-show="isScoreTrackerVisible();"></keypad>
+    <dartboard ng-if="game.user.profile.scoreTracking == 'dartboard'" ng-show="isScoreTrackerVisible();"></dartboard>
 
-    <div class="col-md-7">
+    <div class="{{isScoreTrackerVisible() ? 'col-md-7' : 'col-md-12'}}">
 
         <div class="widget stacked">
 

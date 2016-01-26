@@ -68,6 +68,16 @@ angular.module('ydb').directive('game', function() {
             };
 
             /**
+             * Evaluates if the score tracker (dartboard or keypad) is visible for the current user
+             *
+             * @returns {boolean}
+             */
+            $scope.isScoreTrackerVisible = () => {
+                let game = $scope.ourGame;
+                return (game.currentPlayer == Meteor.userId()) || ((!game.players[game.currentPlayerIndex].remote) && (game.owner._id == Meteor.userId()));
+            };
+
+            /**
              * Helpers
              */
             this.helpers({
@@ -89,6 +99,9 @@ angular.module('ydb').directive('game', function() {
                         return game;
                     }
                     return undefined;
+                },
+                user: () => {
+                    return Meteor.user()
                 }
             });
         }

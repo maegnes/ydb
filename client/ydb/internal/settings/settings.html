@@ -1,0 +1,52 @@
+<div id="settingsModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Personal settings</h4>
+            </div>
+            <div class="modal-body" style="min-height: 500px;">
+                <form action="/" id="validation-form" role="form" class="form-horizontal col-md-12"
+                      novalidate="novalidate">
+
+                    <fieldset>
+
+                        <div class="form-group">
+
+                            <label class="col-lg-4">Score tracking</label>
+
+                            <div class="col-lg-8">
+
+                                <div class="radio">
+                                    <label>
+                                        <input ng-model="settings.profile.scoreTracking" value="keypad" type="radio" name="validateRadio" id="optionsRadios1">
+                                        I want to use the numeric keypad
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label>
+                                        <input ng-model="settings.profile.scoreTracking" value="dartboard" type="radio" name="validateRadio" id="optionsRadios2">
+                                        I want to use the canvas dartboard (clicking on a virtual dartboard)
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-lg-4"></div>
+                            <div class="col-lg-8">
+                                <button ng-click="settings.save();" type="button" class="btn btn-success"><i
+                                        class="icon-save"></i> Save settings
+                                </button>
+                                &nbsp;&nbsp;
+                            </div>
+                        </div>
+
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

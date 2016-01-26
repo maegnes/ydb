@@ -21,7 +21,10 @@ angular.module('ydb').directive('register', () => {
                 try {
                     Accounts.createUser({
                         username: this.newUser.username,
-                        password: this.newUser.password
+                        password: this.newUser.password,
+                        profile: {
+                            scoreTracking: 'keyboard'
+                        }
                     }, (error) => {
                         if (error) {
                             this.errorMessage = "The registration was not successful. Please check your input.";

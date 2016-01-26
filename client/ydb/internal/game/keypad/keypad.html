@@ -1,0 +1,22 @@
+<div class="col-md-5">
+
+    <div id="dartboard-width" class="widget stacked">
+        <div class="widget-header">
+            <i class="icon-rocket"></i>
+
+            <h3>Mark your scores</h3>
+        </div> <!-- /widget-header -->
+
+        <div class="widget-content text-center keyboard" id="db-container">
+            <div class="btn-group" role="group" aria-label="...">
+                <button ng-disabled="scoringLocked()" ng-click="keypad.clickDouble();" type="button" class="btn btn-lg" ng-class="keypad.isDouble ? 'btn-danger' : 'btn-default'">DOUBLE</button>
+                <button ng-disabled="scoringLocked()" ng-click="keypad.clickTriple();" type="button" class="btn btn-lg" ng-class="keypad.isTriple ? 'btn-danger' : 'btn-default'">TRIPLE</button>
+                <button ng-disabled="keypad.isDouble || keypad.isTriple || scoringLocked()" ng-click="keypad.clickScore(0);" type="button" class="btn btn-default btn-lg">NO SCORE</button>
+            </div>
+            <div class="clear"></div>
+            <button ng-disabled="scoringLocked();" ng-repeat="n in [] | range:20" type="button" ng-click="keypad.clickScore(n + 1);" class="btn btn-lg btn-default number">{{n + 1}}</button>
+            <button type="button" ng-disabled="keypad.isTriple || scoringLocked()" class="btn btn-default btn-lg number" ng-click="keypad.clickScore(25);"><i class="icon-bullseye"></i></button>
+        </div>
+
+    </div>
+</div>

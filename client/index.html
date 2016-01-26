@@ -47,7 +47,7 @@
                     </a>
 
                     <ul class="dropdown-menu">
-                        <li><a href="javascript:;">Personal data</a></li>
+                        <li><a href="#settingsModal" data-toggle="modal">Settings</a></li>
                         <li class="divider"></li>
                         <li><a href="/logout">Logout</a></li>
                     </ul>
@@ -70,6 +70,8 @@
         <div ui-view="">
 
         </div>
+
+        <settings ng-if="$root.currentUser"></settings>
 
     </div> <!-- /container -->
 

@@ -1,9 +1,9 @@
-angular.module('ydb').directive('keyboard', function() {
+angular.module('ydb').directive('keypad', function() {
     return {
         restrict: 'E',
-        templateUrl: 'client/ydb/internal/game/keyboard/keyboard.html',
-        controllerAs: 'keyboard',
-        controller: function($scope, $reactive, $state, $stateParams) {
+        templateUrl: 'client/ydb/internal/game/keypad/keypad.html',
+        controllerAs: 'keypad',
+        controller: function($scope, $reactive) {
 
             $reactive(this).attach($scope);
 
@@ -46,7 +46,7 @@ angular.module('ydb').directive('keyboard', function() {
                 score = this.getScore(score);
                 this.isTriple = false;
                 this.isDouble = false;
-                $scope.$broadcast("throwEvent", score);
+                $scope.$parent.$broadcast("throwEvent", score);
             };
 
             /**

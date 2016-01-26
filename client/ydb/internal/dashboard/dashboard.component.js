@@ -106,7 +106,6 @@ angular.module('ydb').directive('dashboard', function () {
                     'getQuickStats',
                     Meteor.userId(),
                     (err, res) => {
-                        console.log(res);
                         $scope.quickStats = res;
                         $scope.$apply();
                     }
