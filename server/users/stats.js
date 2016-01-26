@@ -74,22 +74,22 @@ UserStats = class UserStats {
             }
         );
 
+        if (gameId != 0) {
+            selector.push(
+                {
+                    $match: {
+                        "_id": gameId
+                    }
+                }
+            );
+        }
+
         // Check if we should limit on game or user
         if (userId != 0) {
             selector.push(
                 {
                     $match: {
                         "players._id": userId
-                    }
-                }
-            );
-        }
-
-        if (gameId != 0) {
-            selector.push(
-                {
-                    $match: {
-                        "_id": gameId
                     }
                 }
             );
