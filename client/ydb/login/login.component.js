@@ -5,25 +5,40 @@ angular.module('ydb').directive('login', function () {
         controllerAs: 'login',
         controller: function ($scope, $reactive, $state) {
 
-            $reactive(this).attach($scope);
-
+            /**
+             * Model for the new user
+             *
+             * @type {{}}
+             */
             this.user = {};
 
+            /**
+             * Error message for the template
+             *
+             * @type {null}
+             */
             this.errorMessage = null;
 
+            /**
+             * Login user. if successful redirect to dashboard
+             */
             this.login = () => {
-                Meteor.loginWithPassword(
-                    this.user.username,
-                    this.user.password,
-                    (error) => {
-                        if (error) {
-                            this.errorMessage = 'The login was not successful!';
-                            $scope.$apply();
-                        } else {
-                            $state.go('dashboard');
+                try {
+                    Meteor.loginWithPassword(
+                        this.user.username,
+                        this.user.password,
+                        (error) => {
+                            if (error) {
+                                this.errorMessage = 'The login was not successful!';
+                                $scope.$apply();
+                            } else {
+                                $state.go('dashboard');
+                            }
                         }
-                    }
-                );
+                    );
+                } catch (error) {
+                    this.errorMessage = 'The login was not successful!';
+                }
             };
         }
     }
