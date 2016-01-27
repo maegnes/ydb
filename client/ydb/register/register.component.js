@@ -19,15 +19,18 @@ angular.module('ydb').directive('register', () => {
              */
             this.addUser = () => {
                 try {
+                    if (this.newUser.pin != this.newUser.pinConfirm) {
+                        throw 'pin';
+                    }
                     Accounts.createUser({
                         username: this.newUser.username,
-                        password: this.newUser.password,
+                        password: this.newUser.pin,
                         profile: {
                             scoreTracking: 'keyboard'
                         }
                     }, (error) => {
                         if (error) {
-                            this.errorMessage = "The registration was not successful. Please check your input.";
+                            this.errorMessage = "An error has occured. Please check your input.";
                             $scope.$apply();
                         } else {
                             $state.go('dashboard');
@@ -35,7 +38,11 @@ angular.module('ydb').directive('register', () => {
                     });
                     this.newUser = {};
                 } catch(error) {
-                    this.errorMessage = "The registration was not successful. Please check your input.";
+                    if ('pin' == error) {
+                        this.errorMessage = 'PINs does not match!';
+                    } else {
+                        this.errorMessage = "An error has occured. Please check your input.";
+                    }
                 }
             }
         }

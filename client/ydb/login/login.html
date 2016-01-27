@@ -1,32 +1,32 @@
-<div class="row">
+<div class="account-container content clearfix">
 
-    <div class="col-md-12">
+    <form id="register-form" ng-submit="login.login();">
+        <h1>Login</h1>
 
-        <div class="widget stacked">
+        <div class="login-fields">
 
-            <div class="widget-header">
-                <i class="icon-pushpin"></i>
+            <p>Login using your registered ydb account:</p>
 
-                <h3>Login with your existing acccount</h3>
-            </div>
+            <div ng-show="login.errorMessage" class="alert alert-danger">{{login.errorMessage}}</div>
 
-            <div class="widget-content">
+            <div class="field">
+                <label for="username">Username:</label>
+                <input type="text" id="username" ng-model="login.user.username" name="username" value=""
+                       placeholder="Your username" class="form-control input-lg username-field">
+            </div> <!-- /field -->
 
-                <form id="register-form" ng-submit="login.login();">
-                    <div ng-show="login.errorMessage" class="alert alert-danger">{{login.errorMessage}}</div>
-                    <div class="form-group">
-                        <label for="txtUsername">Username</label>
-                        <input type="text" class="form-control" id="txtUsername" ng-model="login.user.username"
-                               placeholder="Username" value="{{login.user.username}}">
-                    </div>
-                    <div class="form-group">
-                        <label for="txtPassword">Password</label>
-                        <input type="password" class="form-control" id="txtPassword"
-                               ng-model="login.user.password" placeholder="Password">
-                    </div>
-                    <button type="submit" class="btn btn-default">Login</button>
-                </form>
-            </div>
-        </div>
-    </div>
+            <div class="field">
+                <label for="password">PIN:</label>
+                <input type="password" id="password" ng-model="login.user.password" name="password" value=""
+                       placeholder="Your personal PIN" class="form-control input-lg password-field">
+            </div> <!-- /password -->
+
+        </div> <!-- /login-fields -->
+
+        <div class="login-actions">
+
+            <button type="submit" class="login-action btn btn-primary">LOGIN</button>
+
+        </div> <!-- .actions -->
+    </form>
 </div>

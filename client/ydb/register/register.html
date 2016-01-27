@@ -1,32 +1,42 @@
-<div class="row">
+<div class="account-container register stacked">
 
-    <div class="col-md-12">
+    <div class="content clearfix">
 
-        <div class="widget stacked">
+        <form ng-submit="register.addUser();" method="post">
 
-            <div class="widget-header">
-                <i class="icon-pushpin"></i>
+            <h1>Create Your Account</h1>
 
-                <h3>Register for your own account!</h3>
-            </div>
+            <div class="login-fields">
 
-            <div class="widget-content">
+                <p>Create your free account:</p>
 
-                <form id="register-form" ng-submit="register.addUser();">
-                    <div ng-show="register.errorMessage" class="alert alert-danger">{{register.errorMessage}}</div>
-                    <div class="form-group">
-                        <label for="txtUsername">Username</label>
-                        <input type="text" class="form-control" id="txtUsername" ng-model="register.newUser.username"
-                               placeholder="Username">
-                    </div>
-                    <div class="form-group">
-                        <label for="txtPassword">Password</label>
-                        <input type="password" class="form-control" id="txtPassword"
-                               ng-model="register.newUser.password" placeholder="Password">
-                    </div>
-                    <button type="submit" class="btn btn-default">Register</button>
-                </form>
-            </div>
-        </div>
-    </div>
+                <div ng-show="register.errorMessage" class="alert alert-danger">{{register.errorMessage}}</div>
+
+                <div class="field">
+                    <label for="firstname">Username</label>
+                    <input type="text" id="username" ng-model="register.newUser.username" name="username" value="" placeholder="Username" class="form-control">
+                </div> <!-- /field -->
+
+                <div class="field">
+                    <label for="password">PIN:</label>
+                    <input type="password" ng-model="register.newUser.pin" id="pin" name="pin" value="" placeholder="Your PIN" class="form-control">
+                </div> <!-- /field -->
+
+                <div class="field">
+                    <label for="confirm_password">Confirm PIN:</label>
+                    <input type="password" ng-model="register.newUser.pinConfirm" id="confirm_pin" name="confirm_pin" value="" placeholder="Confirm PIN" class="form-control">
+                </div> <!-- /field -->
+
+            </div> <!-- /login-fields -->
+
+            <div class="login-actions">
+
+                <button type="submit" class="login-action btn btn-primary">Register</button>
+
+            </div> <!-- .actions -->
+
+        </form>
+
+    </div> <!-- /content -->
+
 </div>
