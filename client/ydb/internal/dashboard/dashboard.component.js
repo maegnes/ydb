@@ -14,71 +14,6 @@ angular.module('ydb').directive('dashboard', function () {
 
             $scope.modes = availableGameModes;
 
-            // The skeleton for new games
-            // @todo - add to server. no collection definitions in the client!
-            this.newGame = {
-                visibility: true,
-                created: new Date(),
-                running: false,
-                finished: false,
-                players: [],
-                monitor: false,
-                currentPlayer: null,
-                currentScores: [],
-                currentRoundDartsThrown: 0,
-                currentLeg: 0,
-                currentSet: 0,
-                firstToSets: 1,
-                type: 501
-            };
-
-            /**
-             * Stores data for the player who should be added to the game
-             *
-             * @type {{}}
-             */
-            this.newPlayer = {
-                error: false
-            };
-
-            /**
-             * The game id for the add player operations
-             *
-             * @type {undefined}
-             */
-            this.gameId = undefined;
-
-            /**
-             * Sets the game id to add players
-             *
-             * @param gameId
-             */
-            this.setGameId = (gameId) => {
-                this.gameId = gameId;
-            };
-
-            /**
-             * Checks the username for the new player
-             */
-            this.checkUserName = () => {
-                Meteor.call(
-                    'checkPassword',
-                    this.newPlayer.userName,
-                    Package.sha.SHA256(this.newPlayer.pin),
-                    (err, res) => {
-                        if (res) {
-                            if (this.addPlayerToGame(this.gameId, res, Boolean(this.newPlayer.remote))) {
-                                this.newPlayer = {};
-                                this.setGameId(undefined);
-                            }
-                        } else {
-                            this.newPlayer.error = true;
-                        }
-                        $scope.$apply();
-                    }
-                );
-            };
-
             this.observeChanges = () => {
                 let games = Games.find({
                     players: {
@@ -109,51 +44,6 @@ angular.module('ydb').directive('dashboard', function () {
                     (err, res) => {
                         $scope.quickStats = res;
                         $scope.$apply();
-                    }
-                );
-            };
-
-            /**
-             * Informs the server to create a new game
-             */
-            this.createNewGame = () => {
-                this.newGame.visibility = Boolean(this.newGame.visibility);
-                this.newGame.monitor = Boolean(this.newGame.monitor);
-                this.newGame.owner = Meteor.user();
-                Meteor.call(
-                    'createGame',
-                    this.newGame,
-                    (error, gameId) => {
-                        if (error) {
-                            // todo - error handling
-                        } else {
-                            this.addPlayerToGame(gameId, Meteor.userId(), false);
-                            $('#startNewGameModal').modal('hide');
-                        }
-
-                    }
-                );
-            };
-
-            /**
-             * Adds the current user to the given game
-             *
-             * @param gameId - id of the game
-             * @param userId - id of the user
-             * @param remotePlayer - is the player a remote player
-             */
-            this.addPlayerToGame = (gameId, userId, remotePlayer) => {
-                Meteor.call(
-                    'addPlayerToGame',
-                    gameId,
-                    userId,
-                    remotePlayer,
-                    (error, result) => {
-                        if (error) {
-                            console.log(error);
-                        } else {
-                            $('#addNewPlayerModal').modal('hide');
-                        }
                     }
                 );
             };

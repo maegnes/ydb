@@ -1,0 +1,65 @@
+<div id="addNewPlayerModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Add a new player to your game</h4>
+            </div>
+            <div class="modal-body" style="height: 400px;">
+
+                <div ng-show="addPlayerToGame.newPlayer.error" class="alert alert-danger">
+                    The player credentials are incorrect. The player cannot be added to the game!
+                </div>
+
+                <form action="/" id="validation-form" role="form" class="form-horizontal col-md-12"
+                      novalidate="novalidate">
+
+                    <fieldset>
+
+                        <div class="form-group">
+                            <label for="name" class="col-lg-4">The players username</label>
+
+                            <div class="col-lg-8">
+                                <input type="text" class="form-control" name="username" id="username" ng-model="addPlayerToGame.newPlayer.userName">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name" class="col-lg-4">The players pin?</label>
+
+                            <div class="col-lg-8">
+                                <input type="password" class="form-control" name="username" id="username" ng-model="addPlayerToGame.newPlayer.pin">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+
+                            <label class="col-lg-4">Remote player?</label>
+
+                            <div class="col-lg-8">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="validateCheckbox"
+                                               ng-model="addPlayerToGame.newPlayer.remote" ng-value="1">
+                                        Yes, the player is a remote player.
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-lg-4"></div>
+                            <div class="col-lg-8">
+                                <button ng-click="addPlayerToGame.checkUserName()" type="button" class="btn btn-success"><i
+                                        class="icon-gamepad"></i> Add player
+                                </button>
+                                &nbsp;&nbsp;
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

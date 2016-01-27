@@ -1,0 +1,46 @@
+<div id="startNewPracticeModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Create a new practice game</h4>
+            </div>
+            <div class="modal-body" style="min-height: 500px;">
+                <form action="/" id="validation-form" role="form" class="form-horizontal col-md-12"
+                      novalidate="novalidate">
+
+                    <fieldset>
+
+                        <div class="form-group">
+                            <label for="selectGameType" class="col-lg-4">Game type</label>
+                            <div class="col-lg-8">
+                                <select ng-model="addPractice.newPractice.type" id="selectGameType" class="form-control" ng-options='type.value as type.name for type in types'>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="selectGameType" class="col-lg-4">Mode</label>
+
+                            <div class="col-lg-8">
+                                <select ng-model="addPractice.newPractice.firstToSets" id="selectGameType" class="form-control" ng-options='mode.firstToSets as mode.name for mode in modes'>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-lg-4"></div>
+                            <div class="col-lg-8">
+                                <button ng-click="addPractice.createNewGame()" type="button" class="btn btn-success"><i
+                                        class="icon-gamepad"></i> Create practice game
+                                </button>
+                                &nbsp;&nbsp;
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

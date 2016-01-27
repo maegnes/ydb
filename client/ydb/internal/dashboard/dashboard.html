@@ -79,7 +79,7 @@
                                 </button>
                                 <a href="#addNewPlayerModal" data-toggle="modal" class="shortcut">
                                     <button ng-disabled="game.running" ng-show="game.owner._id == $root.currentUser._id"
-                                            ng-click="dashboard.setGameId(game._id);" class="btn btn-default">
+                                            ng-click="addPlayerToGame.setGameId(game._id);" class="btn btn-default">
                                         + <i class="icon-user"></i>
                                     </button>
                                 </a>
@@ -141,7 +141,7 @@
                         <i class="shortcut-icon icon-gamepad"></i>
                         <span class="shortcut-label">NEW GAME</span>
                     </a>
-                    <a href="#startNewGameModal" data-toggle="modal" class="shortcut">
+                    <a href="#startNewPracticeModal" data-toggle="modal" class="shortcut">
                         <i class="shortcut-icon icon-list-ol"></i>
                         <span class="shortcut-label">PRACTICE</span>
                     </a>
@@ -159,156 +159,6 @@
 
 </div>
 
-<div id="startNewGameModal" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Create a new game</h4>
-            </div>
-            <div class="modal-body" style="min-height: 500px;">
-                <form action="/" id="validation-form" role="form" class="form-horizontal col-md-12"
-                      novalidate="novalidate">
-
-                    <fieldset>
-
-                        <div class="form-group">
-                            <label for="selectGameType" class="col-lg-4">Game type</label>
-                            <div class="col-lg-8">
-                                <select ng-model="dashboard.newGame.type" id="selectGameType" class="form-control" ng-options='type.value as type.name for type in types'>
-                                    <option value="501">501</option>
-                                    <option value="401">401</option>
-                                    <option value="301">301</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="selectGameType" class="col-lg-4">Mode</label>
-
-                            <div class="col-lg-8">
-                                <select ng-model="dashboard.newGame.firstToSets" id="selectGameType" class="form-control" ng-options='mode.firstToSets as mode.name for mode in modes'>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-
-                            <label class="col-lg-4">Visibility</label>
-
-                            <div class="col-lg-8">
-
-                                <div class="radio">
-                                    <label>
-                                        <input ng-model="dashboard.newGame.visibility" type="radio"
-                                               id="optionGameVisibility1" ng-value="1">
-                                        Public - everyone can join the game
-                                    </label>
-                                </div>
-                                <div class="radio">
-                                    <label>
-                                        <input ng-model="dashboard.newGame.visibility" type="radio"
-                                               id="optionGameVisibility2" ng-value="0">
-                                        Private - i will add players to the game
-                                    </label>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="form-group">
-
-                            <label class="col-lg-4">Enable monitor?</label>
-
-                            <div class="col-lg-8">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="validateCheckbox"
-                                               ng-model="dashboard.newGame.monitor" ng-value="1">
-                                        Yes, everyone can watch the game!
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-lg-4"></div>
-                            <div class="col-lg-8">
-                                <button ng-click="dashboard.createNewGame()" type="button" class="btn btn-success"><i
-                                        class="icon-gamepad"></i> Create game
-                                </button>
-                                &nbsp;&nbsp;
-                            </div>
-                        </div>
-                    </fieldset>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<div id="addNewPlayerModal" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">Add a new player to your game</h4>
-            </div>
-            <div class="modal-body" style="height: 400px;">
-
-                <div ng-show="dashboard.newPlayer.error" class="alert alert-danger">
-                    The player credentials are incorrect. The player cannot be added to the game!
-                </div>
-
-                <form action="/" id="validation-form" role="form" class="form-horizontal col-md-12"
-                      novalidate="novalidate">
-
-                    <fieldset>
-
-                        <div class="form-group">
-                            <label for="name" class="col-lg-4">The players username</label>
-
-                            <div class="col-lg-8">
-                                <input type="text" class="form-control" name="username" id="username" ng-model="dashboard.newPlayer.userName">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="name" class="col-lg-4">The players pin?</label>
-
-                            <div class="col-lg-8">
-                                <input type="password" class="form-control" name="username" id="username" ng-model="dashboard.newPlayer.pin">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-
-                            <label class="col-lg-4">Remote player?</label>
-
-                            <div class="col-lg-8">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="validateCheckbox"
-                                               ng-model="dashboard.newPlayer.remote" ng-value="1">
-                                        Yes, the player is a remote player.
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-lg-4"></div>
-                            <div class="col-lg-8">
-                                <button ng-click="dashboard.checkUserName()" type="button" class="btn btn-success"><i
-                                        class="icon-gamepad"></i> Add player
-                                </button>
-                                &nbsp;&nbsp;
-                            </div>
-                        </div>
-                    </fieldset>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+<add-game></add-game>
+<add-practice></add-practice>
+<add-player-to-game></add-player-to-game>
