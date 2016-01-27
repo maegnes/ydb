@@ -10,7 +10,20 @@ Meteor.methods({
      * @returns {*|any}
      */
     createGame: (data) => {
-        return Games.insert(data);
+        let staticGameData = {
+            created: new Date(),
+            running: false,
+            finished: false,
+            players: [],
+            currentPlayer: null,
+            currentScores: [],
+            currentRoundDartsThrown: 0,
+            currentLeg: 0,
+            currentSet: 0,
+            practice: false
+        };
+        let mergedData = Object.assign(staticGameData, data);
+        return Games.insert(mergedData);
     },
 
     /**
@@ -116,6 +129,13 @@ Meteor.methods({
                     let game = Games.findOne(id);
                     statExport.extract(game);
                     handle.stop();
+                }
+                // If the player has changed check if it's computers turn
+                if (fields.currentPlayerIndex) {
+                    let currentPlayer = game.players[fields.currentPlayerIndex];
+                    if (currentPlayer.user.profile.isComputer) {
+                        
+                    }
                 }
             }
         });

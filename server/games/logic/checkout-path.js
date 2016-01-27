@@ -44,7 +44,8 @@ CheckoutPath = class CheckoutPath {
     paths = {
         ONE: [],
         TWO: [],
-        THREE: []
+        THREE: [],
+        OTHERS: []
     };
 
     /**
@@ -154,6 +155,9 @@ CheckoutPath = class CheckoutPath {
                         break;
                     case 3:
                         this.paths.THREE.push(myPath);
+                        break;
+                    default:
+                        this.paths.OTHERS.push(myPath);
                 }
             } else {
                 this.calculate(newScore, dartsRemaining - 1, myPath);
@@ -162,6 +166,6 @@ CheckoutPath = class CheckoutPath {
     };
 
     isCheckoutPossible = () => {
-        return !(this.paths.ONE.length == 0 && this.paths.TWO.length == 0 && this.paths.THREE.length == 0);
+        return !(this.paths.ONE.length == 0 && this.paths.TWO.length == 0 && this.paths.THREE.length == 0 && this.paths.OTHERS.length == 0);
     };
 };

@@ -26,7 +26,8 @@ angular.module('ydb').directive('register', () => {
                         username: this.newUser.username,
                         password: this.newUser.pin,
                         profile: {
-                            scoreTracking: 'keyboard'
+                            scoreTracking: 'keypad',
+                            isComputer: false
                         }
                     }, (error) => {
                         if (error) {

@@ -15,7 +15,7 @@
                         <div class="form-group">
                             <label for="selectGameType" class="col-lg-4">Game type</label>
                             <div class="col-lg-8">
-                                <select ng-model="addPractice.newPractice.type" id="selectGameType" class="form-control" ng-options='type.value as type.name for type in types'>
+                                <select ng-model="addGame.newGame.type" id="selectGameType" class="form-control" ng-options='type.value as type.name for type in types'>
                                 </select>
                             </div>
                         </div>
@@ -24,7 +24,16 @@
                             <label for="selectGameType" class="col-lg-4">Mode</label>
 
                             <div class="col-lg-8">
-                                <select ng-model="addPractice.newPractice.firstToSets" id="selectGameType" class="form-control" ng-options='mode.firstToSets as mode.name for mode in modes'>
+                                <select ng-model="addGame.newGame.firstToSets" id="selectGameType" class="form-control" ng-options='mode.firstToSets as mode.name for mode in modes'>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="selectGameType" class="col-lg-4">Level of difficulty</label>
+
+                            <div class="col-lg-8">
+                                <select ng-model="addGame.newGame.difficulty" id="selectLevelOfDifficulty" class="form-control" ng-options='difficulty.value as difficulty.name for difficulty in difficultyLevels'>
                                 </select>
                             </div>
                         </div>
@@ -32,7 +41,7 @@
                         <div class="form-group">
                             <div class="col-lg-4"></div>
                             <div class="col-lg-8">
-                                <button ng-click="addPractice.createNewGame()" type="button" class="btn btn-success"><i
+                                <button ng-click="addGame.createNewGame(true)" type="button" class="btn btn-success"><i
                                         class="icon-gamepad"></i> Create practice game
                                 </button>
                                 &nbsp;&nbsp;

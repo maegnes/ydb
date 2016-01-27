@@ -12,41 +12,39 @@ angular.module('ydb').directive('addGame', function() {
 
             $scope.modes = availableGameModes;
 
-            // @todo - add to server. no collection definitions in the client!
             this.newGame = {
                 visibility: true,
-                created: new Date(),
-                running: false,
-                finished: false,
-                players: [],
                 monitor: false,
-                currentPlayer: null,
-                currentScores: [],
-                currentRoundDartsThrown: 0,
-                currentLeg: 0,
-                currentSet: 0,
                 firstToSets: 1,
-                type: 501
+                type: 501,
+                difficulty: 1
             };
 
             /**
              * Informs the server to create a new game
              */
-            this.createNewGame = () => {
-                this.newGame.visibility = Boolean(this.newGame.visibility);
-                this.newGame.monitor = Boolean(this.newGame.monitor);
-                this.newGame.owner = Meteor.user();
+            this.createNewGame = (isPractice = false) => {
+                let convertData = {
+                    visibility: Boolean(this.newGame.visibility),
+                    monitor: Boolean(this.newGame.monitor),
+                    owner: Meteor.user(),
+                    practice: isPractice
+                };
+                let createGameData = Object.assign(this.newGame, convertData);
                 Meteor.call(
                     'createGame',
-                    this.newGame,
+                    createGameData,
                     (error, gameId) => {
                         if (error) {
                             // todo - error handling
                         } else {
                             this.addPlayerToGame(gameId, Meteor.userId(), false);
                             $('#startNewGameModal').modal('hide');
+                            // If practice add computer player
+                            if (isPractice) {
+                                this.addPlayerToGame(gameId, 'wqX7hD3hxRv9n9Tiy', true);
+                            }
                         }
-
                     }
                 );
             };
@@ -71,7 +69,6 @@ angular.module('ydb').directive('addGame', function() {
                     }
                 );
             };
-
         }
     }
 });

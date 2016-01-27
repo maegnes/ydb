@@ -75,3 +75,28 @@ ydb.factory('availableGameModes', () => {
         }
     ];
 });
+
+ydb.factory('difficultyLevels', () => {
+    return [
+        {
+            name: 'Absolute Beginner',
+            value: 1
+        },
+        {
+            name: 'Sporadic player',
+            value: 2
+        },
+        {
+            name: 'Regular player',
+            value: 3
+        },
+        {
+            name: 'Great player',
+            value: 4
+        },
+        {
+            name: 'World class',
+            value: 5
+        }
+    ];
+});

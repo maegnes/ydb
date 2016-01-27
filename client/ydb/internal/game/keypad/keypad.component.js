@@ -5,8 +5,6 @@ angular.module('ydb').directive('keypad', function() {
         controllerAs: 'keypad',
         controller: function($scope, $reactive) {
 
-            $reactive(this).attach($scope);
-
             /**
              * Is the double button active?
              *

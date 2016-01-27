@@ -5,8 +5,6 @@ angular.module('ydb').directive('dartboard', function() {
         controllerAs: 'dartboard',
         controller: function($scope, $reactive, $state, $stateParams, dartBoardCreator) {
 
-            $reactive(this).attach($scope);
-
             $scope.dartBoard = dartBoardCreator;
 
             $scope.dartBoard.htmlContainer = document.getElementById('db-container');
