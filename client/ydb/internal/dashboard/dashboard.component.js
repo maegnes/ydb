@@ -15,6 +15,7 @@ angular.module('ydb').directive('dashboard', function () {
             $scope.modes = availableGameModes;
 
             // The skeleton for new games
+            // @todo - add to server. no collection definitions in the client!
             this.newGame = {
                 visibility: true,
                 created: new Date(),
