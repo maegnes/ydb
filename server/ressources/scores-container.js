@@ -77,6 +77,11 @@ ScoresContainer = class ScoresContainer {
         }
     };
 
+    /**
+     * Returns a random score
+     *
+     * @returns {*}
+     */
     getRandomScore() {
         switch(Math.floor(Math.random() * 3)) {
             case 0:
