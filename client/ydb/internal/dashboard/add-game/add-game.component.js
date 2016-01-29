@@ -43,6 +43,7 @@ angular.module('ydb').directive('addGame', function() {
                             // If practice add computer player
                             if (isPractice) {
                                 this.addPlayerToGame(gameId, 'wqX7hD3hxRv9n9Tiy', true);
+                                $('#startNewPracticeModal').modal('hide');
                             }
                         }
                     }

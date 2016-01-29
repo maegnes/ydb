@@ -11,35 +11,104 @@ ComputerOpponent = class ComputerOpponent {
      * @returns {{}}
      */
     get range() {
-        throw 'METHOD_NOT_IMPLEMENTED_EXCEPTION';
+        throw 'NOT_IMPLEMENTED_EXCEPTION';
+    }
+
+    get probability() {
+        throw 'NOW IMPLEMENTED_EXCEPTION';
+    }
+
+    constructor(game) {
+        this.scores = new ScoresContainer();
+        this.game = game;
+        this.computerPlayer = this.game.game.currentPlayer;
+        this.simulatedDarts = 0;
     }
 
     /**
-     * Creates the opponent based on the difficulty level
+     * Calculates current scored average by the computer
      *
-     * @param difficultyLevel
-     * @returns {ComputerOpponent}
+     * @param thrown
+     * @param scored
      */
-    static create(difficultyLevel = 1) {
-        switch (difficultyLevel) {
-            case 1:
-                return new AbsoluteBeginner();
-            case 2:
-                return new SporadicPlayer();
-            case 3:
-                return new RegularPlayer();
-            case 4:
-                return new GreatPlayer();
-            case 5:
-                return new WorldClassPlayer();
-            default:
-                throw 'Difficulty Level ' + difficultyLevel + ' is unknown!';
+    calcAverage = (thrown, scored) => {
+        if (0 == thrown) {
+            return 0;
+        }
+        return Math.round((scored / thrown)) * 3;
+    };
+
+    /**
+     * Tells the computer opponent to throw a virtual dart
+     */
+    play() {
+
+        this.simulatedDarts++;
+
+        if (this.simulatedDarts <= 3) {
+
+            let dartsThrown = this.game.getCurrentPlayerScores().length;
+            let scoredPoints = this.game.startingPoints - this.game.getCurrentPlayerObject().scoreRemaining;
+            let currentPlayer = this.game.game.currentPlayer;
+            let pointsToGo = this.game.startingPoints - scoredPoints;
+
+            if (this.computerPlayer == currentPlayer) {
+
+                for (t = 1; t <= 100; t++) {
+
+                    // Get a random score
+                    let randomScore = this.scores.getRandomScore();
+
+                    let virtualScoredPoints = scoredPoints + randomScore.score;
+
+                    // Calculate the avg with the new score
+                    let virtualAverage = this.calcAverage((dartsThrown + 1), virtualScoredPoints);
+
+                    // Does the virtual average fit into the range?
+                    if (virtualAverage >= this.range.min && virtualAverage <= this.range.max) {
+
+                        dartsThrown++;
+                        scoredPoints += randomScore.score;
+
+                        // Throw the virtual dart
+                        this.game.score(randomScore);
+
+                        // Play the next dart in one second
+                        this.nextDart();
+
+                        break;
+
+                    }
+                }
+
+                if (101 == t) {
+                    let checkoutPath = this.game.getCurrentPlayerObject().checkoutPath;
+                    if (checkoutPath) {
+                        console.log("checkout möglich!");
+                        if (1 == checkoutPath.length) {
+                        }
+                    }
+                    if (pointsToGo <= 170) {
+                        this.game.score(this.scores.getRandomScoreByRange(this.range));
+                        this.nextDart();
+                    }
+                }
+
+            }
         }
     }
 
-    constructor() {
-
-    }
+    /**
+     * Tells the virtual opponent to throw the next dart in 1 second
+     */
+    nextDart = () => {
+        Meteor.setTimeout(
+            () => {
+                this.play();
+            },
+            (2000)
+        );
+    };
 };
 
 /**
@@ -54,7 +123,14 @@ AbsoluteBeginner = class AbsoluteBeginner extends ComputerOpponent {
             max: 25
         };
     }
- };
+    get probability() {
+        return {
+            'S': 1,
+            'D': 1,
+            'T': 1
+        }
+    }
+};
 
 /**
  * Class for a sporadic player opponent
@@ -68,6 +144,13 @@ SporadicPlayer = class SporadicPlayer extends ComputerOpponent {
             max: 45
         }
     }
+    get probability() {
+        return {
+            'S': 1,
+            'D': 1,
+            'T': 1
+        }
+    }
 };
 
 /**
@@ -79,7 +162,14 @@ RegularPlayer = class RegularPlayer extends ComputerOpponent {
     get range() {
         return {
             min: 45,
-            max: 46
+            max: 65
+        }
+    }
+    get probability() {
+        return {
+            'S': 1,
+            'D': 1,
+            'T': 1
         }
     }
 };
@@ -96,6 +186,13 @@ GreatPlayer = class GreatPlayer extends ComputerOpponent {
             max: 85
         }
     }
+    get probability() {
+        return {
+            'S': 1,
+            'D': 1,
+            'T': 1
+        }
+    }
 };
 
 /**
@@ -108,6 +205,13 @@ WorldClassPlayer = class WorldClassPlayer extends ComputerOpponent {
         return {
             min: 85,
             max: 115
+        }
+    }
+    get probability() {
+        return {
+            'S': 95,
+            'D': 40,
+            'T': 50
         }
     }
 };

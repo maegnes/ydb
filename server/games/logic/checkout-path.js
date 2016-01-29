@@ -6,37 +6,6 @@
 CheckoutPath = class CheckoutPath {
 
     /**
-     * Array with the available single fields
-     *
-     * @type {*[]}
-     */
-    singles = [
-        {
-            value: 25,
-            name: 'Single Bull'
-        }
-    ];
-
-    /**
-     * Array with the available double fields
-     *
-     * @type {*[]}
-     */
-    doubles = [
-        {
-            value: 50,
-            name: 'Bullseye'
-        }
-    ];
-
-    /**
-     * Array with the available triple fields
-     *
-     * @type {*[]}
-     */
-    triples = [];
-
-    /**
      * Array to store the different checkout paths (ONE = with 1 dart; TWO = with 2 darts etc.)
      *
      * @type {{ONE: Array, TWO: Array, THREE: Array}}
@@ -44,34 +13,11 @@ CheckoutPath = class CheckoutPath {
     paths = {
         ONE: [],
         TWO: [],
-        THREE: [],
-        OTHERS: []
+        THREE: []
     };
 
-    /**
-     * Creates the fields and their values
-     */
     constructor() {
-        for (var i = 1; i <= 20; i++) {
-            this.singles.push(
-                {
-                    value: i,
-                    name: i
-                }
-            );
-            this.doubles.push(
-                {
-                    value: 2 * i,
-                    name: 'D' + i
-                }
-            );
-            this.triples.push(
-                {
-                    value: 3 * i,
-                    name: 'T' + i
-                }
-            );
-        }
+        this.scores = new ScoresContainer();
     };
 
     /**
@@ -98,17 +44,18 @@ CheckoutPath = class CheckoutPath {
 
         if (dartsRemaining >= 2) {
             // Sub triples
-            this.triples.forEach((score) => {
+            this.scores.triples.forEach((score) => {
                 let myPath = path.slice();
-                let newScore = points - score.value;
+                let newScore = points - score.score;
                 if (newScore <= 0) {
                     return;
                 }
                 // We do not need a double hit for a score <= 20 - replace with single hit
-                if (score.value <= 20) {
+                if (score.score <= 20) {
                     score = {
-                        value: score.value,
-                        name: score.value
+                        score: score.score,
+                        fieldName: 'S' + score.score,
+                        fieldType: 'S'
                     };
                 }
                 myPath.push(score);
@@ -116,9 +63,9 @@ CheckoutPath = class CheckoutPath {
             });
 
             // Sub singles
-            this.singles.forEach((score) => {
+            this.scores.singles.forEach((score) => {
                 let myPath = path.slice();
-                let newScore = points - score.value;
+                let newScore = points - score.score;
                 if (newScore <= 0) {
                     return;
                 }
@@ -129,9 +76,9 @@ CheckoutPath = class CheckoutPath {
         }
 
         // Sub doubles
-        this.doubles.forEach((score) => {
+        this.scores.doubles.forEach((score) => {
             let myPath = path.slice();
-            let newScore = points - score.value;
+            let newScore = points - score.score;
             if (newScore < 0) {
                 return;
             }
@@ -139,8 +86,9 @@ CheckoutPath = class CheckoutPath {
             if (score.value <= 20) {
                 if (newScore > 20) {
                     score = {
-                        value: score.value,
-                        name: score.value
+                        score: score.score,
+                        fieldName: 'S' + score.score,
+                        fieldType: 'S'
                     };
                 }
             }
@@ -156,8 +104,6 @@ CheckoutPath = class CheckoutPath {
                     case 3:
                         this.paths.THREE.push(myPath);
                         break;
-                    default:
-                        this.paths.OTHERS.push(myPath);
                 }
             } else {
                 this.calculate(newScore, dartsRemaining - 1, myPath);
@@ -166,6 +112,6 @@ CheckoutPath = class CheckoutPath {
     };
 
     isCheckoutPossible = () => {
-        return !(this.paths.ONE.length == 0 && this.paths.TWO.length == 0 && this.paths.THREE.length == 0 && this.paths.OTHERS.length == 0);
+        return !(this.paths.ONE.length == 0 && this.paths.TWO.length == 0 && this.paths.THREE.length == 0);
     };
 };

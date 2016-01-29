@@ -130,23 +130,23 @@ Meteor.methods({
                     statExport.extract(game);
                     handle.stop();
                 }
-                // If the player has changed check if it's computers turn
-                if (fields.currentPlayerIndex) {
-                    let currentPlayer = game.players[fields.currentPlayerIndex];
+                // Check if computer player is the starting player
+                if (fields.hasOwnProperty("currentPlayerIndex") || fields.hasOwnProperty("message")) {
+                    let game = Games.findOne(id);
+                    let wrapper = GameFactory.createGame(game);
+                    let currentPlayer = game.players[game.currentPlayerIndex];
                     if (currentPlayer.user.profile.isComputer) {
-                        
+                        if (!wrapper.isLocked()) {
+                            let opponent = ComputerOpponentFactory.create(wrapper);
+                            opponent.nextDart();
+                        }
                     }
                 }
             }
         });
 
         if (gameWrapper.start()) {
-            Games.update(
-                {
-                    _id: gameId
-                },
-                gameWrapper.game
-            );
+            gameWrapper.save();
         }
     },
 

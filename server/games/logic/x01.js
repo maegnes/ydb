@@ -14,17 +14,9 @@ X01 = class X01 {
     constructor(game) {
         this.game = game;
         this.checkoutCalculator = new CheckoutPath();
+        this.scores = new ScoresContainer();
+        this.hasOverthrown = false;
     }
-
-    /**
-     * Defines a no score score
-     * @type {{score: number, fieldName: string, fieldType: string}}
-     */
-    noScore = {
-        score: 0,
-        fieldName: "No Score",
-        fieldType: 'N'
-    };
 
     /**
      * A new dart hit the board
@@ -41,9 +33,10 @@ X01 = class X01 {
                 }
             }
             this.subtractFromPlayerScore(score);
-            this.handleCheckoutPath();
             if (3 == this.game.currentRoundDartsThrown && this.game.running) {
                 this.nextPlayer();
+            } else {
+                this.handleCheckoutPath();
             }
         } catch(err) {
             switch (err) {
@@ -62,11 +55,12 @@ X01 = class X01 {
         if (this.getCurrentPlayerObject().scoreRemaining <= 170) {
             let remaining = (3 - (this.game.currentRoundDartsThrown));
             // If no more dart is remaining calculate it for the next round
-            if (0 == remaining) {
+            if (0 == remaining || this.hasOverthrown) {
                 remaining = 3;
             }
             this.checkoutCalculator.calculate(this.getCurrentPlayerObject().scoreRemaining, remaining);
             if (this.checkoutCalculator.isCheckoutPossible()) {
+                console.log("POSSIBLE!");
                 let paths = this.checkoutCalculator.getPaths();
                 if (paths.ONE.length > 0) {
                     this.getCurrentPlayerObject().checkoutPath = paths.ONE[0];
@@ -161,13 +155,15 @@ X01 = class X01 {
      */
     setNoScore = () => {
 
+        this.hasOverthrown = true;
+
         // Replace the latest players scores with NO SCORE
         if (this.game.currentRoundDartsThrown > 1) {
             this.getCurrentPlayerScores().splice((this.game.currentRoundDartsThrown - 1) * -1);
         }
 
         // Push 3x no score to the players score
-        this.getCurrentPlayerScores().push(this.noScore, this.noScore, this.noScore);
+        this.getCurrentPlayerScores().push(this.scores.noScore, this.scores.noScore, this.scores.noScore);
 
         // Fallback to the score before the user has over thrown
         let sum = 0;
