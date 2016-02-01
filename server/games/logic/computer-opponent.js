@@ -14,7 +14,7 @@ ComputerOpponent = class ComputerOpponent {
         throw 'NOT_IMPLEMENTED_EXCEPTION';
     }
 
-    get probability() {
+    get probabilities() {
         throw 'NOW IMPLEMENTED_EXCEPTION';
     }
 
@@ -32,70 +32,111 @@ ComputerOpponent = class ComputerOpponent {
      * @param scored
      */
     calcAverage = (thrown, scored) => {
-        if (0 == thrown) {
+        if (0 == thrown || isNaN(thrown)) {
             return 0;
         }
         return Math.round((scored / thrown)) * 3;
     };
 
     /**
-     * Tells the computer opponent to throw a virtual dart
+     * Opponent logic
      */
     play() {
+
+        if (this.game.isLocked()) {
+            return;
+        }
 
         this.simulatedDarts++;
 
         if (this.simulatedDarts <= 3) {
 
-            let dartsThrown = this.game.getCurrentPlayerScores().length;
-            let scoredPoints = this.game.startingPoints - this.game.getCurrentPlayerObject().scoreRemaining;
             let currentPlayer = this.game.game.currentPlayer;
-            let pointsToGo = this.game.startingPoints - scoredPoints;
 
             if (this.computerPlayer == currentPlayer) {
 
-                for (t = 1; t <= 100; t++) {
+                let checkoutPath = this.game.getCurrentPlayerObject().checkoutPath;
 
-                    // Get a random score
-                    let randomScore = this.scores.getRandomScore();
-
-                    let virtualScoredPoints = scoredPoints + randomScore.score;
-
-                    // Calculate the avg with the new score
-                    let virtualAverage = this.calcAverage((dartsThrown + 1), virtualScoredPoints);
-
-                    // Does the virtual average fit into the range?
-                    if (virtualAverage >= this.range.min && virtualAverage <= this.range.max) {
-
-                        dartsThrown++;
-                        scoredPoints += randomScore.score;
-
-                        // Throw the virtual dart
-                        this.game.score(randomScore);
-
-                        // Play the next dart in one second
-                        this.nextDart();
-
-                        break;
-
+                if (checkoutPath) {
+                    let fieldToScore = checkoutPath[0];
+                    if (this.checkProbability(fieldToScore)) {
+                        this.score(fieldToScore);
+                    } else {
+                        this.throwRandomDart(true);
+                    }
+                } else {
+                    if (this.game.getCurrentPlayerObject().scoreRemaining <= 170) {
+                        this.throwRandomDart(true);
+                    } else {
+                        this.throwRandomDart();
                     }
                 }
+            }
+        }
+    }
 
-                if (101 == t) {
-                    let checkoutPath = this.game.getCurrentPlayerObject().checkoutPath;
-                    if (checkoutPath) {
-                        console.log("checkout möglich!");
-                        if (1 == checkoutPath.length) {
-                        }
-                    }
-                    if (pointsToGo <= 170) {
-                        this.game.score(this.scores.getRandomScoreByRange(this.range));
-                        this.nextDart();
-                    }
+    /**
+     * Throws a random dart based on the current difficulty level
+     *
+     * @param ignoreAverage
+     */
+    throwRandomDart(ignoreAverage = false) {
+
+        for (t = 1; t <= 100; t++) {
+
+            // Get a random score
+            let randomScore = this.scores.getRandomScore();
+
+            if('N' === randomScore.fieldType) {
+                if (!this.checkProbability(randomScore)) {
+                    continue;
                 }
+            }
+
+            let virtualScoredPoints = this.game.getCurrentPlayerObject().totalPoints + randomScore.score;
+            let dartsThrown = this.game.getCurrentPlayerObject().dartsThrown;
+
+            // Calculate the avg with the new score
+            let virtualAverage = this.calcAverage((dartsThrown + 1), virtualScoredPoints);
+
+            // Does the virtual average fit into the range?
+            if (ignoreAverage || (virtualAverage >= this.range.min && virtualAverage <= this.range.max)) {
+
+                // Throw the virtual dart
+                this.score(randomScore);
+
+                break;
 
             }
         }
+
+        if (101 == t) {
+
+            // If it wasn't possible to find a possible score, calculate a accurate score based on the difficulty
+            let scoreCenter = Math.floor(this.range.max / 2);
+            let score = this.scores.getRandomScoreByRange({
+                min: Math.max(scoreCenter - 5, 1),
+                max: Math.min(scoreCenter + 5, 60)
+            });
+
+            this.score(score);
+
+        }
+
+    };
+
+    /**
+     * Throws the virtual dart
+     *
+     * @param score
+     */
+    score(score) {
+        this.game.score(score);
+        this.nextDart();
+    }
+
+    checkProbability(score) {
+        return (Math.random() <= (this.probabilities[score.fieldType] / 100));
     }
 
     /**
@@ -123,11 +164,13 @@ AbsoluteBeginner = class AbsoluteBeginner extends ComputerOpponent {
             max: 25
         };
     }
-    get probability() {
+
+    get probabilities() {
         return {
-            'S': 1,
-            'D': 1,
-            'T': 1
+            'S': 30,
+            'D': 5,
+            'T': 5,
+            'N': 20
         }
     }
 };
@@ -144,11 +187,13 @@ SporadicPlayer = class SporadicPlayer extends ComputerOpponent {
             max: 45
         }
     }
-    get probability() {
+
+    get probabilities() {
         return {
-            'S': 1,
-            'D': 1,
-            'T': 1
+            'S': 40,
+            'D': 10,
+            'T': 15,
+            'N': 10
         }
     }
 };
@@ -165,11 +210,13 @@ RegularPlayer = class RegularPlayer extends ComputerOpponent {
             max: 65
         }
     }
-    get probability() {
+
+    get probabilities() {
         return {
-            'S': 1,
-            'D': 1,
-            'T': 1
+            'S': 65,
+            'D': 20,
+            'T': 25,
+            'N': 5
         }
     }
 };
@@ -186,11 +233,13 @@ GreatPlayer = class GreatPlayer extends ComputerOpponent {
             max: 85
         }
     }
-    get probability() {
+
+    get probabilities() {
         return {
-            'S': 1,
-            'D': 1,
-            'T': 1
+            'S': 80,
+            'D': 30,
+            'T': 35,
+            'N': 0
         }
     }
 };
@@ -207,11 +256,13 @@ WorldClassPlayer = class WorldClassPlayer extends ComputerOpponent {
             max: 115
         }
     }
-    get probability() {
+
+    get probabilities() {
         return {
             'S': 95,
             'D': 40,
-            'T': 50
+            'T': 45,
+            'N': 0
         }
     }
 };

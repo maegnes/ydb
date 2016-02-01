@@ -58,15 +58,19 @@ X01 = class X01 {
             if (0 == remaining || this.hasOverthrown) {
                 remaining = 3;
             }
+            this.checkoutCalculator.reset();
+            console.log("Spieler " + this.game.currentPlayer + " braucht " + this.getCurrentPlayerObject().scoreRemaining + " mit " + remaining);
             this.checkoutCalculator.calculate(this.getCurrentPlayerObject().scoreRemaining, remaining);
             if (this.checkoutCalculator.isCheckoutPossible()) {
-                console.log("POSSIBLE!");
                 let paths = this.checkoutCalculator.getPaths();
                 if (paths.ONE.length > 0) {
+                    console.log(paths.ONE);
                     this.getCurrentPlayerObject().checkoutPath = paths.ONE[0];
                 } else if (paths.TWO.length > 0) {
+                    console.log(paths.TWO);
                     this.getCurrentPlayerObject().checkoutPath = paths.TWO[0];
                 } else {
+                    console.log(paths.THREE);
                     this.getCurrentPlayerObject().checkoutPath = paths.THREE[0];
                 }
             } else {
@@ -87,6 +91,8 @@ X01 = class X01 {
                 );
                 if (avgData !== undefined) {
                     player.TDAVG = avgData.TDAVG;
+                    player.dartsThrown = avgData.dartsThrown;
+                    player.totalPoints = avgData.totalPoints;
                 }
             }
         );
@@ -230,7 +236,9 @@ X01 = class X01 {
             setsWon: 0,
             checkoutAttempts: 0,
             checkouts: 0,
-            TDAVG: 0
+            TDAVG: 0,
+            dartsThrown: 0,
+            totalPoints: 0
         };
         this.game.players.push(player);
     };
@@ -390,6 +398,15 @@ X01 = class X01 {
             },
             this.game
         );
+        if (this.game.message) {
+            Meteor.setTimeout(
+                () => {
+                    this.game.message = undefined;
+                    this.save();
+                },
+                this.game.message.ms
+            );
+        }
     };
 };
 

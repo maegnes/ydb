@@ -83,7 +83,7 @@ ScoresContainer = class ScoresContainer {
      * @returns {*}
      */
     getRandomScore() {
-        switch(Math.floor(Math.random() * 3)) {
+        switch(Math.floor(Math.random() * 4)) {
             case 0:
                 return this.noScore;
             case 1:
@@ -102,11 +102,9 @@ ScoresContainer = class ScoresContainer {
      */
     getRandomScoreByRange(range) {
         // As the given range is the three darts average divide by 3 to receive one darts average
-        let min = Math.floor(range.min / 3);
-        let max = Math.floor(range.max / 3);
         while(true) {
             let randomScore = this.getRandomScore();
-            if (randomScore.score >= min && randomScore.score <= max) {
+            if (randomScore.score >= range.min && randomScore.score <= range.max) {
                 return randomScore;
             }
         }

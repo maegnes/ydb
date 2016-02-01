@@ -180,19 +180,7 @@ Meteor.methods({
         let gameWrapper = GameFactory.createGame(game);
 
         if (game.running && !gameWrapper.isLocked()) {
-
             gameWrapper.score(scores);
-
-            if (gameWrapper.game.message) {
-                Meteor.setTimeout(
-                    () => {
-                        gameWrapper.game.message = undefined;
-                        gameWrapper.save();
-                    },
-                    gameWrapper.game.message.ms
-                );
-            }
-
         }
     }
 });

@@ -18,6 +18,7 @@ CheckoutPath = class CheckoutPath {
 
     constructor() {
         this.scores = new ScoresContainer();
+        this.reset();
     };
 
     /**
@@ -30,6 +31,37 @@ CheckoutPath = class CheckoutPath {
     };
 
     /**
+     * Resets the calculated paths
+     */
+    reset = () => {
+        this.paths.ONE = [];
+        this.paths.TWO = [];
+        this.paths.THREE = [];
+    };
+
+    /**
+     * Validates if a calculation makes sense for the given params
+     *
+     * @param points
+     * @param dartsRemaining
+     */
+    validate = (points, dartsRemaining) => {
+        if (points > 170) {
+            return false;
+        }
+        if (this.isCheckoutPossible()) {
+            return false;
+        }
+        if (points > 100 && dartsRemaining < 3) {
+            return false;
+        }
+        if ((points > 40 && 50 != points) && 1 == dartsRemaining) {
+            return false;
+        }
+        return true;
+    };
+
+    /**
      * Recursive solution to calculate the checkout paths
      *
      * @param points
@@ -38,7 +70,7 @@ CheckoutPath = class CheckoutPath {
      */
     calculate = (points, dartsRemaining, path = []) => {
 
-        if (0 == dartsRemaining) {
+        if (0 == dartsRemaining || !this.validate(points, dartsRemaining)) {
             return;
         }
 
@@ -59,7 +91,9 @@ CheckoutPath = class CheckoutPath {
                     };
                 }
                 myPath.push(score);
-                this.calculate(newScore, dartsRemaining - 1, myPath)
+                if (dartsRemaining > 1) {
+                    this.calculate(newScore, dartsRemaining - 1, myPath)
+                }
             });
 
             // Sub singles
@@ -70,7 +104,9 @@ CheckoutPath = class CheckoutPath {
                     return;
                 }
                 myPath.push(score);
-                this.calculate(newScore, dartsRemaining - 1, myPath);
+                if (dartsRemaining > 1) {
+                    this.calculate(newScore, dartsRemaining - 1, myPath);
+                }
             });
 
         }
@@ -106,7 +142,9 @@ CheckoutPath = class CheckoutPath {
                         break;
                 }
             } else {
-                this.calculate(newScore, dartsRemaining - 1, myPath);
+                if (dartsRemaining > 1) {
+                    this.calculate(newScore, dartsRemaining - 1, myPath);
+                }
             }
         });
     };
