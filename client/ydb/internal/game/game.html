@@ -39,8 +39,37 @@
 
 <div class="row">
 
-    <keypad ng-if="game.user.profile.scoreTracking == 'keypad'" ng-show="isScoreTrackerVisible();"></keypad>
-    <dartboard ng-if="game.user.profile.scoreTracking == 'dartboard'" ng-show="isScoreTrackerVisible();"></dartboard>
+    <div class="col-md-5" ng-if="game.user.profile.scoreTracking == 'keypad'" ng-show="isScoreTrackerVisible();">
+
+        <div id="dartboard-width" class="widget stacked">
+            <div class="widget-header">
+                <i class="icon-rocket"></i>
+
+                <h3>Mark your scores</h3>
+            </div> <!-- /widget-header -->
+
+            <div class="widget-content text-center keyboard">
+                <keypad></keypad>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-md-5" ng-if="game.user.profile.scoreTracking == 'dartboard'" ng-show="isScoreTrackerVisible();">
+
+        <div id="dartboard-width" class="widget widget-nopad stacked">
+            <div class="widget-header">
+                <i class="icon-rocket"></i>
+
+                <h3>Track your scores</h3>
+            </div> <!-- /widget-header -->
+
+            <div class="widget-content">
+                <dartboard></dartboard>
+            </div>
+
+        </div>
+    </div>
 
     <div class="{{isScoreTrackerVisible() ? 'col-md-7' : 'col-md-12'}}">
 
