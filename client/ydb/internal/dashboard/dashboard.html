@@ -43,6 +43,44 @@
 
         </div> <!-- /widget -->
 
+        <div class="widget stacked">
+
+            <div class="widget-header">
+                <i class="icon-bookmark"></i>
+
+                <h3>Navigation</h3>
+            </div> <!-- /widget-header -->
+
+            <div class="widget-content">
+
+                <div class="shortcuts">
+                    <a href="#startNewGameModal" data-toggle="modal" class="shortcut">
+                        <i class="shortcut-icon icon-gamepad"></i>
+                        <span class="shortcut-label">NEW GAME</span>
+                    </a>
+                    <a href="#startNewPracticeModal" data-toggle="modal" class="shortcut">
+                        <i class="shortcut-icon icon-list-ol"></i>
+                        <span class="shortcut-label">PRACTICE</span>
+                    </a>
+                    <a href="/stats" class="shortcut">
+                        <i class="shortcut-icon icon-bar-chart"></i>
+                        <span class="shortcut-label">STATISTICS</span>
+                    </a>
+                    <a href="/accuracy" class="shortcut">
+                        <i class="shortcut-icon icon-bar-chart"></i>
+                        <span class="shortcut-label">ACCURACY</span>
+                    </a>
+                </div> <!-- /shortcuts -->
+
+            </div> <!-- /widget-content -->
+
+        </div> <!-- /widget -->
+
+
+    </div> <!-- /span6 -->
+
+
+    <div class="col-md-6">
 
         <div class="widget widget-nopad stacked">
 
@@ -104,7 +142,9 @@
                             <i ng-show="game.visibility" class="icon-unlock"></i>
                             <i ng-hide="game.visibility" class="icon-lock"></i>
                             -
-                            <strong>{{game.type}} by {{game.owner.username}} @ {{game.created | date : 'dd.MM.yyyy HH:mm'}}</strong>
+                            <strong>{{game.type}} by {{game.owner.username}}
+                                @ {{game.created | date : 'dd.MM.yyyy HH:mm'}}</strong>
+
                             <p class="news-item-preview">Currently {{game.players.length}} players</p>
                         </div>
                     </li>
@@ -120,40 +160,6 @@
 
         </div> <!-- /widget -->
 
-    </div> <!-- /span6 -->
-
-
-    <div class="col-md-6">
-
-
-        <div class="widget stacked">
-
-            <div class="widget-header">
-                <i class="icon-bookmark"></i>
-
-                <h3>Navigation</h3>
-            </div> <!-- /widget-header -->
-
-            <div class="widget-content">
-
-                <div class="shortcuts">
-                    <a href="#startNewGameModal" data-toggle="modal" class="shortcut">
-                        <i class="shortcut-icon icon-gamepad"></i>
-                        <span class="shortcut-label">NEW GAME</span>
-                    </a>
-                    <a href="#startNewPracticeModal" data-toggle="modal" class="shortcut">
-                        <i class="shortcut-icon icon-list-ol"></i>
-                        <span class="shortcut-label">PRACTICE</span>
-                    </a>
-                    <a href="/stats" class="shortcut">
-                        <i class="shortcut-icon icon-bar-chart"></i>
-                        <span class="shortcut-label">STATISTICS</span>
-                    </a>
-                </div> <!-- /shortcuts -->
-
-            </div> <!-- /widget-content -->
-
-        </div> <!-- /widget -->
 
     </div> <!-- /span6 -->
 

@@ -42,7 +42,7 @@ angular.module('ydb').directive('addGame', function() {
                             $('#startNewGameModal').modal('hide');
                             // If practice add computer player
                             if (isPractice) {
-                                this.addPlayerToGame(gameId, 'wqX7hD3hxRv9n9Tiy', true);
+                                this.addComputerOpponentToGame(gameId);
                                 $('#startNewPracticeModal').modal('hide');
                             }
                         }
@@ -67,6 +67,21 @@ angular.module('ydb').directive('addGame', function() {
                         if (error) {
                             console.log(error);
                         }
+                    }
+                );
+            };
+
+            /**
+             * Adds a computer opponent to the given game
+             *
+             * @param gameId
+             */
+            this.addComputerOpponentToGame = (gameId) => {
+                Meteor.call(
+                    'addComputerOpponentToGame',
+                    gameId,
+                    (error, result) => {
+                        console.log(error, result);
                     }
                 );
             };

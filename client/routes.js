@@ -56,6 +56,13 @@ angular.module('ydb')
                     checkLogin
                 }
             })
+            .state('accuracy', {
+                url: '/accuracy',
+                template: '<accuracy></accuracy>',
+                resolve: {
+                    checkLogin
+                }
+            })
             .state('login', {
                 url: '/login',
                 template: '<login></login>',

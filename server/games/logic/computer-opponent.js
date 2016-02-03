@@ -7,13 +7,14 @@ ComputerOpponent = class ComputerOpponent {
 
     /**
      * Must be overwritten in sub classes
-     *
-     * @returns {{}}
      */
     get range() {
         throw 'NOT_IMPLEMENTED_EXCEPTION';
     }
 
+    /**
+     * Must be overwritten in the sub classes
+     */
     get probabilities() {
         throw 'NOW IMPLEMENTED_EXCEPTION';
     }

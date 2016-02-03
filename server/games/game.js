@@ -59,17 +59,54 @@ Meteor.methods({
         if ("object" == typeof gameWrapper) {
 
             gameWrapper.addPlayer(user, remotePlayer);
+            gameWrapper.save();
 
-            // Update mongo database
-            Games.update(
-                {
-                    _id: game._id
-                },
-                gameWrapper.game
-            );
         } else {
             throw new Meteor.Error('Game ' + gameId + ' is unknown!');
         }
+    },
+
+    /**
+     * Adds a computer opponent to the game
+     *
+     * @param gameId
+     */
+    addComputerOpponentToGame: (gameId) => {
+
+        let game = Games.findOne(gameId);
+
+        let computerOpponent = Meteor.users.findOne({"profile.isComputer": true});
+
+        if (undefined === computerOpponent) {
+            // Create our computer opponent
+            let createdOpponentId = Accounts.createUser({
+                username: 'computer',
+                password: '8888',
+                profile: {
+                    scoreTracking: 'keypad',
+                    isComputer: true
+                }
+            });
+            if (createdOpponentId) {
+                Meteor.call(
+                    'addPlayerToGame',
+                    gameId,
+                    createdOpponentId,
+                    true
+                );
+            } else {
+                throw Meteor.Error('A computer opponent could not be added!');
+            }
+        } else {
+            Meteor.call(
+                'addPlayerToGame',
+                gameId,
+                computerOpponent._id,
+                true
+            );
+        }
+
+
     },
 
     /**
