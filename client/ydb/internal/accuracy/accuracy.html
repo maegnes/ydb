@@ -5,12 +5,18 @@
 
             <div class="widget-header">
                 <i class="icon-th-large"></i>
-
-                <h3>Hallo</h3>
+                <h3>Information</h3>
             </div>
 
             <div class="widget-content">
-                TEST
+                These page provides statistical methods to estimate your personal accuracy in darts. Please throw
+                at least 40 darts and mark the hits on the board aside.<br/>
+                <p>Darts thrown: <strong>{{hits.length}}</strong></p>
+                <hr/>
+                <button ng-hide="accuracy > 0" ng-disabled="enoughDartsThrown() === false" ng-click="calculate();" type="button" class="btn btn-default">Calculate</button>
+                <div ng-if="accuracy > 0">
+                    Your estimated accuracy is <strong>{{accuracy}}</strong>
+                </div>
             </div>
 
         </div>
@@ -23,7 +29,7 @@
             <div class="widget-header">
                 <i class="icon-th-large"></i>
 
-                <h3>Hallo</h3>
+                <h3>Mark your scores</h3>
             </div> <!-- /widget-header -->
 
             <div class="widget-content">

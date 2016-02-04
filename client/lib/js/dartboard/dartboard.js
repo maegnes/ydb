@@ -145,6 +145,13 @@ Dartboard = function (htmlContainer, canvasContainer, callbackFunction) {
     this.scores = [];
 
     /**
+     * Stores positional data of all hits
+     *
+     * @type {Array}
+     */
+    this.hits = [];
+
+    /**
      * Hit amounts grouped by area
      */
     this.hitAmounts = {};
@@ -395,6 +402,12 @@ Dartboard = function (htmlContainer, canvasContainer, callbackFunction) {
         var number = this.getField(e.layerX, e.layerY, d);
         var score = this.getScore(d, number);
 
+        this.hits.push({
+            x: hit[0].toFixed(0),
+            y: hit[1].toFixed(0),
+            distance: d
+        });
+
         this.scores.push(score);
 
         this.notify();
@@ -473,7 +486,8 @@ Dartboard = function (htmlContainer, canvasContainer, callbackFunction) {
     this.notify = function () {
         if ('function' === typeof this.callback) {
             var lastScore = this.scores[this.scores.length - 1];
-            this.callback(this.hitAmounts, this.thrownDarts, this.scores, lastScore);
+            var lastPosition = this.hits[this.hits.length - 1];
+            this.callback(this.hitAmounts, this.thrownDarts, this.scores, lastScore, lastPosition);
         }
     };
 
@@ -488,6 +502,7 @@ Dartboard = function (htmlContainer, canvasContainer, callbackFunction) {
         // Redraw the dartboard!
         this.thrownDarts = 0;
         this.scores = [];
+        this.hits = [];
         this.resetHitAmounts();
         this.draw();
     };

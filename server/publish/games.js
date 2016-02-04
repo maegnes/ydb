@@ -1,19 +1,24 @@
+/**
+ * Defines which kind of games should be synced to the client
+ */
 Meteor.publish("games", function (options) {
 
-    // Just publish public games or the owners own games
     let selector = {
         $or: [
+            // Public games
             {
                 $and: [
                     {'visibility': true},
                     {'visibility': {$exists: true}}
                 ]
             },
+            // Games where the current user is the owner
             {
                 $and: [
                     {"owner._id": this.userId}
                 ]
             },
+            // Games where the current player is in
             {
                 players: {
                     $elemMatch: {
@@ -24,6 +29,7 @@ Meteor.publish("games", function (options) {
         ]
     };
 
+    // Sync games to the client
     return Games.find(selector, options);
 
 });

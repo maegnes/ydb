@@ -1,5 +1,5 @@
 /**
- * Server side game logic
+ * Provides server side logic for games
  */
 Meteor.methods({
 

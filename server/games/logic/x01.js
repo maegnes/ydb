@@ -59,18 +59,15 @@ X01 = class X01 {
                 remaining = 3;
             }
             this.checkoutCalculator.reset();
-            console.log("Spieler " + this.game.currentPlayer + " braucht " + this.getCurrentPlayerObject().scoreRemaining + " mit " + remaining);
+            //console.log("Spieler " + this.game.currentPlayer + " braucht " + this.getCurrentPlayerObject().scoreRemaining + " mit " + remaining);
             this.checkoutCalculator.calculate(this.getCurrentPlayerObject().scoreRemaining, remaining);
             if (this.checkoutCalculator.isCheckoutPossible()) {
                 let paths = this.checkoutCalculator.getPaths();
                 if (paths.ONE.length > 0) {
-                    console.log(paths.ONE);
                     this.getCurrentPlayerObject().checkoutPath = paths.ONE[0];
                 } else if (paths.TWO.length > 0) {
-                    console.log(paths.TWO);
                     this.getCurrentPlayerObject().checkoutPath = paths.TWO[0];
                 } else {
-                    console.log(paths.THREE);
                     this.getCurrentPlayerObject().checkoutPath = paths.THREE[0];
                 }
             } else {

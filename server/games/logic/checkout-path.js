@@ -130,6 +130,7 @@ CheckoutPath = class CheckoutPath {
             }
             myPath.push(score);
             if (0 == newScore) {
+                myPath = this.convertCompletePath(myPath);
                 switch (myPath.length) {
                     case 1:
                         this.paths.ONE.push(myPath);
@@ -147,6 +148,30 @@ CheckoutPath = class CheckoutPath {
                 }
             }
         });
+    };
+
+    /**
+     * Some path validations
+     *
+     * @param path
+     */
+    convertCompletePath = (path) => {
+        let first = path[0];
+        let second = path[1];
+        let third = path[2];
+        // If first an second targets are singles < 20
+        if (first.fieldType == 'S' && second.fieldType == 'S') {
+            if ((first.score + second.score) < 20) {
+                path.shift();
+                path.shift();
+                path.unshift({
+                    score: first.score + second.score,
+                    fieldName: 'S' + parseFloat(first.score + second.score),
+                    'fieldType': 'S'
+                });
+            }
+        }
+        return path;
     };
 
     isCheckoutPossible = () => {

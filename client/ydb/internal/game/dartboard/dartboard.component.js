@@ -13,11 +13,12 @@ angular.module('ydb').directive('dartboard', function() {
             $scope.dartBoard.init();
             $scope.dartBoard.draw();
 
-            $scope.dartBoard.callback = (amounts, thrownDarts, scores, lastScore) => {
+            $scope.dartBoard.callback = (amounts, thrownDarts, scores, lastScore, lastPosition) => {
                 $scope.$parent.$broadcast("throwEvent", lastScore);
+                $scope.$parent.$broadcast("positionEvent", lastPosition);
             };
 
-            $scope.$on("playerHasChanged", (res, dasd) => {
+            $scope.$on("playerHasChanged", () => {
                 $scope.dartBoard.reset();
             });
         }
