@@ -179,6 +179,9 @@ Meteor.methods({
                         }
                     }
                 }
+            },
+            removed: (id) => {
+                handle.stop();
             }
         });
 

@@ -347,6 +347,27 @@ X01 = class X01 {
     };
 
     /**
+     * Returns the missed checkouts of the current player
+     */
+    getCurrentPlayerMissedCheckouts = () => {
+        let player = this.getCurrentPlayerObject();
+        return (player.checkoutAttempts - player.checkouts);
+    };
+
+    /**
+     * Returns the amount of played legs (including the current one)
+     */
+    getTheoreticalPlayedLegs = () => {
+        let leg = this.game.currentLeg + 1;
+        let set = this.game.currentSet + 1;
+        if (0 == this.game.currentSet) {
+            return leg;
+        } else {
+            return ((3 * set) + leg);
+        }
+    };
+
+    /**
      * Returns the current scores from the current player and leg
      * @returns {*}
      */

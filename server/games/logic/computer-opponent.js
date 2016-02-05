@@ -21,8 +21,9 @@ ComputerOpponent = class ComputerOpponent {
 
     constructor(game) {
         this.scores = new ScoresContainer();
-        this.game = game;
-        this.computerPlayer = this.game.game.currentPlayer;
+        this.gameWrapper = game;
+        this.game = game.game;
+        this.computerPlayer = this.game.currentPlayer;
         this.simulatedDarts = 0;
     }
 
@@ -36,6 +37,12 @@ ComputerOpponent = class ComputerOpponent {
         if (0 == thrown || isNaN(thrown)) {
             return 0;
         }
+        // As the checkout probability has direct impact on the average we must include it into the calculation
+        let checkoutsNeeded = (this.game.firstToSets * 3);
+        let checkoutErrors = Math.round((checkoutsNeeded * 3 / 100) * (100 - this.probabilities.D));
+        let checkoutErrorsPerLeg = checkoutErrors / checkoutsNeeded;
+        let checkoutErrorsProRata = Math.round(checkoutErrorsPerLeg * this.gameWrapper.getTheoreticalPlayedLegs());
+        thrown += checkoutErrorsProRata;
         return Math.round((scored / thrown)) * 3;
     };
 
@@ -44,7 +51,7 @@ ComputerOpponent = class ComputerOpponent {
      */
     play() {
 
-        if (this.game.isLocked()) {
+        if (this.gameWrapper.isLocked()) {
             return;
         }
 
@@ -52,22 +59,22 @@ ComputerOpponent = class ComputerOpponent {
 
         if (this.simulatedDarts <= 3) {
 
-            let currentPlayer = this.game.game.currentPlayer;
+            let currentPlayer = this.game.currentPlayer;
 
             if (this.computerPlayer == currentPlayer) {
 
-                let checkoutPath = this.game.getCurrentPlayerObject().checkoutPath;
+                let checkoutPath = this.gameWrapper.getCurrentPlayerObject().checkoutPath;
 
                 if (checkoutPath) {
                     let fieldToScore = checkoutPath[0];
                     if (this.checkProbability(fieldToScore)) {
                         this.score(fieldToScore);
                     } else {
-                        this.throwRandomDart(true);
+                        this.throwAppropriateDart();
                     }
                 } else {
-                    if (this.game.getCurrentPlayerObject().scoreRemaining <= 170) {
-                        this.throwRandomDart(true);
+                    if (this.gameWrapper.getCurrentPlayerObject().scoreRemaining <= 170) {
+                        this.throwAppropriateDart();
                     } else {
                         this.throwRandomDart();
                     }
@@ -94,8 +101,8 @@ ComputerOpponent = class ComputerOpponent {
                 }
             }
 
-            let virtualScoredPoints = this.game.getCurrentPlayerObject().totalPoints + randomScore.score;
-            let dartsThrown = this.game.getCurrentPlayerObject().dartsThrown;
+            let virtualScoredPoints = this.gameWrapper.getCurrentPlayerObject().totalPoints + randomScore.score;
+            let dartsThrown = this.gameWrapper.getCurrentPlayerObject().dartsThrown;
 
             // Calculate the avg with the new score
             let virtualAverage = this.calcAverage((dartsThrown + 1), virtualScoredPoints);
@@ -112,19 +119,28 @@ ComputerOpponent = class ComputerOpponent {
         }
 
         if (101 == t) {
-
-            // If it wasn't possible to find a possible score, calculate a accurate score based on the difficulty
-            let scoreCenter = Math.floor(this.range.max / 2);
-            let score = this.scores.getRandomScoreByRange({
-                min: Math.max(scoreCenter - 5, 1),
-                max: Math.min(scoreCenter + 5, 60)
-            });
-
-            this.score(score);
-
+            // If it wasn't possible to find a possible score, throw a appropriate score based on the difficulty
+            this.throwAppropriateDart();
         }
+    }
 
-    };
+    /**
+     * Throws a dart appropriate to the players difficulty level
+     */
+    throwAppropriateDart() {
+        let scoreCenter = Math.floor(this.range.max / 2);
+        let range = {};
+        range.min = Math.max(scoreCenter - 5, 1);
+        range.max = Math.min(scoreCenter + 5, 60);
+        if (this.gameWrapper.getCurrentPlayerObject().scoreRemaining <= 60) {
+            if (!this.checkProbability(null, 'OT')) {
+                range.min = 1;
+                range.max = Math.max(this.gameWrapper.getCurrentPlayerObject().scoreRemaining - 2, 2);
+            }
+        }
+        let score = this.scores.getRandomScoreByRange(range);
+        this.score(score);
+    }
 
     /**
      * Throws the virtual dart
@@ -132,12 +148,15 @@ ComputerOpponent = class ComputerOpponent {
      * @param score
      */
     score(score) {
-        this.game.score(score);
+        this.gameWrapper.score(score);
         this.nextDart();
     }
 
-    checkProbability(score) {
-        return (Math.random() <= (this.probabilities[score.fieldType] / 100));
+    checkProbability(score, fieldType = false) {
+        if (!fieldType) {
+            fieldType = score.fieldType;
+        }
+        return (Math.random() <= (this.probabilities[fieldType] / 100));
     }
 
     /**
@@ -171,7 +190,8 @@ AbsoluteBeginner = class AbsoluteBeginner extends ComputerOpponent {
             'S': 30,
             'D': 5,
             'T': 5,
-            'N': 20
+            'N': 20,
+            'OT': 60
         }
     }
 };
@@ -194,7 +214,8 @@ SporadicPlayer = class SporadicPlayer extends ComputerOpponent {
             'S': 40,
             'D': 10,
             'T': 15,
-            'N': 10
+            'N': 10,
+            'OT': 40
         }
     }
 };
@@ -217,7 +238,8 @@ RegularPlayer = class RegularPlayer extends ComputerOpponent {
             'S': 65,
             'D': 20,
             'T': 25,
-            'N': 5
+            'N': 5,
+            'OT': 20
         }
     }
 };
@@ -240,7 +262,8 @@ GreatPlayer = class GreatPlayer extends ComputerOpponent {
             'S': 80,
             'D': 30,
             'T': 35,
-            'N': 0
+            'N': 5,
+            'OT': 10
         }
     }
 };
@@ -263,7 +286,8 @@ WorldClassPlayer = class WorldClassPlayer extends ComputerOpponent {
             'S': 95,
             'D': 40,
             'T': 45,
-            'N': 0
+            'N': 3,
+            'OT': 5
         }
     }
 };
