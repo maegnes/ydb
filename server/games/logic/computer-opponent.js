@@ -230,8 +230,8 @@ ComputerOpponent = class ComputerOpponent {
 AbsoluteBeginner = class AbsoluteBeginner extends ComputerOpponent {
     get range() {
         return {
-            min: 10,
-            max: 25
+            min: 5,
+            max: 15
         };
     }
 
@@ -254,8 +254,8 @@ AbsoluteBeginner = class AbsoluteBeginner extends ComputerOpponent {
 SporadicPlayer = class SporadicPlayer extends ComputerOpponent {
     get range() {
         return {
-            min: 25,
-            max: 45
+            min: 15,
+            max: 35
         }
     }
 
@@ -278,8 +278,8 @@ SporadicPlayer = class SporadicPlayer extends ComputerOpponent {
 RegularPlayer = class RegularPlayer extends ComputerOpponent {
     get range() {
         return {
-            min: 45,
-            max: 65
+            min: 35,
+            max: 55
         }
     }
 
@@ -302,8 +302,8 @@ RegularPlayer = class RegularPlayer extends ComputerOpponent {
 GreatPlayer = class GreatPlayer extends ComputerOpponent {
     get range() {
         return {
-            min: 65,
-            max: 85
+            min: 55,
+            max: 75
         }
     }
 
@@ -326,7 +326,7 @@ GreatPlayer = class GreatPlayer extends ComputerOpponent {
 WorldClassPlayer = class WorldClassPlayer extends ComputerOpponent {
     get range() {
         return {
-            min: 85,
+            min: 75,
             max: 115
         }
     }
