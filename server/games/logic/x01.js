@@ -187,11 +187,30 @@ X01 = class X01 {
     };
 
     /**
+     * Checks if the current player scored a new high score
+     */
+    checkHighestScoreForCurrentPlayer = () => {
+        // Check if the highest score of the player was improved
+        let totalScore = 0;
+        this.game.currentScores.forEach(
+            (score) => {
+                totalScore += score.score;
+            }
+        );
+
+        if (totalScore > this.getCurrentPlayerObject().highestScore) {
+            this.getCurrentPlayerObject().highestScore = totalScore;
+        }
+    };
+
+    /**
      * Jumps to the next player
      */
     nextPlayer = () => {
 
         this.handleCheckoutPath();
+
+        this.checkHighestScoreForCurrentPlayer();
 
         // Reset the current scores
         this.game.currentScores = [];
@@ -239,7 +258,9 @@ X01 = class X01 {
             checkouts: 0,
             TDAVG: 0,
             dartsThrown: 0,
-            totalPoints: 0
+            totalPoints: 0,
+            highestCheckout: 0,
+            highestScore: 0
         };
         this.game.players.push(player);
     };
