@@ -261,12 +261,12 @@ X01 = class X01 {
      * Adds the given user as a new player for the game
      *
      * @param user - the meteor user object
-     * @param remotePlayer - is the player a remote player?
+     * @param isRemotePlayer - is the player a remote player?
      */
-    addPlayer = (user, remotePlayer) => {
+    addPlayer = (user, isRemotePlayer) => {
         let player = {
             _id: user._id,
-            remote: remotePlayer,
+            remote: isRemotePlayer,
             scores: [],
             user: user,
             scoreRemaining: this.startingPoints,

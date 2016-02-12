@@ -36,9 +36,9 @@ Meteor.methods({
      *
      * @param gameId
      * @param playerId
-     * @param remotePlayer
+     * @param isRemotePlayer
      */
-    addPlayerToGame: (gameId, playerId, remotePlayer) => {
+    addPlayerToGame: (gameId, playerId, isRemotePlayer) => {
 
         let user = Meteor.users.findOne(playerId);
         let game = Games.findOne(gameId);
@@ -63,7 +63,7 @@ Meteor.methods({
 
         if ("object" == typeof gameWrapper) {
 
-            gameWrapper.addPlayer(user, remotePlayer);
+            gameWrapper.addPlayer(user, isRemotePlayer);
             gameWrapper.save();
 
         } else {
@@ -168,6 +168,10 @@ Meteor.methods({
 
         let game = Games.findOne(gameId);
         let gameWrapper = GameFactory.createGame(game);
+
+        if (game.owner._id !== userId) {
+            throw new Meteor.Error('You are not allowed to start the game!');
+        }
 
         // Observe the game to save stats after game is finished
         let query = Games.find({_id: gameId});
