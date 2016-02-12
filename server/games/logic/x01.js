@@ -135,6 +135,7 @@ X01 = class X01 {
 
             if (0 == newScore) {
                 // Player checked out!
+                this.checkHighestCheckoutForCurrentPlayer();
                 player.checkouts++;
                 // Start new leg!
                 if (2 == player.legsWon) {
@@ -187,19 +188,36 @@ X01 = class X01 {
     };
 
     /**
-     * Checks if the current player scored a new high score
+     * Returns the sum of the currently thrown scores
      */
-    checkHighestScoreForCurrentPlayer = () => {
-        // Check if the highest score of the player was improved
+    getCurrentScoresSum = () => {
         let totalScore = 0;
         this.game.currentScores.forEach(
             (score) => {
                 totalScore += score.score;
             }
         );
+        return totalScore;
+    };
 
-        if (totalScore > this.getCurrentPlayerObject().highestScore) {
-            this.getCurrentPlayerObject().highestScore = totalScore;
+    /**
+     * Checks if the current player scored a new high score
+     */
+    checkHighestScoreForCurrentPlayer = () => {
+        let sum = this.getCurrentScoresSum();
+        // Check if the highest score of the player was improved
+        if (sum > this.getCurrentPlayerObject().highestScore) {
+            this.getCurrentPlayerObject().highestScore = sum;
+        }
+    };
+
+    /**
+     * Check for a checkout high score
+     */
+    checkHighestCheckoutForCurrentPlayer = () => {
+        let sum = this.getCurrentScoresSum();
+        if (sum > this.getCurrentPlayerObject().highestCheckout) {
+            this.getCurrentPlayerObject().highestCheckout = sum;
         }
     };
 
