@@ -9,22 +9,27 @@
                 <div id="big_stats" class="cf">
                     <div class="stat">
                         <h4>Average</h4>
-                        <span class="value">{{stats.avg.avg.AVG | number : 2}}</span>
+                        <span class="value">{{stats.avg.AVG | number : 2}}</span>
                     </div> <!-- .stat -->
 
                     <div class="stat">
                         <h4>Three Darts Average</h4>
-                        <span class="value">{{stats.avg.avg.TDAVG | number : 2}}</span>
+                        <span class="value">{{stats.avg.TDAVG | number : 2}}</span>
                     </div> <!-- .stat -->
 
                     <div class="stat">
                         <h4>Checkout Percentage</h4>
-                        <span class="value">{{stats.checkoutPercentage | number : 2}}%</span>
+                        <span class="value">{{checkoutPercentage | number : 2}}%</span>
                     </div> <!-- .stat -->
 
                     <div class="stat">
-                        <h4>Something Else</h4>
-                        <span class="value">13</span>
+                        <h4>Best Score</h4>
+                        <span class="value">{{stats.bestValues.highestScore}}</span>
+                    </div> <!-- .stat -->
+
+                    <div class="stat">
+                        <h4>Best Checkout</h4>
+                        <span class="value">{{stats.bestValues.highestCheckout}}</span>
                     </div> <!-- .stat -->
                 </div>
 

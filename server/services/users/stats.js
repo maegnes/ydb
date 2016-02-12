@@ -45,8 +45,52 @@ UserStats = class UserStats {
             gamesPlayed: gamesPlayed,
             gamesWon: gamesWon,
             pctWon: (isNaN(Math.round((100 / gamesPlayed) * gamesWon))) ? 0 : Math.round((100 / gamesPlayed) * gamesWon),
-            avg: UserStats.getAverages(userId)
+            avg: UserStats.getAverages(userId),
+            bestValues: UserStats.getBestValues(userId)
         }
+    };
+
+    /**
+     * Returns the best values (best score and best checkout)
+     *
+     * @param userId
+     */
+    static getBestValues = (userId) => {
+
+        let aggregationPipeline = [];
+
+        aggregationPipeline.push(
+            {
+                $unwind: "$players"
+            },
+            {
+                $match: {
+                    "players._id": userId
+                }
+            },
+            {
+                $group: {
+                    _id: "",
+                    "highestScore": {
+                        $max: "$players.highestScore"
+                    },
+                    "highestCheckout": {
+                        $max: "$players.highestCheckout"
+                    }
+                }
+            },
+            {
+                $project: {
+                    "highestScore": "$highestScore",
+                    "highestCheckout": "$highestCheckout"
+                }
+            }
+        );
+
+        let result = Games.aggregate(aggregationPipeline);
+
+        return result[0];
+
     };
 
     /**

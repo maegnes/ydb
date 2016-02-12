@@ -27,7 +27,7 @@ angular.module('ydb').directive('stats', function() {
                         if (err) {
                             alert('Error while retrieving the checkout percentage');
                         } else {
-                            $scope.stats.checkoutPercentage = res.checkoutPercentage;
+                            $scope.checkoutPercentage = res.checkoutPercentage;
                             $scope.$apply();
                         }
                     }
@@ -39,7 +39,7 @@ angular.module('ydb').directive('stats', function() {
                         if (err) {
                             alert('Error while retrieving the quick stats');
                         } else {
-                            $scope.stats.avg = res;
+                            $scope.stats = res;
                             $scope.$apply();
                         }
                     }

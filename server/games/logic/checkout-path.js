@@ -55,7 +55,7 @@ CheckoutPath = class CheckoutPath {
             return false;
         }
         // A score gt 100 cannot be checked with 1 or 2 darts
-        if (points > 100 && dartsRemaining < 3) {
+        if (points > 110 && dartsRemaining < 3) {
             return false;
         }
         // A score gt 40 (except bullseye) cannot be checked with 1 remaining dart
