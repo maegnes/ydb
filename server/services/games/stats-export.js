@@ -5,8 +5,16 @@
  */
 StatsExport = class StatsExport {
 
+    /**
+     * Store the user stats here
+     *
+     * @type {{}}
+     */
     userStats = {};
 
+    /**
+     * Reset all stats
+     */
     resetStats = () => {
         this.userStats.thrownDarts = 0;
         this.userStats.thrownSingles = 0;

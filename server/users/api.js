@@ -1,4 +1,8 @@
+/**
+ * Provides server side api for user operations
+ */
 Meteor.methods({
+
     /**
      * Validates the password for the given userId
      *
@@ -7,7 +11,9 @@ Meteor.methods({
      * @returns {boolean}
      */
     checkPassword: (username, digest) => {
-        let user = Meteor.users.findOne({username: username});
+        let user = Meteor.users.findOne({
+            username: username
+        });
         if (user) {
             let password = {digest: digest, algorithm: 'sha-256'};
             let result = Accounts._checkPassword(user, password);

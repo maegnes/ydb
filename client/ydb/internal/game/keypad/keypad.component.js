@@ -1,9 +1,12 @@
+/**
+ * Directive for the alternative keypad score tracker
+ */
 angular.module('ydb').directive('keypad', function() {
     return {
         restrict: 'E',
         templateUrl: 'client/ydb/internal/game/keypad/keypad.html',
         controllerAs: 'keypad',
-        controller: function($scope, $reactive) {
+        controller: function($scope) {
 
             /**
              * Is the double button active?
@@ -44,6 +47,7 @@ angular.module('ydb').directive('keypad', function() {
                 score = this.getScore(score);
                 this.isTriple = false;
                 this.isDouble = false;
+                // Emit a throwEvent. Being watched inside the game component to send scores to the server
                 $scope.$parent.$broadcast("throwEvent", score);
             };
 
@@ -63,7 +67,6 @@ angular.module('ydb').directive('keypad', function() {
                     fieldType: fieldType
                 };
             };
-
         }
     }
 });

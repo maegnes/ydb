@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
 
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
-    <link rel="shortcut icon" href="img/ydb.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="img/ydb.ico" type="image/x-icon"/>
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -21,96 +21,96 @@
 
 <div ng-app="ydb" ng-strict-di="">
 
-<nav class="navbar navbar-inverse" role="navigation">
+    <nav class="navbar navbar-inverse" role="navigation">
 
-    <div class="container">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <i class="icon-cog"></i>
-            </button>
-            <a class="navbar-brand" href="/">
-                <i class="icon-bullseye"></i> ydb - your darts buddy
-            </a>
-        </div>
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="icon-cog"></i>
+                </button>
+                <a class="navbar-brand" href="/">
+                    <i class="icon-bullseye"></i> ydb - your darts buddy
+                </a>
+            </div>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse navbar-ex1-collapse">
-            <ul ng-show="$root.currentUser" class="nav navbar-nav navbar-right">
-                <li class="dropdown">
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul ng-show="$root.currentUser" class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
 
-                    <a href="javscript:;" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="icon-user"></i>
-                        {{$root.currentUser.username}}
-                        <b class="caret"></b>
-                    </a>
+                        <a href="javscript:;" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="icon-user"></i>
+                            {{$root.currentUser.username}}
+                            <b class="caret"></b>
+                        </a>
 
-                    <ul class="dropdown-menu">
-                        <li><a href="#settingsModal" data-toggle="modal">Settings</a></li>
-                        <li class="divider"></li>
-                        <li><a href="/logout">Logout</a></li>
-                    </ul>
+                        <ul class="dropdown-menu">
+                            <li><a href="#settingsModal" data-toggle="modal">Settings</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/logout">Logout</a></li>
+                        </ul>
 
-                </li>
-            </ul>
-        </div><!-- /.navbar-collapse -->
-    </div> <!-- /.container -->
-</nav>
+                    </li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div> <!-- /.container -->
+    </nav>
 
-<div class="subnavbar">
+    <div class="subnavbar">
 
 
-</div> <!-- /subnavbar -->
+    </div> <!-- /subnavbar -->
 
-<div class="main">
+    <div class="main">
 
-    <div class="container">
+        <div class="container">
 
-        <div ui-view="">
+            <div ui-view="">
 
-        </div>
+            </div>
 
-        <settings ng-if="$root.currentUser"></settings>
-
-    </div> <!-- /container -->
-
-</div> <!-- /main -->
-
-<div class="extra">
-
-    <div class="container">
-
-        <div class="row">
-
-            <div class="col-md-12">
-                <span ng-show="connectedToBackend() === true" class="label label-success">Backend connection established!</span>
-                <span ng-show="connectedToBackend() === false" class="label label-danger">Not connected to the backend!</span>
-                <br/><br/>
-            </div> <!-- /row -->
+            <settings ng-if="$root.currentUser"></settings>
 
         </div> <!-- /container -->
 
-    </div> <!-- /extra -->
+    </div> <!-- /main -->
 
-
-    <div class="footer">
+    <div class="extra">
 
         <div class="container">
 
             <div class="row">
 
-                <div id="footer-copyright" class="col-lg-12 col-md-12 col-xs-12 text-center">
-                    &copy; 2016 by Magnus Buk
-                </div> <!-- /span6 -->
+                <div class="col-md-12">
+                    <span ng-show="connectedToBackend() === true" class="label label-success">Backend connection established!</span>
+                    <span ng-show="connectedToBackend() === false" class="label label-danger">Not connected to the backend!</span>
+                    <br/><br/>
+                </div> <!-- /row -->
 
-            </div> <!-- /row -->
+            </div> <!-- /container -->
 
-        </div> <!-- /container -->
+        </div> <!-- /extra -->
 
-    </div> <!-- /footer -->
 
-</div>
+        <div class="footer">
+
+            <div class="container">
+
+                <div class="row">
+
+                    <div id="footer-copyright" class="col-lg-12 col-md-12 col-xs-12 text-center">
+                        &copy; 2016 by Magnus Buk
+                    </div> <!-- /span6 -->
+
+                </div> <!-- /row -->
+
+            </div> <!-- /container -->
+
+        </div> <!-- /footer -->
+
+    </div>
 
 </div>
 

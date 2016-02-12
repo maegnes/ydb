@@ -7,12 +7,16 @@ X01 = class X01 {
 
     ERROR_THROWN_OVER = 'THROWN_OVER';
 
+    /**
+     * Returns the starting points of the selected game type. Must be overwritten in the child classes
+     * @returns {number}
+     */
     get startingPoints() {
         return 0;
     }
 
-    constructor(game) {
-        this.game = game;
+    constructor(gameData) {
+        this.game = gameData;
         this.checkoutCalculator = new CheckoutPath();
         this.scores = new ScoresContainer();
         this.hasOverthrown = false;
@@ -135,7 +139,7 @@ X01 = class X01 {
                 // Start new leg!
                 if (2 == player.legsWon) {
                     player.setsWon++;
-                    // Check if the game is ower
+                    // Check if the game is over
                     if (player.setsWon == this.game.firstToSets) {
                         this.finish();
                     } else {

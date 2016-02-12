@@ -4,8 +4,10 @@
  * @type {GameFactory}
  */
 GameFactory = class GameFactory {
+
     /**
      * Creates a game object based on the given type
+     *
      * @param game
      */
     static createGame(game) {

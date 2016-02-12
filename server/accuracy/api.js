@@ -1,9 +1,10 @@
 /**
- * Provides server side logic for a players accuracy
+ * Provides server side API to calculate a players accuracy
  */
 Meteor.methods({
-    calculateAccuracy: (playerId, data) => {
-        let accuracy = new AccuracyCalculation(data);
+    calculateAccuracy: (playerId, throws) => {
+        // Receives client data and calculates accuracy
+        let accuracy = new AccuracyCalculation(throws);
         return accuracy.calculate();
     }
 });

@@ -6,11 +6,21 @@ angular.module('ydb').directive('addPractice', function() {
         restrict: 'E',
         templateUrl: 'client/ydb/internal/dashboard/add-practice/add-practice.html',
         controllerAs: 'addPractice',
-        controller: function($scope, availableGameTypes, availableGameModes, difficultyLevels) {
-            // Just provide game types and modes to the template.
+        controller: function($scope, availableGameTypes, availableGameModes, availableDifficultyLevels) {
+            /**
+             * Different game types
+             */
             $scope.types = availableGameTypes;
+
+            /**
+             * Different game modes
+             */
             $scope.modes = availableGameModes;
-            $scope.difficultyLevels = difficultyLevels;
+
+            /**
+             * Selected difficulty level for the practice
+             */
+            $scope.difficultyLevels = availableDifficultyLevels;
         }
     }
 });

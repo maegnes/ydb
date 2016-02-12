@@ -1,5 +1,5 @@
 /**
- * Provides possible scores for the server classes
+ * Provides possible scores and helper methods for the server scores handling
  *
  * @type {ScoresContainer}
  */
@@ -54,25 +54,13 @@ ScoresContainer = class ScoresContainer {
     constructor() {
         for (var i = 1; i <= 20; i++) {
             this.singles.push(
-                {
-                    score: i,
-                    fieldName: i,
-                    fieldType: 'S'
-                }
+                ScoresContainer.createScore(i, 'S')
             );
             this.doubles.push(
-                {
-                    score: 2 * i,
-                    fieldName: 'D' + i,
-                    fieldType: 'D'
-                }
+                ScoresContainer.createScore(i, 'D')
             );
             this.triples.push(
-                {
-                    score: 3 * i,
-                    fieldName: 'T' + i,
-                    fieldType: 'T'
-                }
+                ScoresContainer.createScore(i, 'T')
             );
         }
     };
@@ -101,12 +89,27 @@ ScoresContainer = class ScoresContainer {
      * @param range
      */
     getRandomScoreByRange(range) {
-        // As the given range is the three darts average divide by 3 to receive one darts average
         while(true) {
             let randomScore = this.getRandomScore();
             if (randomScore.score >= range.min && randomScore.score <= range.max) {
                 return randomScore;
             }
         }
+    }
+
+    /**
+     * Creates a score object based on score and type
+     *
+     * @param score
+     * @param type
+     */
+    static createScore(score, type) {
+        let returnScore = score * (('T' == type) ? 3 : ('D' == type ? 2 : 1));
+        let fieldName = (type == 'N') ? 'No Score' : type + score;
+        return {
+            score: returnScore,
+            fieldName: fieldName,
+            fieldType: type
+        };
     }
 };

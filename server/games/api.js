@@ -1,5 +1,5 @@
 /**
- * Provides server side logic for games
+ * Provides server side API for games operations
  */
 Meteor.methods({
 
@@ -10,6 +10,7 @@ Meteor.methods({
      * @returns {*|any}
      */
     createGame: (data) => {
+        // Static game data
         let staticGameData = {
             created: new Date(),
             running: false,
@@ -22,7 +23,11 @@ Meteor.methods({
             currentSet: 0,
             practice: false
         };
+
+        // Merge client data with the static data
         let mergedData = Object.assign(staticGameData, data);
+
+        // Insert game into mongodb
         return Games.insert(mergedData);
     },
 
@@ -73,10 +78,14 @@ Meteor.methods({
      */
     addComputerOpponentToGame: (gameId) => {
 
-        let game = Games.findOne(gameId);
+        // Check if a computer opponent already exists in the database
+        let computerOpponent = Meteor.users.findOne(
+            {
+                "profile.isComputer": true
+            }
+        );
 
-        let computerOpponent = Meteor.users.findOne({"profile.isComputer": true});
-
+        // If no computer opponent exists, create it
         if (undefined === computerOpponent) {
             // Create our computer opponent
             let createdOpponentId = Accounts.createUser({
@@ -87,6 +96,7 @@ Meteor.methods({
                     isComputer: true
                 }
             });
+            // Add computer opponent to the game
             if (createdOpponentId) {
                 Meteor.call(
                     'addPlayerToGame',
@@ -98,6 +108,7 @@ Meteor.methods({
                 throw Meteor.Error('A computer opponent could not be added!');
             }
         } else {
+            // Opponent already exists - add to game
             Meteor.call(
                 'addPlayerToGame',
                 gameId,
@@ -131,6 +142,7 @@ Meteor.methods({
             throw new Meteor.Error("This game is already finished!");
         }
 
+        // Pulls the given player from the game
         Games.update(
             {
                 _id: gameId
@@ -159,32 +171,47 @@ Meteor.methods({
 
         // Observe the game to save stats after game is finished
         let query = Games.find({_id: gameId});
+
+        // Add observers
         let handle = query.observeChanges({
+
+            // If the game has been changed
             changed: (id, fields) => {
+                // If the game is finished, export stats to stats collection
                 if (fields.finished) {
                     let statExport = new StatsExport();
                     let game = Games.findOne(id);
                     statExport.extract(game);
                     handle.stop();
                 }
-                // Check if computer player is the starting player
+                // Is the current player a computer opponent?
                 if (fields.hasOwnProperty("currentPlayerIndex") || fields.hasOwnProperty("message")) {
-                    let game = Games.findOne(id);
-                    let wrapper = GameFactory.createGame(game);
-                    let currentPlayer = game.players[game.currentPlayerIndex];
+                    // Find game
+                    let gameData = Games.findOne(id);
+                    // Create game wrapper for operations
+                    let gameWrapper = GameFactory.createGame(gameData);
+                    // Selects the current player
+                    let currentPlayer = gameWrapper.getCurrentPlayerObject();
                     if (currentPlayer.user.profile.isComputer) {
-                        if (!wrapper.isLocked()) {
-                            let opponent = ComputerOpponentFactory.create(wrapper);
+                        // It's the computer opponents turn. If game is not locked, instruct the computer to play
+                        if (!gameWrapper.isLocked()) {
+                            // Create the computer opponent
+                            let opponent = ComputerOpponentFactory.create(gameWrapper);
+
+                            // Tells the opponent to throw the darts
                             opponent.nextDart();
                         }
                     }
                 }
             },
+
+            // If the game has been removed, stop the handler
             removed: (id) => {
                 handle.stop();
             }
         });
 
+        // Start the game and save state to database
         if (gameWrapper.start()) {
             gameWrapper.save();
         }
@@ -205,6 +232,8 @@ Meteor.methods({
         });
         if (game) {
             Games.remove(gameId);
+        } else {
+            throw new Meteor.Error("You are not allowed to delete the given game!");
         }
     },
 
@@ -212,15 +241,19 @@ Meteor.methods({
      * Being called after every throw to the board
      *
      * @param gameId
-     * @param scores
+     * @param score
      */
-    score: (gameId, scores) => {
+    score: (gameId, score) => {
 
-        let game = Games.findOne(gameId);
-        let gameWrapper = GameFactory.createGame(game);
+        // Selects the game from the database
+        let gameData = Games.findOne(gameId);
 
-        if (game.running && !gameWrapper.isLocked()) {
-            gameWrapper.score(scores);
+        // Create game wrapper
+        let gameWrapper = GameFactory.createGame(gameData);
+
+        // If the game is running and NOT locked, pass the throw to the games logic
+        if (gameData.running && !gameWrapper.isLocked()) {
+            gameWrapper.score(score);
         }
     }
 });

@@ -1,19 +1,18 @@
+/**
+ * Dashboard component
+ */
 angular.module('ydb').directive('dashboard', function () {
     return {
         restrict: 'E',
         templateUrl: 'client/ydb/internal/dashboard/dashboard.html',
         controllerAs: 'dashboard',
-        controller: function ($scope, $reactive, $state, availableGameModes, availableGameTypes) {
+        controller: function ($scope, $reactive, $state) {
 
             $reactive(this).attach($scope);
 
-            // Subscribe to all game changes
-            this.subscribe("games");
-
-            $scope.types = availableGameTypes;
-
-            $scope.modes = availableGameModes;
-
+            /**
+             * Observe changes and redirect user if a game has been started
+             */
             this.observeChanges = () => {
                 let games = Games.find({
                     players: {
@@ -59,7 +58,9 @@ angular.module('ydb').directive('dashboard', function () {
                     gameId,
                     Meteor.userId(),
                     (error, result) => {
-                        console.log(error, result);
+                        if (error) {
+                            alert('The player could not be added to the game!');
+                        }
                     }
                 );
             };
@@ -115,6 +116,9 @@ angular.module('ydb').directive('dashboard', function () {
                     return Games.find({finished: false});
                 }
             });
+
+            // Subscribe to all game changes
+            this.subscribe("games");
 
             // Tell the controller to observe changes on joined games
             this.observeChanges();

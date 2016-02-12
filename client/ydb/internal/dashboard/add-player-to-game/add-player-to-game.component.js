@@ -70,7 +70,7 @@ angular.module('ydb').directive('addPlayerToGame', function() {
                     remotePlayer,
                     (error, result) => {
                         if (error) {
-                            console.log(error);
+                            alert('The player could not be added to the game');
                         } else {
                             $('#addNewPlayerModal').modal('hide');
                         }

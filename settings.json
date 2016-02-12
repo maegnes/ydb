@@ -1,5 +1,66 @@
 {
   "public": {
-
+    "availableGameTypes": [
+      {
+        "name": "501 Game",
+        "value": "501"
+      },
+      {
+        "name": "401 Game",
+        "value": "401"
+      },
+      {
+        "name": "301 Game",
+        "value": "301"
+      },
+      {
+        "name": "201 Game",
+        "value": "201"
+      }
+    ],
+    "availableGameModes": [
+      {
+        "name": "First to 1 set",
+        "firstToSets": 1
+      },
+      {
+        "name": "First to 2 sets",
+        "firstToSets": 2
+      },
+      {
+        "name": "First to 3 sets",
+        "firstToSets": 3
+      },
+      {
+        "name": "First to 4 sets",
+        "firstToSets": 4
+      },
+      {
+        "name": "First to 5 sets",
+        "firstToSets": 5
+      }
+    ],
+    "availableDifficultyLevels": [
+      {
+        "name": "Absolute Beginner",
+        "value": 1
+      },
+      {
+        "name": "Sporadic player",
+        "value": 2
+      },
+      {
+        "name": "Regular player",
+        "value": 3
+      },
+      {
+        "name": "Great player",
+        "value": 4
+      },
+      {
+        "name": "World class",
+        "value": 5
+      }
+    ]
   }
 }

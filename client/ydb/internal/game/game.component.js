@@ -1,3 +1,6 @@
+/**
+ * Directive for a game
+ */
 angular.module('ydb').directive('game', function() {
     return {
         restrict: 'E',
@@ -61,6 +64,10 @@ angular.module('ydb').directive('game', function() {
                 }
             };
 
+            /**
+             * Checks if the scoring is currently locked (after set/leg change for instance)
+             * @returns {*|boolean}
+             */
             $scope.scoringLocked = () => {
                 if ($scope.ourGame) {
                     return ($scope.ourGame.message || $scope.ourGame.finished);
@@ -74,6 +81,7 @@ angular.module('ydb').directive('game', function() {
              */
             $scope.isScoreTrackerVisible = () => {
                 let game = $scope.ourGame;
+                // Tracker is visible if user is the current user OR user is the owner and the current player is not a remote player
                 return (game.currentPlayer == Meteor.userId()) || ((!game.players[game.currentPlayerIndex].remote) && (game.owner._id == Meteor.userId()));
             };
 
@@ -81,13 +89,19 @@ angular.module('ydb').directive('game', function() {
              * Helpers
              */
             this.helpers({
+                /**
+                 * Returns the current game
+                 * @returns {*}
+                 */
                 currentGame: () => {
                     let games = Games.find({_id:this.gameId});
                     if (games.count() > 0) {
                         let game = games.fetch()[0];
                         $scope.ourGame = game;
+                        // Observe changes
                         let handle = games.observeChanges({
                             changed: (id, game) => {
+                                // If the current player changed tell the dartboard to remove marked hits
                                 if (game.currentPlayer !== undefined) {
                                     $scope.$broadcast("playerHasChanged", game);
                                 }
@@ -100,6 +114,11 @@ angular.module('ydb').directive('game', function() {
                     }
                     return undefined;
                 },
+                /**
+                 * Returns the current Meteor user
+                 *
+                 * @returns {any}
+                 */
                 user: () => {
                     return Meteor.user()
                 }

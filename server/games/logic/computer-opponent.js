@@ -19,11 +19,22 @@ ComputerOpponent = class ComputerOpponent {
         throw 'NOW IMPLEMENTED_EXCEPTION';
     }
 
-    constructor(game) {
+    /**
+     * Constructor
+     *
+     * @param gameWrapper
+     */
+    constructor(gameWrapper) {
         this.scores = new ScoresContainer();
-        this.gameWrapper = game;
-        this.game = game.game;
-        this.computerPlayer = this.game.currentPlayer;
+        this.gameWrapper = gameWrapper;
+
+        // Extract the game object out of the wrapper
+        this.gameObject = gameWrapper.game;
+
+        // Extract the computer player to check if it is still the computers turn
+        this.computerPlayer = this.gameObject.currentPlayer;
+
+        // Count the thrown darts of the computer opponent
         this.simulatedDarts = 0;
     }
 
@@ -38,7 +49,7 @@ ComputerOpponent = class ComputerOpponent {
             return 0;
         }
         // As the checkout probability has direct impact on the average we must include it into the calculation
-        let checkoutsNeeded = (this.game.firstToSets * 3);
+        let checkoutsNeeded = (this.gameObject.firstToSets * 3);
         let checkoutErrors = Math.round((checkoutsNeeded * 3 / 100) * (100 - this.probabilities.D));
         let checkoutErrorsPerLeg = checkoutErrors / checkoutsNeeded;
         let checkoutErrorsProRata = Math.round(checkoutErrorsPerLeg * this.gameWrapper.getTheoreticalPlayedLegs());
@@ -51,6 +62,7 @@ ComputerOpponent = class ComputerOpponent {
      */
     play() {
 
+        // If the game is locked, no need for the opponent to play
         if (this.gameWrapper.isLocked()) {
             return;
         }
@@ -59,20 +71,29 @@ ComputerOpponent = class ComputerOpponent {
 
         if (this.simulatedDarts <= 3) {
 
-            let currentPlayer = this.game.currentPlayer;
+            let currentPlayer = this.gameObject.currentPlayer;
 
+            // Check if the current player is the same as on the startup
             if (this.computerPlayer == currentPlayer) {
 
+                // Check if the computer opponent reached the checkout region
                 let checkoutPath = this.gameWrapper.getCurrentPlayerObject().checkoutPath;
 
                 if (checkoutPath) {
+
+                    // Get the next field
                     let fieldToScore = checkoutPath[0];
+
+                    // Check the hit probability of the computer
                     if (this.checkProbability(fieldToScore)) {
+                        // Opponent hit the field!
                         this.score(fieldToScore);
                     } else {
+                        // Opponent didn't hit - throw appropriate dart
                         this.throwAppropriateDart();
                     }
                 } else {
+                    // Opponent is not in the checkout region
                     if (this.gameWrapper.getCurrentPlayerObject().scoreRemaining <= 170) {
                         this.throwAppropriateDart();
                     } else {
@@ -86,15 +107,17 @@ ComputerOpponent = class ComputerOpponent {
     /**
      * Throws a random dart based on the current difficulty level
      *
-     * @param ignoreAverage
+     * @param ignoreAverage - ignore the current average for this dart?
      */
     throwRandomDart(ignoreAverage = false) {
 
+        // 100 attempts to find a proper score
         for (t = 1; t <= 100; t++) {
 
-            // Get a random score
+            // Fetch a random score
             let randomScore = this.scores.getRandomScore();
 
+            // If the opponent missed the board, check the probability (as this is very rare)
             if('N' === randomScore.fieldType) {
                 if (!this.checkProbability(randomScore)) {
                     continue;
@@ -118,6 +141,7 @@ ComputerOpponent = class ComputerOpponent {
             }
         }
 
+        // We could not find a score - throw a appropriate dart
         if (101 == t) {
             // If it wasn't possible to find a possible score, throw a appropriate score based on the difficulty
             this.throwAppropriateDart();
@@ -125,20 +149,33 @@ ComputerOpponent = class ComputerOpponent {
     }
 
     /**
-     * Throws a dart appropriate to the players difficulty level
+     * Throws a dart appropriate based on the opponents difficulty level
      */
     throwAppropriateDart() {
+
+        // Calculate a score range for the current difficulty level
         let scoreCenter = Math.floor(this.range.max / 2);
         let range = {};
+
+        // Minimum must be 1
         range.min = Math.max(scoreCenter - 5, 1);
+
+        // Maximum must be 60 with one throw
         range.max = Math.min(scoreCenter + 5, 60);
+
         if (this.gameWrapper.getCurrentPlayerObject().scoreRemaining <= 60) {
+            // Check if a "overthrow" is probable for the current opponent
             if (!this.checkProbability(null, 'OT')) {
+                // The opponent is too strong. Create a range matching the current score and avoid overthrowing
                 range.min = 1;
                 range.max = Math.max(this.gameWrapper.getCurrentPlayerObject().scoreRemaining - 2, 2);
             }
         }
+
+        // Find a proper score
         let score = this.scores.getRandomScoreByRange(range);
+
+        // "Throw" the matched score
         this.score(score);
     }
 
@@ -152,22 +189,30 @@ ComputerOpponent = class ComputerOpponent {
         this.nextDart();
     }
 
+    /**
+     * Check the probability of the given field hit based on the difficulty level
+     *
+     * @param score
+     * @param fieldType
+     * @returns {boolean}
+     */
     checkProbability(score, fieldType = false) {
         if (!fieldType) {
             fieldType = score.fieldType;
         }
+        // Use normally distributed random() function to check probability
         return (Math.random() <= (this.probabilities[fieldType] / 100));
     }
 
     /**
-     * Tells the virtual opponent to throw the next dart in 1 second
+     * Tells the virtual opponent to throw the next dart in 1.5 seconds
      */
     nextDart = () => {
         Meteor.setTimeout(
             () => {
                 this.play();
             },
-            (2000)
+            (1500)
         );
     };
 };

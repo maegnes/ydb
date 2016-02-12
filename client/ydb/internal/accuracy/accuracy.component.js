@@ -1,9 +1,12 @@
+/**
+ * Accuracy calculation directive
+ */
 angular.module('ydb').directive('accuracy', function() {
     return {
         restrict: 'E',
         templateUrl: 'client/ydb/internal/accuracy/accuracy.html',
         controllerAs: 'accuracy',
-        controller: function($scope, $reactive, $state, $stateParams) {
+        controller: function($scope) {
 
             /**
              * Stores the marked hits
@@ -20,7 +23,7 @@ angular.module('ydb').directive('accuracy', function() {
             $scope.accuracy = 0;
 
             /**
-             * Listen for the throwEvent. Is being emitted by dartboard or keyboard tracker
+             * Listen for the throwEvent. Is being emitted by the drawn dartboard
              */
             $scope.$on("positionEvent", function (event, data) {
                 $scope.hits.push(data);
@@ -31,7 +34,6 @@ angular.module('ydb').directive('accuracy', function() {
              * Starts server side calculation
              */
             $scope.calculate = () => {
-
                 Meteor.call(
                     'calculateAccuracy',
                     Meteor.userId(),
@@ -45,7 +47,6 @@ angular.module('ydb').directive('accuracy', function() {
                         }
                     }
                 );
-
             };
 
             /**
@@ -54,7 +55,7 @@ angular.module('ydb').directive('accuracy', function() {
              * @returns {boolean}
              */
             $scope.enoughDartsThrown = () => {
-                return $scope.hits.length > 5;
+                return $scope.hits.length >= 50;
             };
         }
     }

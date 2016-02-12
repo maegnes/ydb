@@ -46,15 +46,19 @@ CheckoutPath = class CheckoutPath {
      * @param dartsRemaining
      */
     validate = (points, dartsRemaining) => {
+        // No checkout with three darts possible for a score > 170
         if (points > 170) {
             return false;
         }
+        // If we have already found a path, stop calculating further paths
         if (this.isCheckoutPossible()) {
             return false;
         }
+        // A score gt 100 cannot be checked with 1 or 2 darts
         if (points > 100 && dartsRemaining < 3) {
             return false;
         }
+        // A score gt 40 (except bullseye) cannot be checked with 1 remaining dart
         if ((points > 40 && 50 != points) && 1 == dartsRemaining) {
             return false;
         }
@@ -84,14 +88,11 @@ CheckoutPath = class CheckoutPath {
                 }
                 // We do not need a double hit for a score <= 20 - replace with single hit
                 if (score.score <= 20) {
-                    score = {
-                        score: score.score,
-                        fieldName: 'S' + score.score,
-                        fieldType: 'S'
-                    };
+                    score = ScoresContainer.createScore(score.score, 'S');
                 }
                 myPath.push(score);
                 if (dartsRemaining > 1) {
+                    // Call the function recursively
                     this.calculate(newScore, dartsRemaining - 1, myPath)
                 }
             });
@@ -121,16 +122,14 @@ CheckoutPath = class CheckoutPath {
             // We do not need a double hit for a score <= 20 - replace with single hit
             if (score.value <= 20) {
                 if (newScore > 20) {
-                    score = {
-                        score: score.score,
-                        fieldName: 'S' + score.score,
-                        fieldType: 'S'
-                    };
+                    score = ScoresContainer.createScore(score, score, 'S');
                 }
             }
             myPath.push(score);
             if (0 == newScore) {
-                myPath = this.convertCompletePath(myPath);
+                // Try to optimize the path
+                myPath = this.optimizePath(myPath);
+                // Store the path into the result array
                 switch (myPath.length) {
                     case 1:
                         this.paths.ONE.push(myPath);
@@ -151,29 +150,28 @@ CheckoutPath = class CheckoutPath {
     };
 
     /**
-     * Some path validations
+     * Some path optimizations
      *
      * @param path
      */
-    convertCompletePath = (path) => {
+    optimizePath = (path) => {
         let first = path[0];
         let second = path[1];
-        let third = path[2];
         // If first an second targets are singles < 20
         if (first.fieldType == 'S' && second.fieldType == 'S') {
             if ((first.score + second.score) < 20) {
                 path.shift();
                 path.shift();
-                path.unshift({
-                    score: first.score + second.score,
-                    fieldName: 'S' + parseFloat(first.score + second.score),
-                    'fieldType': 'S'
-                });
+                path.unshift(ScoresContainer.createScore((first.score + second.score), 'S'));
             }
         }
         return path;
     };
 
+    /**
+     * Checks if a checkout path is found
+     * @returns {boolean}
+     */
     isCheckoutPossible = () => {
         return !(this.paths.ONE.length == 0 && this.paths.TWO.length == 0 && this.paths.THREE.length == 0);
     };

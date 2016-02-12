@@ -1,12 +1,12 @@
 /**
  * Directive for the settings modal
  */
-angular.module('ydb').directive('settings', function() {
+angular.module('ydb').directive('settings', function () {
     return {
         restrict: 'E',
         templateUrl: 'client/ydb/internal/settings/settings.html',
         controllerAs: 'settings',
-        controller: function() {
+        controller: function () {
 
             /**
              * Get the current profile from the user object
@@ -19,7 +19,17 @@ angular.module('ydb').directive('settings', function() {
              * Save the new user profile
              */
             this.save = () => {
-                Meteor.users.update({_id: Meteor.userId()}, {$set: {"profile": this.profile}});
+                Meteor.users.update(
+                    {
+                        _id: Meteor.userId()
+                    },
+                    {
+                        $set: {
+                            "profile": this.profile
+                        }
+                    }
+                );
+                // Hide the settings modal
                 $('#settingsModal').modal('hide');
             }
         }
