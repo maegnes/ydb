@@ -131,7 +131,7 @@ span.login-checkbox > input[type='checkbox']:checked + label {
 }
 
 .register .login-fields input {
-	width: 299px;
+	width: 100%;
 	padding-left: 6px;
 }
 
@@ -163,11 +163,10 @@ span.login-checkbox > input[type='checkbox']:checked + label {
 	}
 	
 	.login-fields input {
-		width: 160px;
+		width: 100%;
 	}
 	
 	.register .login-fields input {
-		width: 204px;
 		padding-left: 6px;
 	}
 	
