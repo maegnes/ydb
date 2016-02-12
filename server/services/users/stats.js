@@ -94,7 +94,8 @@ UserStats = class UserStats {
     };
 
     /**
-     * Calculates the
+     * Calculates the averages (single and three dart)
+     *
      * @param userId
      * @param gameId
      * @returns {*}

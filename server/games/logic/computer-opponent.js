@@ -97,7 +97,13 @@ ComputerOpponent = class ComputerOpponent {
                     if (this.gameWrapper.getCurrentPlayerObject().scoreRemaining <= 170) {
                         this.throwAppropriateDart();
                     } else {
-                        this.throwRandomDart();
+                        // If no dart has been thrown yet, throw appropriate dart
+                        if (0 == this.gameWrapper.getCurrentPlayerObject().dartsThrown) {
+                            console.log("WERFE ANGEMESSENEN DART!");
+                            this.throwAppropriateDart();
+                        } else {
+                            this.throwRandomDart();
+                        }
                     }
                 }
             }
