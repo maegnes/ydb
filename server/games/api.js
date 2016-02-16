@@ -173,48 +173,6 @@ Meteor.methods({
             throw new Meteor.Error('You are not allowed to start the game!');
         }
 
-        // Observe the game to save stats after game is finished
-        let query = Games.find({_id: gameId});
-
-        // Add observers
-        let handle = query.observeChanges({
-
-            // If the game has been changed
-            changed: (id, fields) => {
-                // If the game is finished, export stats to stats collection
-                if (fields.finished) {
-                    let statExport = new StatsExport();
-                    let game = Games.findOne(id);
-                    statExport.extract(game);
-                    handle.stop();
-                }
-                // Is the current player a computer opponent?
-                if (fields.hasOwnProperty("currentPlayerIndex") || fields.hasOwnProperty("message")) {
-                    // Find game
-                    let gameData = Games.findOne(id);
-                    // Create game wrapper for operations
-                    let gameWrapper = GameFactory.createGame(gameData);
-                    // Selects the current player
-                    let currentPlayer = gameWrapper.getCurrentPlayerObject();
-                    if (currentPlayer.user.profile.isComputer) {
-                        // It's the computer opponents turn. If game is not locked, instruct the computer to play
-                        if (!gameWrapper.isLocked()) {
-                            // Create the computer opponent
-                            let opponent = ComputerOpponentFactory.create(gameWrapper);
-
-                            // Tells the opponent to throw the darts
-                            opponent.nextDart();
-                        }
-                    }
-                }
-            },
-
-            // If the game has been removed, stop the handler
-            removed: (id) => {
-                handle.stop();
-            }
-        });
-
         // Start the game and save state to database
         if (gameWrapper.start()) {
             gameWrapper.save();
