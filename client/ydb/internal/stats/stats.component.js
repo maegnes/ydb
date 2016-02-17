@@ -5,7 +5,7 @@ angular.module('ydb').directive('stats', function() {
     return {
         restrict: 'E',
         templateUrl: 'client/ydb/internal/stats/stats.html',
-        controllerAs: 'game',
+        controllerAs: 'gameStats',
         controller: function($scope) {
 
             /**
