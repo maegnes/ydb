@@ -25,7 +25,11 @@ ComputerOpponent = class ComputerOpponent {
      * @param gameWrapper
      */
     constructor(gameWrapper) {
+
+        // Create ScoresContainer object
         this.scores = new ScoresContainer();
+
+        // Set game wrapper to class property
         this.gameWrapper = gameWrapper;
 
         // Extract the game object out of the wrapper
