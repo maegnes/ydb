@@ -126,13 +126,11 @@
                                 </button>
                             </span>
                             <span ng-if="game.running">
+                                <button disabled ng-show="!game.monitor && !dashboard.hasPlayerJoinedGame(game._id)" type="button" class="btn btn-info">
+                                    <i class="icon-bullseye"></i> RUNNING
+                                </button>
                                 <a ui-sref="game({ gameId: game._id })">
-                                    <button ng-show="!game.monitor" type="button" class="btn btn-info">
-                                        <i class="icon-bullseye"></i> STARTED
-                                    </button>
-                                </a>
-                                <a ui-sref="game({ gameId: game._id })">
-                                    <button ng-show="game.monitor" type="button" class="btn btn-info">
+                                    <button ng-show="game.monitor || dashboard.hasPlayerJoinedGame(game._id)" type="button" class="btn btn-info">
                                         <i class="icon-eye-open"></i> WATCH
                                     </button>
                                 </a>
