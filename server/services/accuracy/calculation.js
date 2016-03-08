@@ -37,12 +37,19 @@ AccuracyCalculation = class AccuracyCalculation {
     calculate() {
         let s = 100;
         let iterations = 100;
+        // Run EM algorithm with 100
         for (let i = 0; i < iterations; i++) {
             s = this.step(s);
         }
         return Math.sqrt(s).toFixed(2);
     }
 
+    /**
+     * Sigma calculation
+     *
+     * @param s
+     * @returns {number}
+     */
     step(s) {
 
         let a = [];

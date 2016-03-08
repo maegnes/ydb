@@ -21,6 +21,41 @@
                 </button>
                 <div ng-if="accuracy > 0">
                     Your estimated accuracy is <strong>{{accuracy}}</strong>
+                    <hr/>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Range</th>
+                            <th>Explanation</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>1 - 16</td>
+                            <td>WORLDCLASS!</td>
+                        </tr>
+                        <tr>
+                            <td>17 - 25</td>
+                            <td>Great player</td>
+                        </tr>
+                        <tr>
+                            <td>26 - 40</td>
+                            <td>Satisfying</td>
+                        </tr>
+                        <tr>
+                            <td>41 - 60</td>
+                            <td>Average player</td>
+                        </tr>
+                        <tr>
+                            <td>61 - 80</td>
+                            <td>Bad</td>
+                        </tr>
+                        <tr>
+                            <td>81 - 100</td>
+                            <td>Try to hit the board at least</td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
