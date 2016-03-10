@@ -210,7 +210,7 @@ ComputerOpponent = class ComputerOpponent {
             fieldType = score.fieldType;
         }
         // Use generally distributed random() function to check probability
-        return (Math.random() <= (this.probabilities[fieldType] / 100));
+        return ((Math.floor(Math.random() * (100 - 1)) + 1) <= this.probabilities[fieldType]);
     }
 
     /**
