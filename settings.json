@@ -19,6 +19,10 @@
       {
         "name": "201 Game",
         "value": 201
+      },
+      {
+        "name": "Cricket",
+        "value": "cricket"
       }
     ],
     "availableGameModes": [

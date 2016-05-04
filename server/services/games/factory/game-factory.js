@@ -24,6 +24,8 @@ GameFactory = class GameFactory {
             case 201:
                 return new X201(game);
                 break;
+            case "cricket":
+                return new Cricket(game);
             default:
                 throw new Error('Unknown game type ' + game.type);
         }
