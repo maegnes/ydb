@@ -25,7 +25,8 @@ angular.module('ydb').directive('dashboard', function () {
                     changed: (id, game) => {
                         if (game.running) {
                             $state.go('game', {
-                                gameId: id
+                                gameId: id,
+                                type: game.type
                             });
                             handle.stop();
                         }

@@ -129,7 +129,7 @@
                                 <button disabled ng-show="!game.monitor && !dashboard.hasPlayerJoinedGame(game._id)" type="button" class="btn btn-info">
                                     <i class="icon-bullseye"></i> RUNNING
                                 </button>
-                                <a ui-sref="game({ gameId: game._id })">
+                                <a ui-sref="game({ gameId: game._id, type: game.type })">
                                     <button ng-show="game.monitor || dashboard.hasPlayerJoinedGame(game._id)" type="button" class="btn btn-info">
                                         <i class="icon-eye-open"></i> WATCH
                                     </button>

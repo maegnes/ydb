@@ -4,7 +4,16 @@
 angular.module('ydb').directive('game', function() {
     return {
         restrict: 'E',
-        templateUrl: 'client/ydb/internal/game/game.html',
+        templateUrl: function(element, attributes) {
+            var gameType = attributes.gtype;
+            console.log(gameType);
+            switch(gameType) {
+                case 'cricket':
+                    return 'client/ydb/internal/game/types/cricket/template.html';
+                default:
+                    return 'client/ydb/internal/game/types/x01/template.html';
+            }
+        },
         controllerAs: 'game',
         controller: function($scope, $reactive, $state, $stateParams) {
 

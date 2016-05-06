@@ -16,9 +16,10 @@ ydb.run(
  * Define a template helper to create loops
  */
 ydb.filter('range', () => {
-    return (input, total) => {
-        total = parseInt(total);
-        for (var i=0; i<total; i++) {
+    return (input, start, end) => {
+        start = parseInt(start);
+        end = parseInt(end);
+        for (var i = start; i <= end; i++) {
             input.push(i);
         }
         return input;

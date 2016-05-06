@@ -6,7 +6,7 @@ angular.module('ydb').directive('keypad', function() {
         restrict: 'E',
         templateUrl: 'client/ydb/internal/game/keypad/keypad.html',
         controllerAs: 'keypad',
-        controller: function($scope) {
+        controller: function($scope, $stateParams) {
 
             /**
              * Is the double button active?
@@ -21,6 +21,13 @@ angular.module('ydb').directive('keypad', function() {
              * @type {boolean}
              */
             this.isTriple = false;
+
+            /**
+             * Check if its a cricket game
+             */
+            this.isCricket = () => {
+                return ('cricket' == $stateParams.type);
+            };
 
             /**
              * User clicked double

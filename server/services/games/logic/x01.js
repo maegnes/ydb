@@ -3,7 +3,7 @@
  *
  * @type {X01}
  */
-X01 = class X01 {
+X01 = class X01 extends AbstractGame {
 
     ERROR_THROWN_OVER = 'THROWN_OVER';
 
@@ -16,7 +16,8 @@ X01 = class X01 {
     }
 
     constructor(gameData) {
-        this.game = gameData;
+        super(gameData);
+        // X01 specific stuff
         this.checkoutCalculator = new CheckoutPath();
         this.scores = new ScoresContainer();
         this.hasOverthrown = false;
@@ -201,6 +202,20 @@ X01 = class X01 {
     };
 
     /**
+     * Returns the current scores from the current player and leg
+     * @returns {*}
+     */
+    getCurrentPlayerScores = () => {
+        if (undefined === this.game.players[this.game.currentPlayerIndex].scores[this.game.currentSet]) {
+            this.game.players[this.game.currentPlayerIndex].scores[this.game.currentSet] = [];
+        }
+        if (undefined === this.game.players[this.game.currentPlayerIndex].scores[this.game.currentSet][this.game.currentLeg]) {
+            this.game.players[this.game.currentPlayerIndex].scores[this.game.currentSet][this.game.currentLeg] = [];
+        }
+        return this.game.players[this.game.currentPlayerIndex].scores[this.game.currentSet][this.game.currentLeg];
+    };
+
+    /**
      * Checks if the current player scored a new high score
      */
     checkHighestScoreForCurrentPlayer = () => {
@@ -240,24 +255,6 @@ X01 = class X01 {
     };
 
     /**
-     * Sets the current player to the next player in the players array
-     */
-    setNextPlayer = (index = -1) => {
-        let newIndex = 0;
-        if (-1 == index) {
-            newIndex = this.game.currentPlayerIndex + 1;
-        } else {
-            newIndex = index + 1;
-        }
-        // Check the index of the next player
-        if (this.game.players[newIndex] === undefined) {
-            newIndex = 0;
-        }
-        this.game.currentPlayerIndex = newIndex;
-        this.game.currentPlayer = this.game.players[newIndex]._id;
-    };
-
-    /**
      * Adds the given user as a new player for the game
      *
      * @param user - the meteor user object
@@ -284,24 +281,6 @@ X01 = class X01 {
     };
 
     /**
-     * Sets a random starting player and starts the game
-     *
-     * @returns {boolean}
-     */
-    start = () => {
-        // Select a random starting player
-        let startingPlayerIndex = Math.floor(Math.random() * this.game.players.length);
-        // Set game related information
-        this.game.running = true;
-        this.game.currentPlayer = this.game.players[startingPlayerIndex]._id;
-        this.game.currentPlayerIndex = startingPlayerIndex;
-        this.game.currentLegBeginner = startingPlayerIndex;
-        this.game.currentSetBeginner = startingPlayerIndex;
-        this.game.currentScores = [];
-        return true;
-    };
-
-    /**
      * Finishes a game
      */
     finish = () => {
@@ -325,18 +304,6 @@ X01 = class X01 {
         // Reset all remaining scores to the starting points (501, 401, 301)
         this.resetRemainingScores();
         this.showMessage("Starting a new leg. Game on!", 3000);
-    };
-
-    /**
-     *
-     * @param message - the message
-     * @param ms - how long shall the message be displayed?
-     */
-    showMessage = (message, ms) => {
-        this.game.message = {
-            msg: message,
-            ms: ms
-        };
     };
 
     /**
@@ -370,26 +337,6 @@ X01 = class X01 {
     };
 
     /**
-     * Resets the won legs information after a set has been finished to 0
-     */
-    resetLegsWon = () => {
-        this.game.players.forEach(
-            (player) => {
-                player.legsWon = 0;
-            }
-        );
-    };
-
-    /**
-     * Returns the current player object from the array
-     *
-     * @returns {*}
-     */
-    getCurrentPlayerObject = () => {
-        return this.game.players[this.game.currentPlayerIndex];
-    };
-
-    /**
      * Returns the missed checkouts of the current player
      */
     getCurrentPlayerMissedCheckouts = () => {
@@ -407,66 +354,6 @@ X01 = class X01 {
             return leg;
         } else {
             return ((3 * set) + leg);
-        }
-    };
-
-    /**
-     * Returns the current scores from the current player and leg
-     * @returns {*}
-     */
-    getCurrentPlayerScores = () => {
-        if (undefined === this.game.players[this.game.currentPlayerIndex].scores[this.game.currentSet]) {
-            this.game.players[this.game.currentPlayerIndex].scores[this.game.currentSet] = [];
-        }
-        if (undefined === this.game.players[this.game.currentPlayerIndex].scores[this.game.currentSet][this.game.currentLeg]) {
-            this.game.players[this.game.currentPlayerIndex].scores[this.game.currentSet][this.game.currentLeg] = [];
-        }
-        return this.game.players[this.game.currentPlayerIndex].scores[this.game.currentSet][this.game.currentLeg];
-    };
-
-    /**
-     * Check if the game is already started
-     *
-     * @returns {boolean}
-     */
-    isStarted = () => {
-        return (this.game.running === true);
-    };
-
-    /**
-     * Check if the game is finished
-     *
-     * @returns {boolean}
-     */
-    isFinished = () => {
-        return (this.game.finished === true);
-    };
-
-    /**
-     * During an active message the game is locked
-     */
-    isLocked = () => {
-        return (this.game.message);
-    };
-
-    /**
-     * Save the given game
-     */
-    save = () => {
-        Games.update(
-            {
-                _id: this.game._id
-            },
-            this.game
-        );
-        if (this.game.message) {
-            Meteor.setTimeout(
-                () => {
-                    this.game.message = undefined;
-                    this.save();
-                },
-                this.game.message.ms
-            );
         }
     };
 };

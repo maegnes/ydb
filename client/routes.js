@@ -83,8 +83,10 @@ angular.module('ydb')
             })
             // Game detail - user must be logged in
             .state('game', {
-                url: '/game/:gameId',
-                template: '<game id="gameContainer"></game>',
+                url: '/game/:type/:gameId',
+                template: function($stateParams) {
+                    return '<game data-gtype="' + $stateParams.type + '" id="gameContainer"></game>';
+                },
                 resolve: {
                     checkLogin
                 }
