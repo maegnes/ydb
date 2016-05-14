@@ -6,7 +6,6 @@ angular.module('ydb').directive('game', function() {
         restrict: 'E',
         templateUrl: function(element, attributes) {
             var gameType = attributes.gtype;
-            console.log(gameType);
             switch(gameType) {
                 case 'cricket':
                     return 'client/ydb/internal/game/types/cricket/template.html';
@@ -92,6 +91,19 @@ angular.module('ydb').directive('game', function() {
                 let game = $scope.ourGame;
                 // Tracker is visible if user is the current user OR user is the owner and the current player is not a remote player
                 return (game.currentPlayer == Meteor.userId()) || ((!game.players[game.currentPlayerIndex].remote) && (game.owner._id == Meteor.userId()));
+            };
+
+            $scope.convertAmountToString = (amount) => {
+                if (amount >= 3) {
+                    return 'drei';
+                }
+                if (2 == amount) {
+                    return 'zwei';
+                }
+                if (1 == amount) {
+                    return 'eins';
+                }
+                return 'nichts';
             };
 
             /**

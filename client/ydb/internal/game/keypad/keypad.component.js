@@ -65,10 +65,13 @@ angular.module('ydb').directive('keypad', function() {
              * @returns {{score: number, fieldName: string, fieldType: string}}
              */
             this.getScore = (score) => {
-                let returnScore = score * ((this.isTriple) ? 3 : (this.isDouble ? 2 : 1));
+                let multiplier = ((this.isTriple) ? 3 : (this.isDouble ? 2 : 1));
+                let returnScore = score * multiplier;
                 let fieldType = ((this.isTriple) ? 'T' : (this.isDouble ? 'D' : (0 == score ? 'N' : 'S')));
                 let fieldName = (fieldType == 'N') ? 'No Score' : fieldType + score;
                 return {
+                    field: score,
+                    multiplier: multiplier,
                     score: returnScore,
                     fieldName: fieldName,
                     fieldType: fieldType

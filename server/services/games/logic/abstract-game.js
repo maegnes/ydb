@@ -92,6 +92,18 @@ AbstractGame = class AbstractGame {
     };
 
     /**
+     * Finishes a game
+     */
+    finish = () => {
+        this.game.winner = this.game.currentPlayer;
+        this.game.running = false;
+        this.game.finished = true;
+        this.game.currentScores = [];
+        this.getCurrentPlayerObject().legsWon = 0;
+        this.showMessage("Fabulous victory, " + this.getCurrentPlayerObject().user.username + "!", 8000);
+    };
+
+    /**
      * Save the given game
      */
     save = () => {

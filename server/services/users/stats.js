@@ -61,6 +61,13 @@ UserStats = class UserStats {
 
         aggregationPipeline.push(
             {
+                $match: {
+                    "type": {
+                        $ne: "cricket"
+                    }
+                }
+            },
+            {
                 $unwind: "$players"
             },
             {
@@ -103,6 +110,16 @@ UserStats = class UserStats {
     static getAverages = (userId = 0, gameId = 0) => {
 
         let selector = [];
+
+        selector.push(
+            {
+                "$match": {
+                    "type": {
+                        $ne: "cricket"
+                    }
+                }
+            }
+        );
 
         selector.push(
             {

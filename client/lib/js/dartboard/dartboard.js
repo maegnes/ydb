@@ -455,22 +455,22 @@ Dartboard = function (htmlContainer, canvasContainer, callbackFunction) {
     this.getScore = function (distance, field) {
         if (distance <= this.distDoubleBull) {
             this.hitAmounts.BULLSEYE++;
-            return {score: 50, fieldName: "Bullseye", fieldType: 'D'};
+            return {field: 25, multiplier: 2, score: 50, fieldName: "Bullseye", fieldType: 'D'};
         } else if (distance <= this.distSingleBull) {
             this.hitAmounts.SINGLEBULL++;
-            return {score: 25, fieldName: "Single Bull", fieldType: 'S'};
+            return {field: 25, multiplier: 1, score: 25, fieldName: "Single Bull", fieldType: 'S'};
         } else if (distance <= this.distInnerTriple) {
             this.hitAmounts.INNERSINGLE++;
-            return {score: field, fieldName: "S" + field, fieldType: 'S'};
+            return {field: field, multiplier: 1, score: field, fieldName: "S" + field, fieldType: 'S'};
         } else if (distance <= this.distOuterTriple) {
             this.hitAmounts.TRIPLE++;
-            return {score: field * 3, fieldName: "T" + field, fieldType: 'T'};
+            return {field: field, multiplier: 3, score: field * 3, fieldName: "T" + field, fieldType: 'T'};
         } else if (distance <= this.distInnerDouble) {
             this.hitAmounts.OUTERSINGLE++;
-            return {score: field, fieldName: "S" + field, fieldType: 'S'};
+            return {field: field, multiplier: 1, score: field, fieldName: "S" + field, fieldType: 'S'};
         } else if (distance <= this.distOuterDouble) {
             this.hitAmounts.DOUBLE++;
-            return {score: field * 2, fieldName: "D" + field, fieldType: 'D'};
+            return {field: field, multiplier: 2, score: field * 2, fieldName: "D" + field, fieldType: 'D'};
         } else if (distance <= this.distBoardEdge) {
             this.hitAmounts.MISSEDSCORES++;
             return {score: 0, fieldName: "Missed Scores", fieldType: 'N'};

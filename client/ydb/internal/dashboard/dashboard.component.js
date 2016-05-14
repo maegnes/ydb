@@ -24,9 +24,10 @@ angular.module('ydb').directive('dashboard', function () {
                 let handle = games.observeChanges({
                     changed: (id, game) => {
                         if (game.running) {
+                            let currentGame = Games.findOne(id);
                             $state.go('game', {
                                 gameId: id,
-                                type: game.type
+                                type: currentGame.type
                             });
                             handle.stop();
                         }
