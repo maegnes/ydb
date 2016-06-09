@@ -16,8 +16,8 @@ es5-shim                # ECMAScript 5 compatibility for older browsers.
 angularui:angular-ui-router
 accounts-password
 dotansimha:accounts-ui-angular
-angular
 u2622:persistent-session
 meteorhacks:aggregate
 standard-minifier-css
 standard-minifier-js
+ecmascript

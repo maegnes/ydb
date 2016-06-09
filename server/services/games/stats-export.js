@@ -5,17 +5,19 @@
  */
 StatsExport = class StatsExport {
 
-    /**
-     * Store the user stats here
-     *
-     * @type {{}}
-     */
-    userStats = {};
+    constructor() {
+        /**
+         * Store the user stats here
+         *
+         * @type {{}}
+         */
+        this.userStats = {};
+    }
 
     /**
      * Reset all stats
      */
-    resetStats = () => {
+    resetStats() {
         this.userStats.thrownDarts = 0;
         this.userStats.thrownSingles = 0;
         this.userStats.thrownDoubles = 0;
@@ -29,7 +31,7 @@ StatsExport = class StatsExport {
      *
      * @param game
      */
-    extract = (game) => {
+    extract(game) {
 
         this.resetStats();
 

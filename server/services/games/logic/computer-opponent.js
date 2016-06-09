@@ -48,7 +48,7 @@ ComputerOpponent = class ComputerOpponent {
      * @param thrown
      * @param scored
      */
-    calcAverage = (thrown, scored) => {
+    calcAverage(thrown, scored) {
         if (0 == thrown || isNaN(thrown)) {
             return 0;
         }
@@ -216,7 +216,7 @@ ComputerOpponent = class ComputerOpponent {
     /**
      * Tells the virtual opponent to throw the next dart in 1.5 seconds
      */
-    nextDart = () => {
+    nextDart() {
         Meteor.setTimeout(
             () => {
                 this.play();

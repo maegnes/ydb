@@ -33,7 +33,7 @@ angular.module('ydb').directive('accuracy', function() {
             /**
              * Starts server side calculation
              */
-            $scope.calculate = () => {
+            $scope.calculate = function() {
                 Meteor.call(
                     'calculateAccuracy',
                     Meteor.userId(),
@@ -54,7 +54,7 @@ angular.module('ydb').directive('accuracy', function() {
              *
              * @returns {boolean}
              */
-            $scope.enoughDartsThrown = () => {
+            $scope.enoughDartsThrown = function() {
                 return $scope.hits.length >= 50;
             };
         }

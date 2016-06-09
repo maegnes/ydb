@@ -5,20 +5,15 @@
  */
 CheckoutPath = class CheckoutPath {
 
-    /**
-     * Array to store the different checkout paths (ONE = with 1 dart; TWO = with 2 darts etc.)
-     *
-     * @type {{ONE: Array, TWO: Array, THREE: Array}}
-     */
-    paths = {
-        ONE: [],
-        TWO: [],
-        THREE: []
-    };
-
     constructor() {
         this.scores = new ScoresContainer();
         this.reset();
+
+        this.paths = {
+        ONE: [],
+        TWO: [],
+        THREE: []
+        };
     };
 
     /**
@@ -26,14 +21,14 @@ CheckoutPath = class CheckoutPath {
      *
      * @returns {{ONE: Array, TWO: Array, THREE: Array}}
      */
-    getPaths = () => {
+    getPaths() {
         return this.paths;
     };
 
     /**
      * Resets the calculated paths
      */
-    reset = () => {
+    reset() {
         this.paths.ONE = [];
         this.paths.TWO = [];
         this.paths.THREE = [];
@@ -45,7 +40,7 @@ CheckoutPath = class CheckoutPath {
      * @param points
      * @param dartsRemaining
      */
-    validate = (points, dartsRemaining) => {
+    validate(points, dartsRemaining) {
         // No checkout with three darts possible for a score > 170
         if (points > 170) {
             return false;
@@ -72,7 +67,7 @@ CheckoutPath = class CheckoutPath {
      * @param dartsRemaining
      * @param path
      */
-    calculate = (points, dartsRemaining, path = []) => {
+    calculate(points, dartsRemaining, path = []) {
 
         if (0 == dartsRemaining || !this.validate(points, dartsRemaining)) {
             return;
@@ -154,7 +149,7 @@ CheckoutPath = class CheckoutPath {
      *
      * @param path
      */
-    optimizePath = (path) => {
+    optimizePath(path) {
         let first = path[0];
         let second = path[1];
         // If first an second targets are singles < 20
@@ -172,7 +167,7 @@ CheckoutPath = class CheckoutPath {
      * Checks if a checkout path is found
      * @returns {boolean}
      */
-    isCheckoutPossible = () => {
+    isCheckoutPossible() {
         return !(this.paths.ONE.length == 0 && this.paths.TWO.length == 0 && this.paths.THREE.length == 0);
     };
 };

@@ -18,7 +18,7 @@ angular.module('ydb').directive('settings', function () {
             /**
              * Save the new user profile
              */
-            this.save = () => {
+            this.save = function() {
                 Meteor.users.update(
                     {
                         _id: Meteor.userId()

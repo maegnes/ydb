@@ -18,7 +18,7 @@ angular.module('ydb').directive('stats', function() {
             /**
              * Loads stats from the server
              */
-            $scope.loadStats = () => {
+            $scope.loadStats = function() {
                 Meteor.call(
                     'getCheckoutPercentage',
                     Meteor.userId(),

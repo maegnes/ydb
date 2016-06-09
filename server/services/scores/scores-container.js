@@ -6,52 +6,52 @@
 ScoresContainer = class ScoresContainer {
 
     /**
-     * Defines a no score score
-     * @type {{score: number, fieldName: string, fieldType: string}}
-     */
-    noScore = {
-        score: 0,
-        fieldName: "No Score",
-        fieldType: 'N'
-    };
-
-    /**
-     * Array with the available single fields
-     *
-     * @type {*[]}
-     */
-    singles = [
-        {
-            score: 25,
-            fieldName: 'Single Bull',
-            fieldType: 'S'
-        }
-    ];
-
-    /**
-     * Array with the available double fields
-     *
-     * @type {*[]}
-     */
-    doubles = [
-        {
-            score: 50,
-            fieldName: 'Bullseye',
-            fieldType: 'D'
-        }
-    ];
-
-    /**
-     * Array with the available triple fields
-     *
-     * @type {*[]}
-     */
-    triples = [];
-
-    /**
      * Creates the scores and their values
      */
     constructor() {
+        /**
+         * Defines a no score score
+         * @type {{score: number, fieldName: string, fieldType: string}}
+         */
+        this.noScore = {
+            score: 0,
+            fieldName: "No Score",
+            fieldType: 'N'
+        };
+
+        /**
+         * Array with the available single fields
+         *
+         * @type {*[]}
+         */
+        this.singles = [
+            {
+                score: 25,
+                fieldName: 'Single Bull',
+                fieldType: 'S'
+            }
+        ];
+
+        /**
+         * Array with the available double fields
+         *
+         * @type {*[]}
+         */
+        this.doubles = [
+            {
+                score: 50,
+                fieldName: 'Bullseye',
+                fieldType: 'D'
+            }
+        ];
+
+        /**
+         * Array with the available triple fields
+         *
+         * @type {*[]}
+         */
+        this.triples = [];
+
         for (var i = 1; i <= 20; i++) {
             this.singles.push(
                 ScoresContainer.createScore(i, 'S')

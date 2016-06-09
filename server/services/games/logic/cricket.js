@@ -15,7 +15,7 @@ Cricket = class Cricket extends AbstractGame {
      *
      * @param score
      */
-    score = (score) => {
+    score(score) {
 
         let player = this.getCurrentPlayerObject();
 
@@ -58,7 +58,7 @@ Cricket = class Cricket extends AbstractGame {
     /**
      * Jumps to the next player
      */
-    nextPlayer = () => {
+    nextPlayer() {
 
         this.game.currentRoundDartsThrown = 0;
 
@@ -74,7 +74,7 @@ Cricket = class Cricket extends AbstractGame {
      * @param user - the meteor user object
      * @param isRemotePlayer - is the player a remote player?
      */
-    addPlayer = (user, isRemotePlayer) => {
+    addPlayer(user, isRemotePlayer) {
         let player = {
             _id: user._id,
             remote: isRemotePlayer,
@@ -90,7 +90,7 @@ Cricket = class Cricket extends AbstractGame {
     /**
      * Starts a new leg
      */
-    startNewLeg = () => {
+    startNewLeg() {
         this.game.currentLeg++;
         this.game.currentRoundDartsThrown = 0;
         this.game.currentScores = [];
@@ -103,7 +103,7 @@ Cricket = class Cricket extends AbstractGame {
     /**
      * Starts a new set
      */
-    startNewSet = () => {
+    startNewSet() {
         this.game.currentSet++;
         this.game.currentLeg = 0;
         this.game.currentRoundDartsThrown = 0;
@@ -121,7 +121,7 @@ Cricket = class Cricket extends AbstractGame {
     /**
      * Resets the player scores
      */
-    resetPlayerScores = () => {
+    resetPlayerScores() {
         this.game.players.forEach(
             (player) => {
                 player.scores = this.getScoreSkeleton();
@@ -134,7 +134,7 @@ Cricket = class Cricket extends AbstractGame {
      *
      * @returns {Array}
      */
-    getScoreSkeleton = () => {
+    getScoreSkeleton() {
         scoreSkeleton = [];
         scoreSkeleton[15] = 0;
         scoreSkeleton[16] = 0;
@@ -150,7 +150,7 @@ Cricket = class Cricket extends AbstractGame {
      * Returns the current scores from the current player and leg
      * @returns {*}
      */
-    getCurrentPlayerScores = () => {
+    getCurrentPlayerScores() {
         return this.game.players[this.game.currentPlayerIndex].scores;
     };
 

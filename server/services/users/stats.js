@@ -11,7 +11,7 @@ UserStats = class UserStats {
      * @param userId
      * @returns {{gamesPlayed: *, gamesWon: number, pctWon: number}}
      */
-    static getQuickStats = (userId) => {
+    static getQuickStats(userId) {
         let selector = {
             $and: [
                 {
@@ -55,7 +55,7 @@ UserStats = class UserStats {
      *
      * @param userId
      */
-    static getBestValues = (userId) => {
+    static getBestValues(userId) {
 
         let aggregationPipeline = [];
 
@@ -107,7 +107,7 @@ UserStats = class UserStats {
      * @param gameId
      * @returns {*}
      */
-    static getAverages = (userId = 0, gameId = 0) => {
+    static getAverages(userId = 0, gameId = 0) {
 
         let selector = [];
 
@@ -200,7 +200,7 @@ UserStats = class UserStats {
      * @param userId
      * @param gameId
      */
-    static getCheckoutPercentage = (userId, gameId = 0) => {
+    static getCheckoutPercentage(userId, gameId = 0) {
 
         let aggregationPipeline = [];
 

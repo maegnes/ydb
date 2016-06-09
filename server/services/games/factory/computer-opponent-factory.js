@@ -3,7 +3,7 @@
  *
  * @type {ComputerOpponentFactory}
  */
-ComputerOpponentFactory = class ComputerOpponentFactory {
+class ComputerOpponentFactory {
 
     /**
      * Creates the opponent based on the difficulty level

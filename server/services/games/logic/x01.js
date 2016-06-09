@@ -5,8 +5,6 @@
  */
 X01 = class X01 extends AbstractGame {
 
-    ERROR_THROWN_OVER = 'THROWN_OVER';
-
     /**
      * Returns the starting points of the selected game type. Must be overwritten in the child classes
      * @returns {number}
@@ -21,6 +19,8 @@ X01 = class X01 extends AbstractGame {
         this.checkoutCalculator = new CheckoutPath();
         this.scores = new ScoresContainer();
         this.hasOverthrown = false;
+
+        this.ERROR_THROWN_OVER = 'THROWN_OVER';
     }
 
     /**
@@ -28,7 +28,7 @@ X01 = class X01 extends AbstractGame {
      *
      * @param score
      */
-    score = (score) => {
+    score(score) {
         this.game.currentRoundDartsThrown++;
         try {
             // If just one dart left it is a checkout attempt
@@ -55,7 +55,7 @@ X01 = class X01 extends AbstractGame {
         }
     };
 
-    handleCheckoutPath = () => {
+    handleCheckoutPath() {
         // Check a possible checkout
         if (this.getCurrentPlayerObject().scoreRemaining <= 170) {
             let remaining = (3 - (this.game.currentRoundDartsThrown));
@@ -84,7 +84,7 @@ X01 = class X01 extends AbstractGame {
     /**
      * Updates the three dart average for the current player
      */
-    updateAverages = () => {
+    updateAverages() {
         this.game.players.forEach(
             (player) => {
                 let avgData = UserStats.getAverages(
@@ -107,7 +107,7 @@ X01 = class X01 extends AbstractGame {
      * @param score
      * @returns {boolean}
      */
-    subtractFromPlayerScore = (score) => {
+    subtractFromPlayerScore(score) {
 
         // First, check if it would be negative, 0 or 1
         let player = this.getCurrentPlayerObject();
@@ -162,7 +162,7 @@ X01 = class X01 extends AbstractGame {
     /**
      * Sets the no score scores if a player is over thrown
      */
-    setNoScore = () => {
+    setNoScore() {
 
         this.hasOverthrown = true;
 
@@ -191,7 +191,7 @@ X01 = class X01 extends AbstractGame {
     /**
      * Returns the sum of the currently thrown scores
      */
-    getCurrentScoresSum = () => {
+    getCurrentScoresSum() {
         let totalScore = 0;
         this.game.currentScores.forEach(
             (score) => {
@@ -205,7 +205,7 @@ X01 = class X01 extends AbstractGame {
      * Returns the current scores from the current player and leg
      * @returns {*}
      */
-    getCurrentPlayerScores = () => {
+    getCurrentPlayerScores() {
         if (undefined === this.game.players[this.game.currentPlayerIndex].scores[this.game.currentSet]) {
             this.game.players[this.game.currentPlayerIndex].scores[this.game.currentSet] = [];
         }
@@ -218,7 +218,7 @@ X01 = class X01 extends AbstractGame {
     /**
      * Checks if the current player scored a new high score
      */
-    checkHighestScoreForCurrentPlayer = () => {
+    checkHighestScoreForCurrentPlayer() {
         let sum = this.getCurrentScoresSum();
         // Check if the highest score of the player was improved
         if (sum > this.getCurrentPlayerObject().highestScore) {
@@ -229,7 +229,7 @@ X01 = class X01 extends AbstractGame {
     /**
      * Check for a checkout high score
      */
-    checkHighestCheckoutForCurrentPlayer = () => {
+    checkHighestCheckoutForCurrentPlayer() {
         let sum = this.getCurrentScoresSum();
         if (sum > this.getCurrentPlayerObject().highestCheckout) {
             this.getCurrentPlayerObject().highestCheckout = sum;
@@ -239,7 +239,7 @@ X01 = class X01 extends AbstractGame {
     /**
      * Jumps to the next player
      */
-    nextPlayer = () => {
+    nextPlayer() {
 
         this.handleCheckoutPath();
 
@@ -260,7 +260,7 @@ X01 = class X01 extends AbstractGame {
      * @param user - the meteor user object
      * @param isRemotePlayer - is the player a remote player?
      */
-    addPlayer = (user, isRemotePlayer) => {
+    addPlayer(user, isRemotePlayer) {
         let player = {
             _id: user._id,
             remote: isRemotePlayer,
@@ -283,7 +283,7 @@ X01 = class X01 extends AbstractGame {
     /**
      * Starts a new leg
      */
-    startNewLeg = () => {
+    startNewLeg() {
         this.game.currentLeg++;
         this.game.currentRoundDartsThrown = 0;
         this.game.currentScores = [];
@@ -297,7 +297,7 @@ X01 = class X01 extends AbstractGame {
     /**
      * Starts a new set
      */
-    startNewSet = () => {
+    startNewSet() {
         this.game.currentSet++;
         this.game.currentLeg = 0;
         this.game.currentRoundDartsThrown = 0;
@@ -315,7 +315,7 @@ X01 = class X01 extends AbstractGame {
     /**
      * Resets the remaining score of all players back to the starting points
      */
-    resetRemainingScores = () => {
+    resetRemainingScores() {
         this.game.players.forEach(
             (player) => {
                 player.scoreRemaining = this.startingPoints;
@@ -327,7 +327,7 @@ X01 = class X01 extends AbstractGame {
     /**
      * Returns the missed checkouts of the current player
      */
-    getCurrentPlayerMissedCheckouts = () => {
+    getCurrentPlayerMissedCheckouts() {
         let player = this.getCurrentPlayerObject();
         return (player.checkoutAttempts - player.checkouts);
     };
@@ -335,7 +335,7 @@ X01 = class X01 extends AbstractGame {
     /**
      * Returns the amount of played legs (including the current one)
      */
-    getTheoreticalPlayedLegs = () => {
+    getTheoreticalPlayedLegs() {
         let leg = this.game.currentLeg + 1;
         let set = this.game.currentSet + 1;
         if (0 == this.game.currentSet) {

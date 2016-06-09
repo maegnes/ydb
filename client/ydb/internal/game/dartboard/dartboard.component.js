@@ -16,7 +16,7 @@ angular.module('ydb').directive('dartboard', function() {
             /**
              * Set some dartboard configurations
              */
-            $scope.drawBoard = () => {
+            $scope.drawBoard = function() {
                 // DIV element which surrounds the canvas container
                 $scope.dartBoard.htmlContainer = document.getElementById('db-container');
                 // Canvas container
@@ -37,7 +37,7 @@ angular.module('ydb').directive('dartboard', function() {
              * @param lastScore
              * @param lastPosition
              */
-            $scope.dartBoard.callback = (amounts, thrownDarts, scores, lastScore, lastPosition) => {
+            $scope.dartBoard.callback = function(amounts, thrownDarts, scores, lastScore, lastPosition) {
                 // Broadcast a throwEvent
                 $scope.$parent.$broadcast("throwEvent", lastScore);
                 // Broadcast a positionEvent for the accuracy calculation

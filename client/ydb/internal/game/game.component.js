@@ -42,7 +42,7 @@ angular.module('ydb').directive('game', function() {
              *
              * @param scores
              */
-            $scope.throw = (scores) => {
+            $scope.throw = function(scores) {
                 Meteor.call(
                     'score',
                     this.gameId,
@@ -55,7 +55,7 @@ angular.module('ydb').directive('game', function() {
              *
              * @returns {undefined|*}
              */
-            $scope.getGame = () => {
+            $scope.getGame = function() {
                 if ($scope.ourGame) {
                     return $scope.ourGame;
                 }
@@ -66,7 +66,7 @@ angular.module('ydb').directive('game', function() {
              *
              * @returns {*}
              */
-            $scope.getCurrentPlayer = () => {
+            $scope.getCurrentPlayer = function() {
                 if ($scope.ourGame) {
                     return $scope.ourGame.players[$scope.ourGame.currentPlayerIndex];
                 }
@@ -76,7 +76,7 @@ angular.module('ydb').directive('game', function() {
              * Checks if the scoring is currently locked (after set/leg change for instance)
              * @returns {*|boolean}
              */
-            $scope.scoringLocked = () => {
+            $scope.scoringLocked = function() {
                 if ($scope.ourGame) {
                     return ($scope.ourGame.message || $scope.ourGame.finished);
                 }
@@ -87,13 +87,13 @@ angular.module('ydb').directive('game', function() {
              *
              * @returns {boolean}
              */
-            $scope.isScoreTrackerVisible = () => {
+            $scope.isScoreTrackerVisible = function() {
                 let game = $scope.ourGame;
                 // Tracker is visible if user is the current user OR user is the owner and the current player is not a remote player
                 return (game.currentPlayer == Meteor.userId()) || ((!game.players[game.currentPlayerIndex].remote) && (game.owner._id == Meteor.userId()));
             };
 
-            $scope.convertAmountToString = (amount) => {
+            $scope.convertAmountToString = function(amount) {
                 if (amount >= 3) {
                     return 'drei';
                 }

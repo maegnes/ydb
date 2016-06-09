@@ -14,7 +14,7 @@ AbstractGame = class AbstractGame {
      *
      * @returns {boolean}
      */
-    isStarted = () => {
+    isStarted() {
         return (this.game.running === true);
     };
 
@@ -23,14 +23,14 @@ AbstractGame = class AbstractGame {
      *
      * @returns {boolean}
      */
-    isFinished = () => {
+    isFinished() {
         return (this.game.finished === true);
     };
 
     /**
      * During an active message the game is locked
      */
-    isLocked = () => {
+    isLocked() {
         return (this.game.message);
     };
 
@@ -39,14 +39,14 @@ AbstractGame = class AbstractGame {
      *
      * @returns {*}
      */
-    getCurrentPlayerObject = () => {
+    getCurrentPlayerObject() {
         return this.game.players[this.game.currentPlayerIndex];
     };
 
     /**
      * Sets the current player to the next player in the players array
      */
-    setNextPlayer = (index = -1) => {
+    setNextPlayer(index = -1) {
         let newIndex = 0;
         if (-1 == index) {
             newIndex = this.game.currentPlayerIndex + 1;
@@ -66,7 +66,7 @@ AbstractGame = class AbstractGame {
      * @param message - the message
      * @param ms - how long shall the message be displayed?
      */
-    showMessage = (message, ms) => {
+    showMessage(message, ms) {
         this.game.message = {
             msg: message,
             ms: ms
@@ -78,7 +78,7 @@ AbstractGame = class AbstractGame {
      *
      * @returns {boolean}
      */
-    start = () => {
+    start() {
         // Select a random starting player
         let startingPlayerIndex = Math.floor(Math.random() * this.game.players.length);
         // Set game related information
@@ -94,7 +94,7 @@ AbstractGame = class AbstractGame {
     /**
      * Finishes a game
      */
-    finish = () => {
+    finish() {
         this.game.winner = this.game.currentPlayer;
         this.game.running = false;
         this.game.finished = true;
@@ -106,7 +106,7 @@ AbstractGame = class AbstractGame {
     /**
      * Save the given game
      */
-    save = () => {
+    save() {
         Games.update(
             {
                 _id: this.game._id

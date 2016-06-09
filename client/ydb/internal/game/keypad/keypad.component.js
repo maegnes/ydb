@@ -25,14 +25,14 @@ angular.module('ydb').directive('keypad', function() {
             /**
              * Check if its a cricket game
              */
-            this.isCricket = () => {
+            this.isCricket = function() {
                 return ('cricket' == $stateParams.type);
             };
 
             /**
              * User clicked double
              */
-            this.clickDouble = () => {
+            this.clickDouble = function() {
                 this.isDouble = !this.isDouble;
                 this.isTriple = false;
             };
@@ -40,7 +40,7 @@ angular.module('ydb').directive('keypad', function() {
             /**
              * User clicked triple
              */
-            this.clickTriple = () => {
+            this.clickTriple = function() {
                 this.isTriple = !this.isTriple;
                 this.isDouble = false;
             };
@@ -50,7 +50,7 @@ angular.module('ydb').directive('keypad', function() {
              *
              * @param score
              */
-            this.clickScore = (score) => {
+            this.clickScore = function(score) {
                 score = this.getScore(score);
                 this.isTriple = false;
                 this.isDouble = false;
@@ -64,7 +64,7 @@ angular.module('ydb').directive('keypad', function() {
              * @param score
              * @returns {{score: number, fieldName: string, fieldType: string}}
              */
-            this.getScore = (score) => {
+            this.getScore = function(score) {
                 let multiplier = ((this.isTriple) ? 3 : (this.isDouble ? 2 : 1));
                 let returnScore = score * multiplier;
                 let fieldType = ((this.isTriple) ? 'T' : (this.isDouble ? 'D' : (0 == score ? 'N' : 'S')));

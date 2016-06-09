@@ -22,7 +22,7 @@ angular.module('ydb').directive('login', function () {
             /**
              * Login user. if successful redirect to dashboard
              */
-            this.login = () => {
+            this.login = function() {
                 try {
                     Meteor.loginWithPassword(
                         this.user.username,

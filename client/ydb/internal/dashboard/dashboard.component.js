@@ -13,7 +13,7 @@ angular.module('ydb').directive('dashboard', function () {
             /**
              * Observe changes and redirect user if a game has been started
              */
-            this.observeChanges = () => {
+            this.observeChanges = function() {
                 let games = Games.find({
                     players: {
                         $elemMatch: {
@@ -38,7 +38,7 @@ angular.module('ydb').directive('dashboard', function () {
             /**
              * Load the quick stats from the server
              */
-            $scope.loadQuickStats = () => {
+            $scope.loadQuickStats = function() {
                 Meteor.call(
                     'getQuickStats',
                     Meteor.userId(),
@@ -54,7 +54,7 @@ angular.module('ydb').directive('dashboard', function () {
              *
              * @param gameId
              */
-            this.removePlayerFromGame = (gameId) => {
+            this.removePlayerFromGame = function(gameId) {
                 Meteor.call(
                     'removePlayerFromGame',
                     gameId,
@@ -72,7 +72,7 @@ angular.module('ydb').directive('dashboard', function () {
              *
              * @param gameId
              */
-            this.startGame = (gameId) => {
+            this.startGame = function(gameId) {
                 Meteor.call(
                     'startGame',
                     gameId,
@@ -85,7 +85,7 @@ angular.module('ydb').directive('dashboard', function () {
              *
              * @param gameId
              */
-            this.deleteGame = (gameId) => {
+            this.deleteGame = function(gameId) {
                 Meteor.call(
                     'deleteGame',
                     gameId,
@@ -99,7 +99,7 @@ angular.module('ydb').directive('dashboard', function () {
              * @param gameId
              * @returns {boolean}
              */
-            this.hasPlayerJoinedGame = (gameId) => {
+            this.hasPlayerJoinedGame = function(gameId) {
                 let game = Games.findOne(gameId);
                 let joinedGame = false;
                 game.players.forEach(function (player) {

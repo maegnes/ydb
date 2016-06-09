@@ -17,7 +17,7 @@ angular.module('ydb').directive('register', () => {
             /**
              * Create user account
              */
-            this.addUser = () => {
+            this.addUser = function() {
                 try {
                     if (this.newUser.pin != this.newUser.pinConfirm) {
                         throw 'pin';

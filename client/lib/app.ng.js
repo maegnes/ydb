@@ -1,3 +1,6 @@
+import { Meteor } from 'meteor/meteor';
+import angular from 'angular';
+
 // Load angular module
 let ydb = angular.module('ydb', ['angular-meteor', 'ui.router']);
 
@@ -5,10 +8,10 @@ let ydb = angular.module('ydb', ['angular-meteor', 'ui.router']);
  * Check if meteor is connected to the backend
  */
 ydb.run(
-    ($rootScope) => {
-        $rootScope.connectedToBackend = () => {
+    ($rootScope) = {
+        connectedToBackend: function() {
             return Meteor.status().connected;
-        };
+        }
     }
 );
 

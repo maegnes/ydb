@@ -36,7 +36,7 @@ angular.module('ydb').directive('addPlayerToGame', function() {
             /**
              * Checks the username for the new player
              */
-            this.checkUserName = () => {
+            this.checkUserName = function() {
                 Meteor.call(
                     'checkPassword',
                     this.newPlayer.userName,
